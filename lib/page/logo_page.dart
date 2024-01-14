@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:robot_living/page/tab_page.dart';
+import 'package:robot_living/page/menu_page.dart';
 
 class LogoPage extends StatefulWidget {
   const LogoPage({super.key});
@@ -33,7 +33,7 @@ class _LogoPageState extends State<LogoPage> {
       onTap: () {
         if (_canNavigate) {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => TabPage(index: 0,)));
+              context, MaterialPageRoute(builder: (context) => const MenuPage()));
         }
       },
       behavior: HitTestBehavior.opaque, // 全域偵測觸控
@@ -46,7 +46,7 @@ class _LogoPageState extends State<LogoPage> {
               child: Image.asset('assets/images/logo.png'),
             );
           } else {
-            return TabPage(index: 0,);
+            return const MenuPage();
           }
         },
       ),
