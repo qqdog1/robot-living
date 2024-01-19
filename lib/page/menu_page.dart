@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:robot_living/page/historical_page.dart';
 import 'package:robot_living/page/settings_page.dart';
 import 'package:robot_living/page/today_page.dart';
@@ -28,9 +28,7 @@ class _MenuPageState extends State<MenuPage> {
     '完成紀錄',
   ];
 
-  final _pagePopupPageCount = [
-    1,5,1
-  ];
+  final _pagePopupPageCount = [1, 5, 1];
 
   final _pagePopupContent = [
     [
@@ -59,7 +57,7 @@ class _MenuPageState extends State<MenuPage> {
             onPressed: () {
               showHelpPopup(context);
             },
-            icon: const Icon(Icons.question_mark_sharp),
+            icon: const Icon(FontAwesomeIcons.circleQuestion),
           ),
         ],
       ),
@@ -108,7 +106,7 @@ class _MenuPageState extends State<MenuPage> {
       builder: (BuildContext context) {
         return PagingPopup(
           totalPages: _pagePopupPageCount[_selectedPage],
-          pageContents:_pagePopupContent[_selectedPage],
+          pageContents: _pagePopupContent[_selectedPage],
         );
       },
     );

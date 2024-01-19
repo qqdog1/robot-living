@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PagingPopup extends StatefulWidget {
   final int totalPages;
@@ -23,7 +24,7 @@ class _PagingPopupState extends State<PagingPopup> {
       title: Align(
         alignment: Alignment.topRight,
         child: IconButton(
-          icon: const Icon(Icons.close),
+          icon: const Icon(FontAwesomeIcons.xmark),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -34,7 +35,7 @@ class _PagingPopupState extends State<PagingPopup> {
           const SizedBox(height: 50, width: 48),
         if (currentPage > 1)
           IconButton(
-            icon: const Icon(Icons.arrow_left),
+            icon: const Icon(FontAwesomeIcons.caretLeft),
             onPressed: () {
               setState(() {
                 currentPage--;
@@ -43,7 +44,7 @@ class _PagingPopupState extends State<PagingPopup> {
           ),
         if (currentPage < widget.totalPages)
           IconButton(
-            icon: const Icon(Icons.arrow_right),
+            icon: const Icon(FontAwesomeIcons.caretRight),
             onPressed: () {
               setState(() {
                 currentPage++;
