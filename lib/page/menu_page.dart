@@ -16,11 +16,18 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   int _selectedPage = 0;
 
-  final _pageOptions = [
-    const TodayPage(),
-    const SettingsPage(),
-    const HistoricalPage(),
-  ];
+  Widget _getPageWidget(int index) {
+    switch (index) {
+      case 0:
+        return const TodayPage();
+      case 1:
+        return const SettingsPage();
+      case 2:
+        return const HistoricalPage();
+      default:
+        return const SettingsPage();
+    }
+  }
 
   final _pageTitles = [
     '今日進度',
@@ -68,35 +75,37 @@ class _MenuPageState extends State<MenuPage> {
             ListTile(
               title: Text(_pageTitles[0]),
               onTap: () {
-                setState(() {
-                  _selectedPage = 0;
-                });
+                clickDrawer(0);
                 Navigator.pop(context);
               },
             ),
             ListTile(
               title: Text(_pageTitles[1]),
               onTap: () {
-                setState(() {
-                  _selectedPage = 1;
-                });
+                clickDrawer(1);
                 Navigator.pop(context);
               },
             ),
             ListTile(
               title: Text(_pageTitles[2]),
               onTap: () {
-                setState(() {
-                  _selectedPage = 2;
-                });
+                clickDrawer(2);
                 Navigator.pop(context);
               },
             ),
           ],
         ),
       ),
-      body: _pageOptions[_selectedPage],
+      body: _getPageWidget(_selectedPage),
     );
+  }
+
+  void clickDrawer(int index) {
+    if (_selectedPage != index) {
+      setState(() {
+        _selectedPage = index;
+      });
+    }
   }
 
   Future<void> showHelpPopup(BuildContext context) {
