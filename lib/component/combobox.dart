@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class Combobox extends StatefulWidget {
-  final String defaultItem;
+  final String? defaultItem;
   final List<String> items;
+  final ValueChanged<String?>? onItemChanged;
 
   const Combobox({
     super.key,
-    required this.defaultItem,
+    this.defaultItem,
     required this.items,
+    this.onItemChanged,
   });
 
   @override
@@ -15,25 +17,26 @@ class Combobox extends StatefulWidget {
 }
 
 class _Combobox extends State<Combobox> {
-  late String dropdownValue;
+  String? dropdownValue;
 
   @override
   void initState() {
     super.initState();
-    dropdownValue = widget.defaultItem; // 在 initState 中进行初始化
+    dropdownValue = widget.defaultItem;
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min, // 避免佔用過多空間
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         DropdownButton<String>(
           value: dropdownValue,
           onChanged: (String? newValue) {
             setState(() {
-              dropdownValue = newValue!;
+              dropdownValue = newValue;
             });
+            widget.onItemChanged?.call(newValue);
           },
           items: widget.items.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
