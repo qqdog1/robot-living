@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../component/combobox.dart';
+import '../component/paging_popup.dart';
 import '../const/daily_task_type_value.dart';
 
 class SettingsEditPage extends StatefulWidget {
@@ -12,13 +13,15 @@ class SettingsEditPage extends StatefulWidget {
 }
 
 class _SettingsEditPageState extends State<SettingsEditPage> {
-  String dailyTaskTypeValue = DailyTaskTypeValue.startEndTask;
+  String? dailyTaskTypeValue;
+  TextEditingController textEditingController = TextEditingController();
+  bool isFirstComboInput = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('通知設定'),
+        title: const Text('任務及通知設定'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -26,7 +29,17 @@ class _SettingsEditPageState extends State<SettingsEditPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const Text(
-              '通知類型',
+              '任務名稱:',
+              style: TextStyle(fontSize: 20),
+            ),
+            TextField(
+              controller: textEditingController,
+              decoration: const InputDecoration(
+                labelText: '請輸入名稱',
+              ),
+            ),
+            const Text(
+              '任務類型:',
               style: TextStyle(fontSize: 20),
             ),
             Row(
@@ -38,18 +51,84 @@ class _SettingsEditPageState extends State<SettingsEditPage> {
                     DailyTaskTypeValue.segmentedTask,
                     DailyTaskTypeValue.oneTimeTask,
                   ],
+                  onItemChanged: (newValue) {
+                    setState(() {
+                      dailyTaskTypeValue = newValue;
+                    });
+                  },
                 ),
                 IconButton(
                   icon: const Icon(FontAwesomeIcons.circleQuestion),
                   onPressed: () {
-                    // 問號按鈕的功能實現
+                    showTypeHelpPopup(context);
                   },
                 ),
               ],
             ),
+            Visibility(
+              visible: dailyTaskTypeValue == DailyTaskTypeValue.startEndTask ||
+                  dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Text(
+                    '設定開始時間:',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      ).then((time) {
+                        if (time != null) {
+                          // Handle the selected time
+                        }
+                      });
+                    },
+                    child: const Text('選擇時間'),
+                  ),
+                  const Text(
+                    '設定結束時間:',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      ).then((time) {
+                        if (time != null) {
+                          // Handle the selected time
+                        }
+                      });
+                    },
+                    child: const Text('選擇時間'),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> showTypeHelpPopup(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const PagingPopup(
+          totalPages: 4,
+          pageContents: [
+            Text('任務分三種類型:\n1.起訖類型\n2.分段類型\n3.一次性', style: TextStyle(fontSize: 18)),
+            Text('起訖類型任務需要設定\n開始時間及結束時間,\n若是想養成早睡早起的習慣,就適合把睡覺設定成起訖行任務\n又或是每日晚間養成定時讀書的習慣也很適合加入一個起訖型的任務', style: TextStyle(fontSize: 18)),
+            Text('分段類的任務適合放一些每日需要被階段完成的目標\n若訂下了每天需要喝2500CC的水,從早上10點開始到晚上8點\n並分成10段\n讓程式再每隔一段時間提醒喝250CC的水\n或是每日做100下伏地挺身\n也可以讓程式協助分段提醒', style: TextStyle(fontSize: 18)),
+            Text('一次型的任務只須設定一個時間點,讓程式提醒你去做某件事\n像是每天早上10點要記得煮水或是晚上10點要關玄關的燈\n各種執行起來不會花太多時間又或是容易忘記的事情都很適合加入', style: TextStyle(fontSize: 18)),
+          ],
+        );
+      },
     );
   }
 }
