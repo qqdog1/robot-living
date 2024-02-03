@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:robot_living/page/settings_day_edit_page.dart';
+import 'package:robot_living/page/settings_task_edit_page.dart';
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+class SettingsDayEditPage extends StatefulWidget {
+  const SettingsDayEditPage({super.key});
 
   @override
-  _SettingsPage createState() => _SettingsPage();
+  _SettingsDayEditPageState createState() => _SettingsDayEditPageState();
 }
 
-class _SettingsPage extends State<SettingsPage> {
+class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('一日計畫設定'),
+      ),
       body: Stack(
         children: [
           Positioned(
@@ -23,7 +25,7 @@ class _SettingsPage extends State<SettingsPage> {
               child: FloatingActionButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const SettingsDayEditPage(),
+                    builder: (context) => const SettingsTaskEditPage(),
                   ));
                 },
                 child: const Icon(FontAwesomeIcons.plus),
