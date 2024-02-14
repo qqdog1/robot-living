@@ -4,7 +4,7 @@ import 'package:robot_living/page/historical_page.dart';
 import 'package:robot_living/page/settings_page.dart';
 import 'package:robot_living/page/today_page.dart';
 
-import '../component/paging_popup.dart';
+import '../component/text_paging_popup.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -113,7 +113,7 @@ class _MenuPageState extends State<MenuPage> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return PagingPopup(
+        return TextPagingPopup(
           totalPages: _pagePopupPageCount[_selectedPage],
           pageContents: _pagePopupContent[_selectedPage],
         );

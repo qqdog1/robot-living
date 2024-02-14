@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../component/combobox.dart';
-import '../component/paging_popup.dart';
+import '../component/text_paging_popup.dart';
 import '../const/daily_task_type_value.dart';
 
 class SettingsTaskEditPage extends StatefulWidget {
@@ -131,7 +131,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return const PagingPopup(
+        return const TextPagingPopup(
           totalPages: 4,
           pageContents: [
             Text('任務分三種類型:\n1.起訖類型\n2.分段類型\n3.一次性',

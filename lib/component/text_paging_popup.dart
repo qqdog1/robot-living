@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class PagingPopup extends StatefulWidget {
+class TextPagingPopup extends StatefulWidget {
   final int totalPages;
   final List<Widget> pageContents;
 
-  const PagingPopup({
+  const TextPagingPopup({
     super.key,
     required this.totalPages,
     required this.pageContents,
   });
 
   @override
-  _PagingPopupState createState() => _PagingPopupState();
+  _TextPagingPopupState createState() => _TextPagingPopupState();
 }
 
-class _PagingPopupState extends State<PagingPopup> {
+class _TextPagingPopupState extends State<TextPagingPopup> {
   int currentPage = 1;
 
   @override
