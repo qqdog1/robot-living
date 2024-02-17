@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:robot_living/dto/daily_task.dart';
 import 'package:robot_living/page/settings_task_edit_page.dart';
 
 class SettingsDayEditPage extends StatefulWidget {
@@ -12,11 +13,13 @@ class SettingsDayEditPage extends StatefulWidget {
 class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  DailyTask? dailyTask;
 
   @override
   void initState() {
     super.initState();
     _focusNode.addListener(_onFocusChange);
+    // TODO read file
   }
 
   @override
@@ -79,14 +82,18 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
 
   void _onFocusChange() {
     if (!_focusNode.hasFocus) {
-      // 當焦點離開TextField時呼叫的方法
       _handleInputComplete();
     }
   }
 
   void _handleInputComplete() {
-    // 在這裡處理用戶輸入完成後的邏輯
-    print("用戶輸入的文字是: ${_controller.text}");
+    if (dailyTask == null) {
+      dailyTask = DailyTask(name: _controller.text, tasks: null);
+    } else {
+      dailyTask?.name = _controller.text;
+    }
+
+    print(dailyTask.toString());
   }
 
   @override
