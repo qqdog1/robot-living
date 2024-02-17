@@ -10,6 +10,15 @@ class SettingsDayEditPage extends StatefulWidget {
 }
 
 class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
+  final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(_onFocusChange);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,14 +27,16 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
       ),
       body: Stack(
         children: [
-          // 文字輸入的區域和加號按鈕
           Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: TextField(
-                  decoration: InputDecoration(
+                  controller: _controller,
+                  focusNode: _focusNode,
+                  decoration: const InputDecoration(
                     labelText: '輸入計劃名稱',
+                    hintText: 'EX: 工作日',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -64,5 +75,24 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
         ],
       ),
     );
+  }
+
+  void _onFocusChange() {
+    if (!_focusNode.hasFocus) {
+      // 當焦點離開TextField時呼叫的方法
+      _handleInputComplete();
+    }
+  }
+
+  void _handleInputComplete() {
+    // 在這裡處理用戶輸入完成後的邏輯
+    print("用戶輸入的文字是: ${_controller.text}");
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
   }
 }
