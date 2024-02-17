@@ -18,17 +18,46 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
       ),
       body: Stack(
         children: [
-          Positioned(
-            bottom: 20.0,
-            right: 20.0,
-            child: Visibility(
-              child: FloatingActionButton(
+          // 文字輸入的區域和加號按鈕
+          Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: '輸入計劃名稱',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(FontAwesomeIcons.plus),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const SettingsTaskEditPage(),
                   ));
                 },
-                child: const Icon(FontAwesomeIcons.plus),
+              ),
+            ],
+          ),
+          // 底部中間的儲存按鈕
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // 儲存按鈕的動作
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15.0),
+                  child: Text('儲存', style: TextStyle(fontSize: 20)),
+                ),
               ),
             ),
           ),

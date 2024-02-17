@@ -1,6 +1,8 @@
 # robot-living
 
-[
+{
+"name": "",
+"tasks": [
 {
 "name": "早睡早起",
 "type": "startEndTask",
@@ -20,3 +22,4 @@
 "time": "21:00"
 }
 ]
+}
