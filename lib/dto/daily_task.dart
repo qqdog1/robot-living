@@ -3,16 +3,18 @@ import 'dart:convert';
 import 'package:robot_living/dto/task.dart';
 
 class DailyTask {
-  String name;
+  String? name;
   List<Task> tasks;
 
-  DailyTask({required this.name, List<Task>? tasks}) : tasks = tasks ?? [];
+  DailyTask({this.name, List<Task>? tasks}) : tasks = tasks ?? [];
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'tasks': tasks.map((task) => task.toJson()).toList(),
-    };
+    final Map<String, dynamic> data = {};
+    if (name != null) {
+      data['name'] = name;
+    }
+    data['tasks'] = tasks.map((task) => task.toJson()).toList();
+    return data;
   }
 
   @override
