@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:robot_living/const/time_unit_value.dart';
 
 import '../component/combobox.dart';
 import '../component/text_paging_popup.dart';
@@ -14,6 +15,7 @@ class SettingsTaskEditPage extends StatefulWidget {
 
 class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
   String? dailyTaskTypeValue;
+  String? timeUnitValue;
   TextEditingController textEditingController = TextEditingController();
   bool isFirstComboInput = false;
   TimeOfDay? _startTime;
@@ -25,103 +27,172 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
       appBar: AppBar(
         title: const Text('任務及通知設定'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Text(
-              '任務名稱:',
-              style: TextStyle(fontSize: 20),
-            ),
-            TextField(
-              controller: textEditingController,
-              decoration: const InputDecoration(
-                labelText: '請輸入名稱',
-              ),
-            ),
-            const Text(
-              '任務類型:',
-              style: TextStyle(fontSize: 20),
-            ),
-            Row(
-              children: <Widget>[
-                Combobox(
-                  defaultItem: dailyTaskTypeValue,
-                  items: const [
-                    DailyTaskTypeValue.startEndTask,
-                    DailyTaskTypeValue.segmentedTask,
-                    DailyTaskTypeValue.oneTimeTask,
-                  ],
-                  onItemChanged: (newValue) {
-                    setState(() {
-                      dailyTaskTypeValue = newValue;
-                    });
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(FontAwesomeIcons.circleQuestion),
-                  onPressed: () {
-                    showTypeHelpPopup(context);
-                  },
-                ),
-              ],
-            ),
-            Visibility(
-              visible: dailyTaskTypeValue == DailyTaskTypeValue.startEndTask ||
-                  dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  if (_startTime == null)
-                    const Text(
-                      '設定開始時間:',
-                      style: TextStyle(fontSize: 20),
+                  TextField(
+                    controller: textEditingController,
+                    decoration: const InputDecoration(
+                      labelText: '輸入任務名稱',
+                      hintText: 'EX: 工作日',
+                      border: OutlineInputBorder(),
                     ),
-                  if (_startTime != null)
-                    Text('開始時間: ${_startTime!.format(context)}',
-                        style: const TextStyle(fontSize: 20)),
-                  ElevatedButton(
-                    onPressed: () async {
-                      TimeOfDay? pickedTime = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      if (pickedTime != null) {
-                        setState(() {
-                          _startTime = pickedTime;
-                        });
-                      }
-                    },
-                    child: const Text('選擇開始時間'),
                   ),
-                  if (_endTime == null)
-                    const Text(
-                      '設定結束時間:',
-                      style: TextStyle(fontSize: 20),
+                  const SizedBox(height: 10), // 添加間距
+                  const Text(
+                    '任務類型:',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Combobox(
+                        defaultItem: dailyTaskTypeValue,
+                        items: const [
+                          DailyTaskTypeValue.startEndTask,
+                          DailyTaskTypeValue.segmentedTask,
+                          DailyTaskTypeValue.oneTimeTask,
+                        ],
+                        onItemChanged: (newValue) {
+                          setState(() {
+                            dailyTaskTypeValue = newValue;
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(FontAwesomeIcons.circleQuestion),
+                        onPressed: () {
+                          showTypeHelpPopup(context);
+                        },
+                      ),
+                    ],
+                  ),
+                  Visibility(
+                    visible: dailyTaskTypeValue ==
+                            DailyTaskTypeValue.startEndTask ||
+                        dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        if (_startTime == null)
+                          const Text(
+                            '設定開始時間:',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        if (_startTime != null)
+                          Text('開始時間: ${_startTime!.format(context)}',
+                              style: const TextStyle(fontSize: 20)),
+                        ElevatedButton(
+                          onPressed: () async {
+                            TimeOfDay? pickedTime = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                            );
+                            if (pickedTime != null) {
+                              setState(() {
+                                _startTime = pickedTime;
+                              });
+                            }
+                          },
+                          child: const Text('選擇開始時間'),
+                        ),
+                        if (_endTime == null)
+                          const Text(
+                            '設定結束時間:',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        if (_endTime != null)
+                          Text('結束時間: ${_endTime!.format(context)}',
+                              style: const TextStyle(fontSize: 20)),
+                        ElevatedButton(
+                          onPressed: () async {
+                            TimeOfDay? pickedTime = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                            );
+                            if (pickedTime != null) {
+                              setState(() {
+                                _endTime = pickedTime; // 更新結束時間狀態
+                              });
+                            }
+                          },
+                          child: const Text('選擇結束時間'),
+                        ),
+                      ],
                     ),
-                  if (_endTime != null)
-                    Text('結束時間: ${_endTime!.format(context)}',
-                        style: const TextStyle(fontSize: 20)),
-                  ElevatedButton(
-                    onPressed: () async {
-                      TimeOfDay? pickedTime = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      if (pickedTime != null) {
-                        setState(() {
-                          _endTime = pickedTime; // 更新結束時間狀態
-                        });
-                      }
-                    },
-                    child: const Text('選擇結束時間'),
+                  ),
+                  Visibility(
+                    visible:
+                        dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            const Flexible(
+                              flex: 1,
+                              child: TextField(
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  labelText: '執行間格',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10), // 為輸入框和下拉選單增加間距
+                            Flexible(
+                              flex: 1,
+                              child: Combobox(
+                                defaultItem: timeUnitValue,
+                                items: const [
+                                  TimeUnitValue.hour,
+                                  TimeUnitValue.minute,
+                                  TimeUnitValue.second,
+                                ],
+                                onItemChanged: (newValue) {
+                                  setState(() {
+                                    timeUnitValue = newValue;
+                                  });
+                                },
+                              ),
+                            ),
+                            Flexible(
+                              flex: 2,
+                              child: Container(),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // 儲存按鈕的動作
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15.0),
+                  child: Text('儲存', style: TextStyle(fontSize: 20)),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
