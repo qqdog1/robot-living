@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:robot_living/const/time_unit_value.dart';
 
 import '../component/combobox.dart';
 import '../component/text_paging_popup.dart';
@@ -14,19 +14,22 @@ class SettingsTaskEditPage extends StatefulWidget {
 }
 
 class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
-  String? dailyTaskTypeValue;
-  final TextEditingController _controller = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
-  String? taskName;
+  final TextEditingController _taskNameController = TextEditingController();
+  final FocusNode _taskNameFocusNode = FocusNode();
+  final TextEditingController _loopMinController = TextEditingController();
+  final FocusNode _loopMinFocusNode = FocusNode();
+  String? _taskName;
+  String? _dailyTaskTypeValue;
   TimeOfDay? _startTime;
   TimeOfDay? _endTime;
-  int? loopMin;
+  int? _loopMin;
 
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(_onFocusChange);
-    // TODO read file
+    _taskNameFocusNode.addListener(_onTaskNameFocusChange);
+    _loopMinFocusNode.addListener(_onLoopMinFocusChange);
+    // TODO read file or from constructor
   }
 
   @override
@@ -44,8 +47,8 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextField(
-                    controller: _controller,
-                    focusNode: _focusNode,
+                    controller: _taskNameController,
+                    focusNode: _taskNameFocusNode,
                     decoration: const InputDecoration(
                       labelText: '輸入任務名稱',
                       hintText: 'EX: 工作日',
@@ -60,7 +63,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                   Row(
                     children: <Widget>[
                       Combobox(
-                        defaultItem: dailyTaskTypeValue,
+                        defaultItem: _dailyTaskTypeValue,
                         items: const [
                           DailyTaskTypeValue.startEndTask,
                           DailyTaskTypeValue.segmentedTask,
@@ -68,7 +71,10 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                         ],
                         onItemChanged: (newValue) {
                           setState(() {
-                            dailyTaskTypeValue = newValue;
+                            _dailyTaskTypeValue = newValue;
+                            _startTime = null;
+                            _endTime = null;
+                            _loopMin = null;
                           });
                         },
                       ),
@@ -81,9 +87,9 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                     ],
                   ),
                   Visibility(
-                    visible: dailyTaskTypeValue ==
-                            DailyTaskTypeValue.startEndTask ||
-                        dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask,
+                    visible: _dailyTaskTypeValue ==
+                        DailyTaskTypeValue.startEndTask ||
+                        _dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -136,19 +142,24 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                   ),
                   Visibility(
                     visible:
-                        dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask,
+                    _dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            const Flexible(
+                            Flexible(
                               flex: 1,
                               child: TextField(
+                                controller: _loopMinController,
+                                focusNode: _loopMinFocusNode,
                                 keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   labelText: '執行間格',
                                 ),
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly,
+                                ],
                               ),
                             ),
                             const SizedBox(width: 10), // 為輸入框和下拉選單增加間距
@@ -167,8 +178,34 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                   ),
                   Visibility(
                     visible:
-                        dailyTaskTypeValue == DailyTaskTypeValue.oneTimeTask,
-                    child: const Column(),
+                    _dailyTaskTypeValue == DailyTaskTypeValue.oneTimeTask,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        if (_startTime == null)
+                          const Text(
+                            '設定觸發時間:',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        if (_startTime != null)
+                          Text('觸發時間: ${_startTime!.format(context)}',
+                              style: const TextStyle(fontSize: 20)),
+                        ElevatedButton(
+                          onPressed: () async {
+                            TimeOfDay? pickedTime = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                            );
+                            if (pickedTime != null) {
+                              setState(() {
+                                _startTime = pickedTime;
+                              });
+                            }
+                          },
+                          child: const Text('選擇觸發時間'),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -180,7 +217,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
               padding: const EdgeInsets.all(20.0),
               child: ElevatedButton(
                 onPressed: () {
-                  // 儲存按鈕的動作
+                  _checkAndSaveInput();
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -224,21 +261,80 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
     );
   }
 
-  void _onFocusChange() {
-    if (!_focusNode.hasFocus) {
-      _handleInputComplete();
+  void _onTaskNameFocusChange() {
+    if (!_taskNameFocusNode.hasFocus) {
+      _handleTaskNameInputComplete();
     }
   }
 
-  void _handleInputComplete() {
-    taskName = _controller.text;
-    print(taskName);
+  void _onLoopMinFocusChange() {
+    if (!_loopMinFocusNode.hasFocus) {
+      _handleLoopMinInputComplete();
+    }
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
+  void _handleTaskNameInputComplete() {
+    _taskName = _taskNameController.text;
   }
+
+  void _handleLoopMinInputComplete() {
+    _loopMin = int.tryParse(_loopMinController.text);
+  }
+
+  void _checkAndSaveInput() {
+    _handleTaskNameInputComplete();
+    _handleLoopMinInputComplete();
+    if (_checkInput()) {
+
+    }
+  }
+
+  bool _checkInput() {
+    if (_taskName == null || _taskName!.isEmpty) {
+      _showErrorPopup('請輸入任務名稱');
+      return false;
+    }
+    if (_dailyTaskTypeValue == null || _dailyTaskTypeValue!.isEmpty) {
+      _showErrorPopup('請選擇任務類型');
+      return false;
+    }
+    if ((_dailyTaskTypeValue == DailyTaskTypeValue.startEndTask || _dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask) && _startTime == null) {
+      _showErrorPopup('請設定開始時間');
+      return false;
+    }
+    if ((_dailyTaskTypeValue == DailyTaskTypeValue.startEndTask || _dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask)&&
+        _endTime == null) {
+      _showErrorPopup('請設定結束時間');
+      return false;
+    }
+    if (_dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask &&
+        _loopMin == null) {
+      _showErrorPopup('請設定執行間隔');
+      return false;
+    }
+    if (_dailyTaskTypeValue == DailyTaskTypeValue.oneTimeTask && _startTime == null) {
+      _showErrorPopup('請設定觸發時間');
+      return false;
+    }
+    return true;
+  }
+
+void _showErrorPopup(String message) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return TextPagingPopup(
+          totalPages: 1,
+          pageContents: [Text(message, style: const TextStyle(fontSize: 20))]);
+    },
+  );
 }
+
+@override
+void dispose() {
+  _taskNameController.dispose();
+  _taskNameFocusNode.dispose();
+  _loopMinController.dispose();
+  _loopMinFocusNode.dispose();
+  super.dispose();
+}}
