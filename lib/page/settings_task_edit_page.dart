@@ -15,11 +15,19 @@ class SettingsTaskEditPage extends StatefulWidget {
 
 class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
   String? dailyTaskTypeValue;
-  String? timeUnitValue;
-  TextEditingController textEditingController = TextEditingController();
-  bool isFirstComboInput = false;
+  final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+  String? taskName;
   TimeOfDay? _startTime;
   TimeOfDay? _endTime;
+  int? loopMin;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(_onFocusChange);
+    // TODO read file
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +44,8 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextField(
-                    controller: textEditingController,
+                    controller: _controller,
+                    focusNode: _focusNode,
                     decoration: const InputDecoration(
                       labelText: '輸入任務名稱',
                       hintText: 'EX: 工作日',
@@ -143,21 +152,9 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                               ),
                             ),
                             const SizedBox(width: 10), // 為輸入框和下拉選單增加間距
-                            Flexible(
+                            const Flexible(
                               flex: 1,
-                              child: Combobox(
-                                defaultItem: timeUnitValue,
-                                items: const [
-                                  TimeUnitValue.hour,
-                                  TimeUnitValue.minute,
-                                  TimeUnitValue.second,
-                                ],
-                                onItemChanged: (newValue) {
-                                  setState(() {
-                                    timeUnitValue = newValue;
-                                  });
-                                },
-                              ),
+                              child: Text('分鐘'),
                             ),
                             Flexible(
                               flex: 2,
@@ -167,6 +164,11 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                         ),
                       ],
                     ),
+                  ),
+                  Visibility(
+                    visible:
+                        dailyTaskTypeValue == DailyTaskTypeValue.oneTimeTask,
+                    child: const Column(),
                   ),
                 ],
               ),
@@ -220,5 +222,23 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
         );
       },
     );
+  }
+
+  void _onFocusChange() {
+    if (!_focusNode.hasFocus) {
+      _handleInputComplete();
+    }
+  }
+
+  void _handleInputComplete() {
+    taskName = _controller.text;
+    print(taskName);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
   }
 }
