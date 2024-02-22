@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:robot_living/dto/daily_task.dart';
 import 'package:robot_living/page/settings_task_edit_page.dart';
 
+import '../dto/task.dart';
+
 class SettingsDayEditPage extends StatefulWidget {
   const SettingsDayEditPage({super.key});
 
@@ -47,9 +49,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
               IconButton(
                 icon: const Icon(FontAwesomeIcons.plus),
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const SettingsTaskEditPage(),
-                  ));
+                  _addNewSettings();
                 },
               ),
             ],
@@ -80,6 +80,17 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
     );
   }
 
+  void _addNewSettings() async {
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const SettingsTaskEditPage()),
+    );
+
+    if (result != null) {
+      Task task = result as Task;
+      _addNewTask(task);
+    }
+  }
+
   void _onFocusChange() {
     if (!_focusNode.hasFocus) {
       _handleInputComplete();
@@ -92,8 +103,11 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
     } else {
       dailyTask?.name = _controller.text;
     }
+  }
 
-    print(dailyTask.toString());
+  void _addNewTask(Task task) {
+    dailyTask ??= DailyTask(name: null, tasks: null);
+    dailyTask?.tasks.add(task);
   }
 
   @override

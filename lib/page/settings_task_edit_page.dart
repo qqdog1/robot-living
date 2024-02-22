@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:robot_living/dto/one_time_task.dart';
+import 'package:robot_living/dto/segmented_task.dart';
+import 'package:robot_living/dto/start_end_task.dart';
+import 'package:robot_living/dto/task.dart';
 
 import '../component/combobox.dart';
 import '../component/text_paging_popup.dart';
 import '../const/daily_task_type_value.dart';
+import '../util/time_util.dart';
 
 class SettingsTaskEditPage extends StatefulWidget {
   const SettingsTaskEditPage({super.key});
@@ -88,7 +93,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                   ),
                   Visibility(
                     visible: _dailyTaskTypeValue ==
-                        DailyTaskTypeValue.startEndTask ||
+                            DailyTaskTypeValue.startEndTask ||
                         _dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +147,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                   ),
                   Visibility(
                     visible:
-                    _dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask,
+                        _dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -178,7 +183,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                   ),
                   Visibility(
                     visible:
-                    _dailyTaskTypeValue == DailyTaskTypeValue.oneTimeTask,
+                        _dailyTaskTypeValue == DailyTaskTypeValue.oneTimeTask,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -217,7 +222,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
               padding: const EdgeInsets.all(20.0),
               child: ElevatedButton(
                 onPressed: () {
-                  _checkAndSaveInput();
+                  _checkAndReturnInput();
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -281,11 +286,12 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
     _loopMin = int.tryParse(_loopMinController.text);
   }
 
-  void _checkAndSaveInput() {
+  void _checkAndReturnInput() {
     _handleTaskNameInputComplete();
     _handleLoopMinInputComplete();
     if (_checkInput()) {
-
+      Task task = _getTask();
+      Navigator.pop(context, task);
     }
   }
 
@@ -298,11 +304,14 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
       _showErrorPopup('請選擇任務類型');
       return false;
     }
-    if ((_dailyTaskTypeValue == DailyTaskTypeValue.startEndTask || _dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask) && _startTime == null) {
+    if ((_dailyTaskTypeValue == DailyTaskTypeValue.startEndTask ||
+            _dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask) &&
+        _startTime == null) {
       _showErrorPopup('請設定開始時間');
       return false;
     }
-    if ((_dailyTaskTypeValue == DailyTaskTypeValue.startEndTask || _dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask)&&
+    if ((_dailyTaskTypeValue == DailyTaskTypeValue.startEndTask ||
+            _dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask) &&
         _endTime == null) {
       _showErrorPopup('請設定結束時間');
       return false;
@@ -312,29 +321,43 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
       _showErrorPopup('請設定執行間隔');
       return false;
     }
-    if (_dailyTaskTypeValue == DailyTaskTypeValue.oneTimeTask && _startTime == null) {
+    if (_dailyTaskTypeValue == DailyTaskTypeValue.oneTimeTask &&
+        _startTime == null) {
       _showErrorPopup('請設定觸發時間');
       return false;
     }
     return true;
   }
 
-void _showErrorPopup(String message) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return TextPagingPopup(
-          totalPages: 1,
-          pageContents: [Text(message, style: const TextStyle(fontSize: 20))]);
-    },
-  );
-}
+  void _showErrorPopup(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return TextPagingPopup(totalPages: 1, pageContents: [
+          Text(message, style: const TextStyle(fontSize: 20))
+        ]);
+      },
+    );
+  }
 
-@override
-void dispose() {
-  _taskNameController.dispose();
-  _taskNameFocusNode.dispose();
-  _loopMinController.dispose();
-  _loopMinFocusNode.dispose();
-  super.dispose();
-}}
+  Task _getTask() {
+    Task task;
+    if (_dailyTaskTypeValue == DailyTaskTypeValue.startEndTask) {
+      task = StartEndTask(_taskName!, TimeUtil.formatTimeOfDay(_startTime!), TimeUtil.formatTimeOfDay(_endTime!));
+    } else if (_dailyTaskTypeValue == DailyTaskTypeValue.segmentedTask) {
+      task = SegmentedTask(_taskName!, TimeUtil.formatTimeOfDay(_startTime!), TimeUtil.formatTimeOfDay(_endTime!), _loopMin!);
+    } else {
+      task = OneTimeTask(_taskName!, TimeUtil.formatTimeOfDay(_startTime!));
+    }
+    return task;
+  }
+
+  @override
+  void dispose() {
+    _taskNameController.dispose();
+    _taskNameFocusNode.dispose();
+    _loopMinController.dispose();
+    _loopMinFocusNode.dispose();
+    super.dispose();
+  }
+}
