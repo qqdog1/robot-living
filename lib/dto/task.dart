@@ -1,15 +1,17 @@
 import 'dart:convert';
 
+import 'package:robot_living/const/daily_task_type.dart';
+
 class Task {
   String name;
-  String type;
+  DailyTaskType type;
 
   Task(this.name, this.type);
 
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'type': type,
+      'type': type.toString().split('.').last,
     };
   }
 

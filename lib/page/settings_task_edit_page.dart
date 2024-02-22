@@ -216,27 +216,24 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  _checkAndReturnInput();
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15.0),
-                  child: Text('儲存', style: TextStyle(fontSize: 20)),
-                ),
-              ),
+        ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: ElevatedButton(
+          onPressed: () {
+            _checkAndReturnInput();
+          },
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
-        ],
+          child: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 15.0),
+            child: Text('儲存', style: TextStyle(fontSize: 20)),
+          ),
+        ),
       ),
     );
   }
