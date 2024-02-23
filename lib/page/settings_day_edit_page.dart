@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:robot_living/const/daily_task_type_value.dart';
 import 'package:robot_living/dto/daily_task.dart';
+import 'package:robot_living/dto/one_time_task.dart';
+import 'package:robot_living/dto/segmented_task.dart';
+import 'package:robot_living/dto/start_end_task.dart';
 import 'package:robot_living/page/settings_task_edit_page.dart';
 
 import '../const/daily_task_type.dart';
@@ -114,7 +117,23 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
     return ListView.builder(
       itemCount: dailyTask?.tasks.length ?? 0,
       itemBuilder: (context, index) {
-        final task = dailyTask!.tasks[index];
+        var currentTask = dailyTask!.tasks[index];
+        String name = currentTask.name;
+        DailyTaskType type = currentTask.type;
+        String? startTime;
+        String? endTime;
+        int? loopMin;
+
+        if (currentTask is StartEndTask) {
+          startTime = currentTask.start;
+          endTime = currentTask.end;
+        } else if (currentTask is SegmentedTask) {
+          startTime = currentTask.start;
+          endTime = currentTask.end;
+          loopMin = currentTask.loopMin;
+        } else if (currentTask is OneTimeTask) {
+          startTime = currentTask.time;
+        }
         return Card(
           child: Stack(
             children: <Widget>[
@@ -124,17 +143,60 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
                 bottom: 0,
                 child: Container(
                   width: 10,
-                  color: _getColorForType(task.type),
+                  color: _getColorForType(type),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 16.0), // Adjust padding as needed
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(task.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            name,
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            DailyTaskTypeValue.getValueByType(type),
+                            style: const TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(FontAwesomeIcons.penToSquare),
+                          onPressed: () {
+                            // 編輯功能的邏輯
+                          },
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 4),
-                    Text(DailyTaskTypeValue.getValueByType(task.type), style: const TextStyle(fontSize: 16, color: Colors.grey)),
+                    // 第二行
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('開始時間: $startTime'),
+                        if (endTime != null) Text('結束時間: $endTime'),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    // 第三行
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (loopMin != null) Text('執行間隔: $loopMin'), // task.loopMin
+                        IconButton(
+                          icon: const Icon(FontAwesomeIcons.trashCan), // 刪除按鈕
+                          onPressed: () {
+                            // 刪除功能的邏輯
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

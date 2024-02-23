@@ -160,7 +160,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                                 focusNode: _loopMinFocusNode,
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
-                                  labelText: '執行間格',
+                                  labelText: '執行間隔',
                                 ),
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly,
