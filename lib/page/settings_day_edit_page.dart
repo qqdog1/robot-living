@@ -186,7 +186,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
                     const SizedBox(height: 4),
                     // 第三行
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         if (loopMin != null) Text('執行間隔: $loopMin'), // task.loopMin
                         IconButton(
