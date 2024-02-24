@@ -56,7 +56,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                     focusNode: _taskNameFocusNode,
                     decoration: const InputDecoration(
                       labelText: '輸入任務名稱',
-                      hintText: 'EX: 工作日',
+                      hintText: 'EX: 定時學習',
                       border: OutlineInputBorder(),
                     ),
                   ),

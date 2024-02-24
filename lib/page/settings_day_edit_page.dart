@@ -44,7 +44,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
               focusNode: _focusNode,
               decoration: const InputDecoration(
                 labelText: '輸入計劃名稱',
-                hintText: 'EX: 工作日',
+                hintText: 'EX: 認真工作一日計畫',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -192,7 +192,9 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
                         IconButton(
                           icon: const Icon(FontAwesomeIcons.trashCan), // 刪除按鈕
                           onPressed: () {
-                            // 刪除功能的邏輯
+                            setState(() {
+                              dailyTask?.tasks.removeAt(index);
+                            });
                           },
                         ),
                       ],
