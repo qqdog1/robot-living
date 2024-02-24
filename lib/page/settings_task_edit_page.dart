@@ -12,7 +12,8 @@ import '../const/daily_task_type_value.dart';
 import '../util/time_util.dart';
 
 class SettingsTaskEditPage extends StatefulWidget {
-  const SettingsTaskEditPage({super.key});
+  final Task? task;
+  const SettingsTaskEditPage({super.key, this.task});
 
   @override
   _SettingsTaskEditPageState createState() => _SettingsTaskEditPageState();
@@ -34,7 +35,23 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
     super.initState();
     _taskNameFocusNode.addListener(_onTaskNameFocusChange);
     _loopMinFocusNode.addListener(_onLoopMinFocusChange);
-    // TODO read file or from constructor
+    if (widget.task != null) {
+      Task task = widget.task!;
+      _taskName = task.name;
+      _taskNameController.text = _taskName!;
+      _dailyTaskTypeValue = DailyTaskTypeValue.getValueByType(task.type);
+      if (task is StartEndTask) {
+        _startTime = TimeUtil.stringToTimeOfDay(task.start);
+        _endTime = TimeUtil.stringToTimeOfDay(task.end);
+      } else if (task is SegmentedTask) {
+        _startTime = TimeUtil.stringToTimeOfDay(task.start);
+        _endTime = TimeUtil.stringToTimeOfDay(task.end);
+        _loopMin = task.loopMin;
+        _loopMinController.text = _loopMin.toString();
+      } else if (task is OneTimeTask) {
+        _startTime = TimeUtil.stringToTimeOfDay(task.time);
+      }
+    }
   }
 
   @override

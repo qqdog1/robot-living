@@ -92,6 +92,17 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
     }
   }
 
+  void _editNewSettings(int index, Task task) async {
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => SettingsTaskEditPage(task: task)),
+    );
+
+    if (result != null) {
+      Task task = result as Task;
+      _replaceTask(index, task);
+    }
+  }
+
   void _onFocusChange() {
     if (!_focusNode.hasFocus) {
       _handleInputComplete();
@@ -110,6 +121,12 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
     dailyTask ??= DailyTask(name: null, tasks: null);
     setState(() {
       dailyTask?.tasks.add(task);
+    });
+  }
+
+  void _replaceTask(int index, Task task) {
+    setState(() {
+      dailyTask?.tasks[index] = task;
     });
   }
 
@@ -169,7 +186,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
                         IconButton(
                           icon: const Icon(FontAwesomeIcons.penToSquare),
                           onPressed: () {
-                            // 編輯功能的邏輯
+                            _editNewSettings(index, currentTask);
                           },
                         ),
                       ],
