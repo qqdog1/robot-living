@@ -21,6 +21,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   DailyTask? dailyTask;
+  final List<bool> _daysSelected = List.generate(7, (_) => false);
 
   @override
   void initState() {
@@ -58,6 +59,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
               _addNewSettings();
             },
           ),
+          _buildWeekdaySelector(),
         ],
       ),
       // 底部中間的儲存按鈕
@@ -65,7 +67,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
         padding: const EdgeInsets.all(20.0),
         child: ElevatedButton(
           onPressed: () {
-            // 儲存按鈕的動作
+            _checkInputAndSave();
           },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
@@ -79,6 +81,62 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
         ),
       ),
     );
+  }
+
+  Widget _buildWeekdaySelector() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: List<Widget>.generate(7, (index) {
+              return Expanded(
+                child: Center(child: Text(_getDayName(index))),
+              );
+            }),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: List<Widget>.generate(7, (index) {
+              return Expanded(
+                child: Center(
+                  child: Checkbox(
+                    value: _daysSelected[index],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _daysSelected[index] = value!;
+                      });
+                    },
+                  ),
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _getDayName(int index) {
+    switch (index) {
+      case 0:
+        return '日';
+      case 1:
+        return '一';
+      case 2:
+        return '二';
+      case 3:
+        return '三';
+      case 4:
+        return '四';
+      case 5:
+        return '五';
+      case 6:
+        return '六';
+      default:
+        return '';
+    }
   }
 
   void _addNewSettings() async {
@@ -237,6 +295,11 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
       default:
         return Colors.grey;
     }
+  }
+
+  void _checkInputAndSave() {
+    dailyTask?.triggered = _daysSelected;
+    print(dailyTask.toString());
   }
 
   @override

@@ -15,7 +15,7 @@ class SegmentedTask extends Task {
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'type': type,
+      'type': type.toString().split('.').last,
       'start': start,
       'end': end,
       'loopMin': loopMin,

@@ -2,6 +2,7 @@
 
 {
 "name": "",
+"triggered": [true, false, false, true, true, true, true],
 "tasks": [
 {
 "name": "早睡早起",
