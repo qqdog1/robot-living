@@ -35,8 +35,6 @@ class _MenuPageState extends State<MenuPage> {
     '完成紀錄',
   ];
 
-  final _pagePopupPageCount = [1, 5, 1];
-
   final _pagePopupContent = [
     [
       const Text('第一頁說明'),
@@ -114,7 +112,6 @@ class _MenuPageState extends State<MenuPage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return TextPagingPopup(
-          totalPages: _pagePopupPageCount[_selectedPage],
           pageContents: _pagePopupContent[_selectedPage],
         );
       },

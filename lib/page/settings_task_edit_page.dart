@@ -125,10 +125,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                               style: const TextStyle(fontSize: 20)),
                         ElevatedButton(
                           onPressed: () async {
-                            TimeOfDay? pickedTime = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.now(),
-                            );
+                            TimeOfDay? pickedTime = await _pickTime();
                             if (pickedTime != null) {
                               setState(() {
                                 _startTime = pickedTime;
@@ -147,10 +144,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                               style: const TextStyle(fontSize: 20)),
                         ElevatedButton(
                           onPressed: () async {
-                            TimeOfDay? pickedTime = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.now(),
-                            );
+                            TimeOfDay? pickedTime = await _pickTime();
                             if (pickedTime != null) {
                               setState(() {
                                 _endTime = pickedTime; // 更新結束時間狀態
@@ -214,10 +208,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
                               style: const TextStyle(fontSize: 20)),
                         ElevatedButton(
                           onPressed: () async {
-                            TimeOfDay? pickedTime = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.now(),
-                            );
+                            TimeOfDay? pickedTime = await _pickTime();
                             if (pickedTime != null) {
                               setState(() {
                                 _startTime = pickedTime;
@@ -261,7 +252,6 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return const TextPagingPopup(
-          totalPages: 4,
           pageContents: [
             Text('任務分三種類型:\n1.起訖類型\n2.分段類型\n3.一次性',
                 style: TextStyle(fontSize: 18)),
@@ -347,7 +337,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return TextPagingPopup(totalPages: 1, pageContents: [
+        return TextPagingPopup(pageContents: [
           Text(message, style: const TextStyle(fontSize: 20))
         ]);
       },
@@ -364,6 +354,13 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
       task = OneTimeTask(_taskName!, TimeUtil.formatTimeOfDay(_startTime!));
     }
     return task;
+  }
+
+  Future<TimeOfDay?> _pickTime() async {
+    return await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
   }
 
   @override

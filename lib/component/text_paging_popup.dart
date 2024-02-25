@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TextPagingPopup extends StatefulWidget {
-  final int totalPages;
   final List<Widget> pageContents;
 
   const TextPagingPopup({
     super.key,
-    required this.totalPages,
     required this.pageContents,
   });
 
@@ -16,7 +14,14 @@ class TextPagingPopup extends StatefulWidget {
 }
 
 class _TextPagingPopupState extends State<TextPagingPopup> {
+  late int totalPages;
   int currentPage = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    totalPages = widget.pageContents.length;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +47,7 @@ class _TextPagingPopupState extends State<TextPagingPopup> {
               });
             },
           ),
-        if (currentPage < widget.totalPages)
+        if (currentPage < totalPages)
           IconButton(
             icon: const Icon(FontAwesomeIcons.caretRight),
             onPressed: () {
@@ -51,7 +56,7 @@ class _TextPagingPopupState extends State<TextPagingPopup> {
               });
             },
           ),
-        if (currentPage == widget.totalPages)
+        if (currentPage == totalPages)
           const SizedBox(height: 50, width: 48),
       ],
     );
