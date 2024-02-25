@@ -239,7 +239,7 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
           ),
           child: const Padding(
             padding: EdgeInsets.symmetric(vertical: 15.0),
-            child: Text('儲存', style: TextStyle(fontSize: 20)),
+            child: Text('確定', style: TextStyle(fontSize: 20)),
           ),
         ),
       ),
