@@ -21,7 +21,7 @@ class _SettingsPage extends State<SettingsPage> {
       appBar: AppBar(),
       body: Stack(
         children: [
-          Expanded(
+          Positioned.fill(
             child: _buildTaskList(),
           ),
           Positioned(
