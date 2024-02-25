@@ -7,6 +7,7 @@ import 'package:robot_living/dto/segmented_task.dart';
 import 'package:robot_living/dto/start_end_task.dart';
 import 'package:robot_living/page/settings_task_edit_page.dart';
 
+import '../component/text_paging_popup.dart';
 import '../const/daily_task_type.dart';
 import '../dto/task.dart';
 
@@ -67,7 +68,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
         padding: const EdgeInsets.all(20.0),
         child: ElevatedButton(
           onPressed: () {
-            _checkInputAndSave();
+            _checkAndReturnInput();
           },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
@@ -178,13 +179,13 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
   void _addNewTask(Task task) {
     dailyTask ??= DailyTask(name: null, tasks: null);
     setState(() {
-      dailyTask?.tasks.add(task);
+      dailyTask!.tasks.add(task);
     });
   }
 
   void _replaceTask(int index, Task task) {
     setState(() {
-      dailyTask?.tasks[index] = task;
+      dailyTask!.tasks[index] = task;
     });
   }
 
@@ -192,7 +193,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
     return ListView.builder(
       itemCount: dailyTask?.tasks.length ?? 0,
       itemBuilder: (context, index) {
-        var currentTask = dailyTask!.tasks[index];
+        Task currentTask = dailyTask!.tasks[index];
         String name = currentTask.name;
         DailyTaskType type = currentTask.type;
         String? startTime;
@@ -297,9 +298,36 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
     }
   }
 
-  void _checkInputAndSave() {
+  void _checkAndReturnInput() {
+    dailyTask?.name = _controller.text;
     dailyTask?.triggered = _daysSelected;
-    print(dailyTask.toString());
+    if (_checkInput()) {
+      // TODO 檢查同為起訖類是否overlap
+      Navigator.pop(context, dailyTask);
+    }
+  }
+
+  bool _checkInput() {
+    if (dailyTask == null || dailyTask!.tasks.isEmpty) {
+      _showErrorPopup('無任何設定無須儲存');
+      return false;
+    }
+    if (dailyTask?.name == null || dailyTask!.name!.isEmpty) {
+      _showErrorPopup('請輸入計畫名稱');
+      return false;
+    }
+    return true;
+  }
+
+  void _showErrorPopup(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return TextPagingPopup(pageContents: [
+          Text(message, style: const TextStyle(fontSize: 20))
+        ]);
+      },
+    );
   }
 
   @override
