@@ -53,23 +53,58 @@ class _SettingsPage extends State<SettingsPage> {
         return Card(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(name,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 8),
-                Row(
-                  children: List.generate(7, (i) {
-                    return triggered[i]
-                        ? Padding(
-                            padding: const EdgeInsets.only(right: 4.0),
-                            child: Text(weekDays[i],
-                                style: const TextStyle(fontSize: 16)),
-                          )
-                        : const SizedBox();
-                  }),
+            child: Stack(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(name,
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(right: 4.0),
+                          child: Text("執行週期:",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                        ),
+                        ...List.generate(
+                          7,
+                              (i) {
+                            return triggered[i]
+                                ? Padding(
+                              padding: const EdgeInsets.only(right: 4.0),
+                              child: Text(weekDays[i],
+                                  style: const TextStyle(fontSize: 16)),
+                            )
+                                : const SizedBox();
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(FontAwesomeIcons.penToSquare),
+                        onPressed: () {
+                          _editNewSettings(index, currentDailyTask);
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(FontAwesomeIcons.trashCan),
+                        onPressed: () {
+                          _deleteTask(index);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -77,6 +112,12 @@ class _SettingsPage extends State<SettingsPage> {
         );
       },
     );
+  }
+
+  void _deleteTask(int index) {
+    setState(() {
+      dailyTaskSet?.dailyTasks.removeAt(index);
+    });
   }
 
   void _addNewTask(DailyTask dailyTask) {
