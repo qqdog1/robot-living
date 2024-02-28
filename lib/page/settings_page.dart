@@ -140,7 +140,7 @@ class _SettingsPage extends State<SettingsPage> {
 
   void _editNewSettings(int index, DailyTask dailyTask) async {
     final result = await Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => const SettingsDayEditPage()),
+      MaterialPageRoute(builder: (context) => SettingsDayEditPage(dailyTask: dailyTask)),
     );
 
     if (result != null) {

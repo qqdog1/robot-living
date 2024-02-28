@@ -12,7 +12,8 @@ import '../const/daily_task_type.dart';
 import '../dto/task.dart';
 
 class SettingsDayEditPage extends StatefulWidget {
-  const SettingsDayEditPage({super.key});
+  final DailyTask? dailyTask;
+  const SettingsDayEditPage({super.key, this.dailyTask});
 
   @override
   _SettingsDayEditPageState createState() => _SettingsDayEditPageState();
@@ -22,13 +23,17 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   DailyTask? dailyTask;
-  final List<bool> _daysSelected = List.generate(7, (_) => false);
+  List<bool> _daysSelected = List.generate(7, (_) => false);
 
   @override
   void initState() {
     super.initState();
     _focusNode.addListener(_onFocusChange);
-    // TODO read file
+    if (widget.dailyTask != null) {
+      dailyTask = widget.dailyTask;
+      _controller.text = dailyTask!.name!;
+      _daysSelected = dailyTask!.triggered!;
+    }
   }
 
   @override
