@@ -72,13 +72,13 @@ class _SettingsPage extends State<SettingsPage> {
                         ),
                         ...List.generate(
                           7,
-                              (i) {
+                          (i) {
                             return triggered[i]
                                 ? Padding(
-                              padding: const EdgeInsets.only(right: 4.0),
-                              child: Text(weekDays[i],
-                                  style: const TextStyle(fontSize: 16)),
-                            )
+                                    padding: const EdgeInsets.only(right: 4.0),
+                                    child: Text(weekDays[i],
+                                        style: const TextStyle(fontSize: 16)),
+                                  )
                                 : const SizedBox();
                           },
                         ),
@@ -94,7 +94,7 @@ class _SettingsPage extends State<SettingsPage> {
                       IconButton(
                         icon: const Icon(FontAwesomeIcons.penToSquare),
                         onPressed: () {
-                          _editNewSettings(index, currentDailyTask);
+                          _editSettings(index, currentDailyTask);
                         },
                       ),
                       IconButton(
@@ -127,6 +127,12 @@ class _SettingsPage extends State<SettingsPage> {
     });
   }
 
+  void _replaceTask(int index, DailyTask dailyTask) {
+    setState(() {
+      dailyTaskSet!.dailyTasks[index] = dailyTask;
+    });
+  }
+
   void _addNewSettings() async {
     final result = await Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => const SettingsDayEditPage()),
@@ -138,14 +144,15 @@ class _SettingsPage extends State<SettingsPage> {
     }
   }
 
-  void _editNewSettings(int index, DailyTask dailyTask) async {
+  void _editSettings(int index, DailyTask dailyTask) async {
     final result = await Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => SettingsDayEditPage(dailyTask: dailyTask)),
+      MaterialPageRoute(
+          builder: (context) => SettingsDayEditPage(dailyTask: dailyTask)),
     );
 
     if (result != null) {
       DailyTask dailyTask = result as DailyTask;
-      print(dailyTask.toString());
+      _replaceTask(index, dailyTask);
     }
   }
 }

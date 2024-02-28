@@ -23,7 +23,9 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   DailyTask? dailyTask;
+  String? _dailyTaskName;
   List<bool> _daysSelected = List.generate(7, (_) => false);
+  List<Task> _tasks = [];
 
   @override
   void initState() {
@@ -31,8 +33,10 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
     _focusNode.addListener(_onFocusChange);
     if (widget.dailyTask != null) {
       dailyTask = widget.dailyTask;
-      _controller.text = dailyTask!.name!;
-      _daysSelected = dailyTask!.triggered!;
+      _dailyTaskName = dailyTask!.name!;
+      _controller.text = _dailyTaskName!;
+      _daysSelected = List.from(dailyTask!.triggered!);
+      _tasks = dailyTask!.tasks;
     }
   }
 
@@ -174,31 +178,27 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
   }
 
   void _handleInputComplete() {
-    if (dailyTask == null) {
-      dailyTask = DailyTask(name: _controller.text, tasks: null);
-    } else {
-      dailyTask?.name = _controller.text;
-    }
+    _dailyTaskName = _controller.text;
   }
 
   void _addNewTask(Task task) {
     dailyTask ??= DailyTask(name: null, tasks: null);
     setState(() {
-      dailyTask!.tasks.add(task);
+      _tasks.add(task);
     });
   }
 
   void _replaceTask(int index, Task task) {
     setState(() {
-      dailyTask!.tasks[index] = task;
+      _tasks[index] = task;
     });
   }
 
   Widget _buildTaskList() {
     return ListView.builder(
-      itemCount: dailyTask?.tasks.length ?? 0,
+      itemCount: _tasks.length ?? 0,
       itemBuilder: (context, index) {
-        Task currentTask = dailyTask!.tasks[index];
+        Task currentTask = _tasks[index];
         String name = currentTask.name;
         DailyTaskType type = currentTask.type;
         String? startTime;
@@ -274,7 +274,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
                           icon: const Icon(FontAwesomeIcons.trashCan), // 刪除按鈕
                           onPressed: () {
                             setState(() {
-                              dailyTask?.tasks.removeAt(index);
+                              _tasks.removeAt(index);
                             });
                           },
                         ),
@@ -304,8 +304,10 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
   }
 
   void _checkAndReturnInput() {
-    dailyTask?.name = _controller.text;
-    dailyTask?.triggered = _daysSelected;
+    _handleInputComplete();
+    dailyTask?.name = _dailyTaskName;
+    dailyTask?.tasks = _tasks;
+    dailyTask?.triggered = List.from(_daysSelected);
     if (_checkInput()) {
       // TODO 檢查同為起訖類是否overlap
       Navigator.pop(context, dailyTask);
@@ -313,11 +315,11 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
   }
 
   bool _checkInput() {
-    if (dailyTask == null || dailyTask!.tasks.isEmpty) {
+    if (dailyTask == null || _tasks.isEmpty) {
       _showErrorPopup('無任何設定無須儲存');
       return false;
     }
-    if (dailyTask?.name == null || dailyTask!.name!.isEmpty) {
+    if (_dailyTaskName == null || _dailyTaskName!.isEmpty) {
       _showErrorPopup('請輸入計畫名稱');
       return false;
     }
