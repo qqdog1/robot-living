@@ -4,12 +4,13 @@ import 'package:robot_living/const/daily_task_type_value.dart';
 import 'package:robot_living/dto/daily_task.dart';
 import 'package:robot_living/dto/one_time_task.dart';
 import 'package:robot_living/dto/segmented_task.dart';
-import 'package:robot_living/dto/start_end_task.dart';
+import 'package:robot_living/dto/duration_task.dart';
 import 'package:robot_living/page/settings_task_edit_page.dart';
 
 import '../component/text_paging_popup.dart';
 import '../const/daily_task_type.dart';
 import '../dto/task.dart';
+import '../generated/l10n.dart';
 
 class SettingsDayEditPage extends StatefulWidget {
   final DailyTask? dailyTask;
@@ -44,7 +45,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('一日計畫設定'),
+        title: Text(S.of(context).title_daily_plan_settings),
       ),
       body: Column(
         children: [
@@ -53,10 +54,10 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
             child: TextField(
               controller: _controller,
               focusNode: _focusNode,
-              decoration: const InputDecoration(
-                labelText: '輸入計劃名稱',
-                hintText: 'EX: 認真工作一日計畫',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: S.of(context).input_plan_name,
+                hintText: S.of(context).input_ex_plan_name,
+                border: const OutlineInputBorder(),
               ),
             ),
           ),
@@ -84,9 +85,9 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(vertical: 15.0),
-            child: Text('儲存', style: TextStyle(fontSize: 20)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15.0),
+            child: Text(S.of(context).save, style: const TextStyle(fontSize: 20)),
           ),
         ),
       ),
@@ -131,19 +132,19 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
   String _getDayName(int index) {
     switch (index) {
       case 0:
-        return '日';
+        return S.of(context).sunday;
       case 1:
-        return '一';
+        return S.of(context).monday;
       case 2:
-        return '二';
+        return S.of(context).tuesday;
       case 3:
-        return '三';
+        return S.of(context).wednesday;
       case 4:
-        return '四';
+        return S.of(context).thursday;
       case 5:
-        return '五';
+        return S.of(context).friday;
       case 6:
-        return '六';
+        return S.of(context).saturday;
       default:
         return '';
     }
@@ -196,7 +197,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
 
   Widget _buildTaskList() {
     return ListView.builder(
-      itemCount: _tasks.length ?? 0,
+      itemCount: _tasks.length,
       itemBuilder: (context, index) {
         Task currentTask = _tasks[index];
         String name = currentTask.name;
@@ -205,7 +206,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
         String? endTime;
         int? loopMin;
 
-        if (currentTask is StartEndTask) {
+        if (currentTask is DurationTask) {
           startTime = currentTask.start;
           endTime = currentTask.end;
         } else if (currentTask is SegmentedTask) {
@@ -243,7 +244,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
                         ),
                         Expanded(
                           child: Text(
-                            DailyTaskTypeValue.getValueByType(type),
+                            DailyTaskTypeValue.getValueByType(context, type),
                             style: const TextStyle(fontSize: 16, color: Colors.grey),
                           ),
                         ),
@@ -260,8 +261,8 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('開始時間: $startTime'),
-                        if (endTime != null) Text('結束時間: $endTime'),
+                        Text(S.of(context).start_time(startTime.toString())),
+                        if (endTime != null) Text(S.of(context).end_time(endTime.toString())),
                       ],
                     ),
                     const SizedBox(height: 4),
@@ -269,7 +270,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        if (loopMin != null) Text('執行間隔: $loopMin'), // task.loopMin
+                        if (loopMin != null) Text(S.of(context).execution_interval_input(loopMin)), // task.loopMin
                         IconButton(
                           icon: const Icon(FontAwesomeIcons.trashCan), // 刪除按鈕
                           onPressed: () {
@@ -292,7 +293,7 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
 
   Color _getColorForType(DailyTaskType dailyTaskType) {
     switch (dailyTaskType) {
-      case DailyTaskType.startEndTask:
+      case DailyTaskType.durationTask:
         return Colors.red;
       case DailyTaskType.segmentedTask:
         return Colors.blue;
@@ -316,11 +317,11 @@ class _SettingsDayEditPageState extends State<SettingsDayEditPage> {
 
   bool _checkInput() {
     if (dailyTask == null || _tasks.isEmpty) {
-      _showErrorPopup('無任何設定無須儲存');
+      _showErrorPopup(S.of(context).error_no_settings_made);
       return false;
     }
     if (_dailyTaskName == null || _dailyTaskName!.isEmpty) {
-      _showErrorPopup('請輸入計畫名稱');
+      _showErrorPopup(S.of(context).error_no_plan_name);
       return false;
     }
     return true;

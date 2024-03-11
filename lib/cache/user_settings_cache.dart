@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:robot_living/const/language.dart';
 
 import '../dto/user_settings.dart';
 
 class UserSettingsCache {
   static final UserSettingsCache instance = UserSettingsCache._internal();
-  UserSettings userSettings = UserSettings(false);
+  UserSettings userSettings = UserSettings(Language.english);
   String fileName = 'settings.txt';
 
   factory UserSettingsCache() {
@@ -20,7 +21,7 @@ class UserSettingsCache {
     if (await file.exists()) {
       final content = await file.readAsString();
       Map<String, dynamic> jsonMap = jsonDecode(content);
-      userSettings = UserSettings(jsonMap['isSettingsPage'] ?? false);
+      userSettings = UserSettings(jsonMap['language'] ?? Language.english);
     } else {
       _write();
     }
@@ -30,8 +31,12 @@ class UserSettingsCache {
     _init();
   }
 
-  void setSettingsPage(bool value) {
-    userSettings.isSettingsPage = value;
+  String getLanguage() {
+    return userSettings.language;
+  }
+
+  void setLanguage(String language) {
+    userSettings.language = language;
     _write();
   }
 

@@ -4,6 +4,7 @@ import 'package:robot_living/dto/daily_task.dart';
 import 'package:robot_living/page/settings_day_edit_page.dart';
 
 import '../dto/daily_task_set.dart';
+import '../generated/l10n.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -48,7 +49,15 @@ class _SettingsPage extends State<SettingsPage> {
         DailyTask currentDailyTask = dailyTaskSet!.dailyTasks[index];
         String name = currentDailyTask.name!;
         List<bool> triggered = currentDailyTask.triggered!;
-        List<String> weekDays = ["日", "一", "二", "三", "四", "五", "六"];
+        List<String> weekDays = [
+          S.of(context).sunday,
+          S.of(context).monday,
+          S.of(context).tuesday,
+          S.of(context).wednesday,
+          S.of(context).thursday,
+          S.of(context).friday,
+          S.of(context).saturday,
+        ];
 
         return Card(
           child: Padding(
@@ -64,10 +73,10 @@ class _SettingsPage extends State<SettingsPage> {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(right: 4.0),
-                          child: Text("執行週期:",
-                              style: TextStyle(
+                        Padding(
+                          padding: const EdgeInsets.only(right: 4.0),
+                          child: Text(S.of(context).execution_interval,
+                              style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                         ),
                         ...List.generate(

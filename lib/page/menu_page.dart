@@ -5,6 +5,7 @@ import 'package:robot_living/page/settings_page.dart';
 import 'package:robot_living/page/today_page.dart';
 
 import '../component/text_paging_popup.dart';
+import '../generated/l10n.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -29,28 +30,26 @@ class _MenuPageState extends State<MenuPage> {
     }
   }
 
-  final _pageTitles = [
-    '今日進度',
-    '設定',
-    '完成紀錄',
-  ];
+  List<String> get _pageTitles => [
+        S.of(context).menu_today_progress,
+        S.of(context).menu_project_settings,
+        S.of(context).menu_completion_records,
+      ];
 
-  final _pagePopupContent = [
-    [
-      const Text('第一頁說明'),
-    ],
-    [
-      const Text('這頁用來設定'),
-      const Text('好好好好好好好好\n'
-          '好好好好好好好好好好'),
-      const Text('OKOKOKOKOK'),
-      const Text('GOOOOOOOOOOOOOOOD'),
-      const Text('!!!'),
-    ],
-    [
-      const Text('說明'),
-    ],
-  ];
+  List<List<Text>> get _pagePopupContent {
+    return [
+      [
+        Text(S.of(context).menu_1_help_1),
+        Text(S.of(context).menu_1_help_2),
+      ],
+      [
+        Text(S.of(context).menu_2_help_1),
+      ],
+      [
+        Text(S.of(context).menu_3_help_1),
+      ],
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {

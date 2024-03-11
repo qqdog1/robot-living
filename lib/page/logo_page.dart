@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../cache/user_settings_cache.dart';
 import 'menu_page.dart';
 
 class LogoPage extends StatefulWidget {
@@ -13,7 +14,7 @@ class _LogoPageState extends State<LogoPage> {
   @override
   void initState() {
     super.initState();
-    // 设置延时跳转
+    UserSettingsCache.instance;
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,

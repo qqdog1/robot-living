@@ -6,7 +6,7 @@
 "tasks": [
 {
 "name": "早睡早起",
-"type": "startEndTask",
+"type": "durationTask",
 "start": "22:00",
 "end": "06:00"
 },

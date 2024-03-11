@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 class UserSettings {
-  // 使用者是否已經開過設定畫面顯示過popup
-  bool isSettingsPage;
+  String language;
 
-  UserSettings(this.isSettingsPage);
+  UserSettings(this.language);
 
   Map<String, dynamic> toJson() {
     return {
-      'isSettingsPage': isSettingsPage,
+      'language': language,
     };
   }
 

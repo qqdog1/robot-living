@@ -1,3 +1,3 @@
 enum DailyTaskType {
-  startEndTask, oneTimeTask, segmentedTask
+  durationTask, oneTimeTask, segmentedTask
 }

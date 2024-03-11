@@ -1,18 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:robot_living/const/daily_task_type.dart';
 
-class DailyTaskTypeValue {
-  static const String startEndTask = "起訖類";
-  static const String oneTimeTask = "單次類";
-  static const String segmentedTask = "分段類";
+import '../generated/l10n.dart';
 
-  static String getValueByType(DailyTaskType dailyTaskType) {
+class DailyTaskTypeValue {
+
+  static String getValueByType(BuildContext context, DailyTaskType dailyTaskType) {
     switch (dailyTaskType) {
-      case DailyTaskType.startEndTask:
-        return startEndTask;
+      case DailyTaskType.durationTask:
+        return S.of(context).duration_type;
       case DailyTaskType.oneTimeTask:
-        return oneTimeTask;
+        return S.of(context).one_time_type;
       case DailyTaskType.segmentedTask:
-        return segmentedTask;
+        return S.of(context).segmented_type;
     }
   }
 }
