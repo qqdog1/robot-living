@@ -7,7 +7,7 @@ import '../dto/user_settings.dart';
 
 class UserSettingsCache {
   static final UserSettingsCache _instance = UserSettingsCache._internal();
-  UserSettings userSettings = UserSettings(Language.english);
+  UserSettings userSettings = UserSettings(Language.chinese);
   String fileName = 'settings.txt';
   bool _initialized = false;
 
@@ -30,7 +30,7 @@ class UserSettingsCache {
     if (await file.exists()) {
       final content = await file.readAsString();
       Map<String, dynamic> jsonMap = jsonDecode(content);
-      userSettings = UserSettings(jsonMap['language'] ?? Language.english);
+      userSettings = UserSettings(jsonMap['language'] ?? Language.chinese);
     } else {
       _write();
     }

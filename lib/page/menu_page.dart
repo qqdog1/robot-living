@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:robot_living/cache/user_settings_cache.dart';
+import 'package:robot_living/const/language.dart';
 import 'package:robot_living/page/historical_page.dart';
 import 'package:robot_living/page/settings_page.dart';
 import 'package:robot_living/page/today_page.dart';
 
 import '../component/text_paging_popup.dart';
 import '../generated/l10n.dart';
+import '../main.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -136,7 +140,15 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  void _toggleLanguage() {
-    print("切换语言");
+  Future<void> _toggleLanguage() async {
+    final userSettingsCache = await UserSettingsCache.getInstance();
+    String language = userSettingsCache.getLanguage();
+    if (language == Language.chinese) {
+      userSettingsCache.setLanguage(Language.english);
+      Provider.of<LocaleProvider>(context, listen: false).setLocale(const Locale(Language.english));
+    } else {
+      userSettingsCache.setLanguage(Language.chinese);
+      Provider.of<LocaleProvider>(context, listen: false).setLocale(const Locale(Language.chinese));
+    }
   }
 }
