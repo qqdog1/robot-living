@@ -37,6 +37,10 @@ class _SettingsTaskEditPageState extends State<SettingsTaskEditPage> {
     super.initState();
     _taskNameFocusNode.addListener(_onTaskNameFocusChange);
     _loopMinFocusNode.addListener(_onLoopMinFocusChange);
+  }
+
+  @override
+  void didChangeDependencies() {
     if (widget.task != null) {
       Task task = widget.task!;
       _taskName = task.name;

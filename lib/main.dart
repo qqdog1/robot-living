@@ -29,7 +29,7 @@ class LocaleProvider with ChangeNotifier {
     final userSettingsCache = await UserSettingsCache.getInstance();
     final languageCode = userSettingsCache.getLanguage();
     _locale = Locale(languageCode);
-    notifyListeners(); // 通知监听者
+    notifyListeners();
   }
 
   void setLocale(Locale locale) {
