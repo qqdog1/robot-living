@@ -66,29 +66,48 @@ class _MenuPageState extends State<MenuPage> {
         ],
       ),
       drawer: Drawer(
-        child: ListView(
+        child: Column(
           children: <Widget>[
-            // ... Drawer items ...
-            ListTile(
-              title: Text(_pageTitles[0]),
-              onTap: () {
-                clickDrawer(0);
-                Navigator.pop(context);
-              },
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  const Padding(
+                    padding: EdgeInsets.only(top: 60), // 顶部填充20像素
+                  ),
+                  ListTile(
+                    title: Text(_pageTitles[0]),
+                    onTap: () {
+                      clickDrawer(0);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    title: Text(_pageTitles[1]),
+                    onTap: () {
+                      clickDrawer(1);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    title: Text(_pageTitles[2]),
+                    onTap: () {
+                      clickDrawer(2);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  // 其他 Drawer 项...
+                ],
+              ),
             ),
-            ListTile(
-              title: Text(_pageTitles[1]),
-              onTap: () {
-                clickDrawer(1);
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text(_pageTitles[2]),
-              onTap: () {
-                clickDrawer(2);
-                Navigator.pop(context);
-              },
+            Align(
+              alignment: FractionalOffset.bottomCenter,
+              child: ListTile(
+                leading: const Icon(FontAwesomeIcons.language),
+                onTap: () {
+                  _toggleLanguage();
+                },
+              ),
             ),
           ],
         ),
@@ -115,5 +134,9 @@ class _MenuPageState extends State<MenuPage> {
         );
       },
     );
+  }
+
+  void _toggleLanguage() {
+    print("切换语言");
   }
 }
