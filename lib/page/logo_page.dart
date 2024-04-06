@@ -14,7 +14,6 @@ class _LogoPageState extends State<LogoPage> {
   @override
   void initState() {
     super.initState();
-    UserSettingsCache.instance;
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,

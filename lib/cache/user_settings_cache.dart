@@ -6,12 +6,21 @@ import 'package:robot_living/const/language.dart';
 import '../dto/user_settings.dart';
 
 class UserSettingsCache {
-  static final UserSettingsCache instance = UserSettingsCache._internal();
+  static final UserSettingsCache _instance = UserSettingsCache._internal();
   UserSettings userSettings = UserSettings(Language.english);
   String fileName = 'settings.txt';
+  bool _initialized = false;
 
   factory UserSettingsCache() {
-    return instance;
+    return _instance;
+  }
+
+  static Future<UserSettingsCache> getInstance() async {
+    if (!_instance._initialized) {
+      await _instance._init();
+      _instance._initialized = true;
+    }
+    return _instance;
   }
 
   Future<void> _init() async {
