@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:robot_living/dto/daily_task.dart';
 import 'package:robot_living/page/settings_day_edit_page.dart';
 
 import '../dto/daily_task_set.dart';
 import '../generated/l10n.dart';
+import '../main.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -18,6 +20,7 @@ class _SettingsPage extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<LocaleProvider>(context);
     return Scaffold(
       appBar: AppBar(),
       body: Stack(
