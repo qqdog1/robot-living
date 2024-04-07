@@ -3,11 +3,12 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:robot_living/const/language.dart';
 
+import '../dto/daily_task_set.dart';
 import '../dto/user_settings.dart';
 
 class UserSettingsCache {
   static final UserSettingsCache _instance = UserSettingsCache._internal();
-  UserSettings userSettings = UserSettings(Language.chinese);
+  UserSettings userSettings = UserSettings(language: Language.chinese);
   String fileName = 'settings.txt';
   bool _initialized = false;
 
@@ -30,7 +31,7 @@ class UserSettingsCache {
     if (await file.exists()) {
       final content = await file.readAsString();
       Map<String, dynamic> jsonMap = jsonDecode(content);
-      userSettings = UserSettings(jsonMap['language'] ?? Language.chinese);
+      userSettings = UserSettings.fromJson(jsonMap);
     } else {
       _write();
     }
@@ -49,9 +50,19 @@ class UserSettingsCache {
     _write();
   }
 
+  DailyTaskSet getDailyTaskSet() {
+    return userSettings.dailyTaskSet;
+  }
+
+  void setDailyTaskSet(DailyTaskSet dailyTaskSet) {
+    userSettings.dailyTaskSet = dailyTaskSet;
+    _write();
+  }
+
   Future<void> _write() async {
     final directory = await getApplicationSupportDirectory();
     final file = File('${directory.path}/$fileName');
     await file.writeAsString(userSettings.toString());
+    print("write file: " + userSettings.toString());
   }
 }

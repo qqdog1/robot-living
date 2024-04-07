@@ -9,6 +9,11 @@ class DurationTask extends Task {
 
   DurationTask(String name, this.start, this.end) : super(name, DailyTaskType.durationTask);
 
+  DurationTask.fromJson(Map<String, dynamic> json)
+      : start = json['start'],
+        end = json['end'],
+        super(json['name'], DailyTaskType.durationTask);
+
   @override
   Map<String, dynamic> toJson() {
     return {

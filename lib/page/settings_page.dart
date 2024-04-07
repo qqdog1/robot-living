@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:robot_living/cache/user_settings_cache.dart';
 import 'package:robot_living/dto/daily_task.dart';
 import 'package:robot_living/page/settings_day_edit_page.dart';
 
@@ -16,7 +17,24 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPage extends State<SettingsPage> {
+  late UserSettingsCache userSettingsCache;
   DailyTaskSet? dailyTaskSet;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSettings();
+  }
+
+  Future<void> _loadSettings() async {
+    userSettingsCache = await UserSettingsCache.getInstance();
+    final dailyTaskSetCache = userSettingsCache.getDailyTaskSet();
+    if (mounted) {
+      setState(() {
+        dailyTaskSet = dailyTaskSetCache;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,12 +155,18 @@ class _SettingsPage extends State<SettingsPage> {
     setState(() {
       dailyTaskSet!.dailyTasks.add(dailyTask);
     });
+    _saveFile();
   }
 
   void _replaceTask(int index, DailyTask dailyTask) {
     setState(() {
       dailyTaskSet!.dailyTasks[index] = dailyTask;
     });
+    _saveFile();
+  }
+
+  void _saveFile() {
+    userSettingsCache.setDailyTaskSet(dailyTaskSet!);
   }
 
   void _addNewSettings() async {

@@ -11,6 +11,12 @@ class SegmentedTask extends Task {
 
   SegmentedTask(String name, this.start, this.end, this.loopMin) : super(name, DailyTaskType.segmentedTask);
 
+  SegmentedTask.fromJson(Map<String, dynamic> json)
+      : start = json['start'],
+        end = json['end'],
+        loopMin = json['loopMin'],
+        super(json['name'], DailyTaskType.segmentedTask);
+
   @override
   Map<String, dynamic> toJson() {
     return {

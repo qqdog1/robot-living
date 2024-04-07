@@ -14,6 +14,13 @@ class DailyTask {
     triggered = [false, false, false, false, false, false, false];
   }
 
+  DailyTask.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        triggered = List<bool>.from(json['triggered']),
+        tasks = (json['tasks'] as List)
+            .map((taskJson) => Task.fromJson(taskJson))
+            .toList();
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
     if (name != null) {

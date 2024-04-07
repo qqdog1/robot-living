@@ -8,6 +8,10 @@ class OneTimeTask extends Task {
 
   OneTimeTask(String name, this.time) : super(name, DailyTaskType.oneTimeTask);
 
+  OneTimeTask.fromJson(Map<String, dynamic> json)
+      : time = json['time'],
+        super(json['name'], DailyTaskType.oneTimeTask);
+
   @override
   Map<String, dynamic> toJson() {
     return {
