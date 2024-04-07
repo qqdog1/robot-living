@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../cache/user_settings_cache.dart';
 import 'menu_page.dart';
 
 class LogoPage extends StatefulWidget {
