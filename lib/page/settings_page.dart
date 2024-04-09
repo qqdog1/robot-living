@@ -155,17 +155,17 @@ class _SettingsPage extends State<SettingsPage> {
     setState(() {
       dailyTaskSet!.dailyTasks.add(dailyTask);
     });
-    _saveFile();
+    _updateUserCache();
   }
 
   void _replaceTask(int index, DailyTask dailyTask) {
     setState(() {
       dailyTaskSet!.dailyTasks[index] = dailyTask;
     });
-    _saveFile();
+    _updateUserCache();
   }
 
-  void _saveFile() {
+  void _updateUserCache() {
     userSettingsCache.setDailyTaskSet(dailyTaskSet!);
   }
 
