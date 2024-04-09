@@ -6,6 +6,7 @@ import 'package:robot_living/dto/daily_task.dart';
 import 'package:robot_living/page/settings_day_edit_page.dart';
 
 import '../dto/daily_task_set.dart';
+import '../dto/notification_set.dart';
 import '../generated/l10n.dart';
 import '../main.dart';
 
@@ -166,7 +167,18 @@ class _SettingsPage extends State<SettingsPage> {
   }
 
   void _updateUserCache() {
-    userSettingsCache.setDailyTaskSet(dailyTaskSet!);
+    // TODO cancel old notification
+    // TODO dailyTaskSet to notificationSet
+    // TODO store both to file
+    NotificationSet notificationSet = _toNotificationSet(dailyTaskSet!);
+    userSettingsCache.setTaskAndNotify(dailyTaskSet!, notificationSet);
+    // TODO create notification
+  }
+
+  NotificationSet _toNotificationSet(DailyTaskSet dailyTaskSet) {
+    NotificationSet notificationSet = NotificationSet();
+    // TODO
+    return notificationSet;
   }
 
   void _addNewSettings() async {

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:robot_living/const/language.dart';
+import 'package:robot_living/dto/notification_set.dart';
 
 import '../dto/daily_task_set.dart';
 import '../dto/user_settings.dart';
@@ -54,8 +55,13 @@ class UserSettingsCache {
     return userSettings.dailyTaskSet;
   }
 
-  void setDailyTaskSet(DailyTaskSet dailyTaskSet) {
+  NotificationSet getNotificationSet() {
+    return userSettings.notificationSet;
+  }
+
+  void setTaskAndNotify(DailyTaskSet dailyTaskSet, NotificationSet notificationSet) {
     userSettings.dailyTaskSet = dailyTaskSet;
+    userSettings.notificationSet = notificationSet;
     _write();
   }
 
