@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class NotificationObject {
   int? id;
-  String? title;
+  String title;
   String body;
   int? weekday;
   int hour;
@@ -12,7 +12,7 @@ class NotificationObject {
 
   NotificationObject({
     this.id,
-    this.title,
+    required this.title,
     required this.body,
     this.weekday,
     required this.hour,

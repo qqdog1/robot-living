@@ -12,7 +12,8 @@ import '../dto/notification_set.dart';
 import '../dto/task.dart';
 
 class NotificationUtil {
-  static void createNotification(int id, String title, String body, int weekday, int hour, int minute, bool repeat) {
+  static void createNotification(int id, String title, String body, int weekday,
+      int hour, int minute, bool repeat) {
     AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: id, // 通知ID，用於取消通知
@@ -53,7 +54,6 @@ class NotificationUtil {
                 adjustedWeekday = 7; // awesome notification 星期日是7
               }
               copyNof.setWeekday(adjustedWeekday);
-              copyNof.setTitle(SystemConst.notificationTitle);
               notificationObjects.add(copyNof);
             }
           }
@@ -62,7 +62,7 @@ class NotificationUtil {
     }
     int id = 1;
     for (NotificationObject notification in notificationObjects) {
-        notification.setId(id++);
+      notification.setId(id++);
     }
     return NotificationSet(notifications: notificationObjects);
   }
@@ -78,7 +78,8 @@ class NotificationUtil {
     }
   }
 
-  static List<NotificationObject> durationTaskToNotificationList(DurationTask durationTask) {
+  static List<NotificationObject> durationTaskToNotificationList(
+      DurationTask durationTask) {
     List<NotificationObject> notifications = [];
     List<String> startTimes = durationTask.start.split(":");
     List<String> endTimes = durationTask.end.split(":");
@@ -86,15 +87,24 @@ class NotificationUtil {
     int startMinute = int.parse(startTimes[1]);
     int endHour = int.parse(endTimes[0]);
     int endMinute = int.parse(endTimes[1]);
-    bool crossDay = endHour < startHour || (endHour == startHour && endMinute < startMinute);
-    NotificationObject startNof = NotificationObject(body: "${durationTask.name} start", hour: int.parse(startTimes[0]), minute: int.parse(startTimes[1]));
-    NotificationObject endNof = NotificationObject(body: "${durationTask.name} end", hour: int.parse(endTimes[0]), minute: int.parse(endTimes[1]), crossDay: crossDay);
-    notifications.add(startNof);
-    notifications.add(endNof);
+    bool crossDay = endHour < startHour ||
+        (endHour == startHour && endMinute < startMinute);
+    notifications.add(NotificationObject(
+        title: "${durationTask.name} start",
+        body: "",
+        hour: int.parse(startTimes[0]),
+        minute: int.parse(startTimes[1])));
+    notifications.add(NotificationObject(
+        title: "${durationTask.name} end",
+        body: "",
+        hour: int.parse(endTimes[0]),
+        minute: int.parse(endTimes[1]),
+        crossDay: crossDay));
     return notifications;
   }
 
-  static List<NotificationObject> segmentedTaskToNotificationList(SegmentedTask segmentedTask) {
+  static List<NotificationObject> segmentedTaskToNotificationList(
+      SegmentedTask segmentedTask) {
     List<NotificationObject> notifications = [];
 
     // 解析開始和結束時間
@@ -107,24 +117,27 @@ class NotificationUtil {
     int endMinute = int.parse(endTimeParts[1]);
 
     // 創建開始和結束時間
-    DateTime startTime = DateTime(2020, 1, 1, startHour, startMinute);  // 使用假日期
-    DateTime endTime = DateTime(2020, 1, 1, endHour, endMinute);  // 使用假日期
+    DateTime startTime = DateTime(2020, 1, 1, startHour, startMinute); // 使用假日期
+    DateTime endTime = DateTime(2020, 1, 1, endHour, endMinute); // 使用假日期
 
     // 處理跨日情況
     if (endTime.isBefore(startTime)) {
       endTime = endTime.add(const Duration(days: 1));
     }
 
-    DateTime currentTime = startTime.add(Duration(minutes: segmentedTask.loopMin));
+    DateTime currentTime =
+        startTime.add(Duration(minutes: segmentedTask.loopMin));
 
     int index = 1;
-    while (currentTime.isBefore(endTime) || currentTime.isAtSameMomentAs(endTime)) {
+    while (currentTime.isBefore(endTime) ||
+        currentTime.isAtSameMomentAs(endTime)) {
       notifications.add(NotificationObject(
-          body: "${segmentedTask.name} $index",
+          title: "${segmentedTask.name} $index",
+          body: "",
           hour: currentTime.hour,
           minute: currentTime.minute,
-          crossDay: currentTime.day != startTime.day  // 標記是否跨日
-      ));
+          crossDay: currentTime.day != startTime.day // 標記是否跨日
+          ));
 
       currentTime = currentTime.add(Duration(minutes: segmentedTask.loopMin));
       index++;
@@ -133,11 +146,15 @@ class NotificationUtil {
     return notifications;
   }
 
-  static List<NotificationObject> oneTimeTaskToNotificationList(OneTimeTask oneTimeTask) {
+  static List<NotificationObject> oneTimeTaskToNotificationList(
+      OneTimeTask oneTimeTask) {
     List<NotificationObject> notifications = [];
     List<String> times = oneTimeTask.time.split(":");
-    NotificationObject notification = NotificationObject(body: oneTimeTask.name, hour: int.parse(times[0]), minute: int.parse(times[1]));
-    notifications.add(notification);
+    notifications.add(NotificationObject(
+        title: oneTimeTask.name,
+        body: "",
+        hour: int.parse(times[0]),
+        minute: int.parse(times[1])));
     return notifications;
   }
 }
