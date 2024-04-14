@@ -1,17 +1,17 @@
 import 'dart:convert';
 
-import 'notification.dart';
+import 'notification_object.dart';
 class NotificationSet {
-  List<Notification> notifications;
+  List<NotificationObject> notificationObjects;
 
-  NotificationSet({List<Notification>? notifications}) : notifications = notifications ?? [];
+  NotificationSet({List<NotificationObject>? notifications}) : notificationObjects = notifications ?? [];
 
   NotificationSet.fromJson(Map<String, dynamic> json)
-      : notifications = (json['notifications'] as List?)?.map((e) => Notification.fromJson(e as Map<String, dynamic>)).toList() ?? [];
+      : notificationObjects = (json['notificationObjects'] as List?)?.map((e) => NotificationObject.fromJson(e as Map<String, dynamic>)).toList() ?? [];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
-    data['notifications'] = notifications.map((notification) => notification.toJson()).toList();
+    data['notificationObjects'] = notificationObjects.map((notification) => notification.toJson()).toList();
     return data;
   }
 

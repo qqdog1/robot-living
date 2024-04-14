@@ -4,8 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:robot_living/cache/user_settings_cache.dart';
 import 'package:robot_living/dto/daily_task.dart';
 import 'package:robot_living/page/settings_day_edit_page.dart';
+import 'package:robot_living/util/notification_util.dart';
 
 import '../dto/daily_task_set.dart';
+import '../dto/notification_object.dart';
 import '../dto/notification_set.dart';
 import '../generated/l10n.dart';
 import '../main.dart';
@@ -167,18 +169,24 @@ class _SettingsPage extends State<SettingsPage> {
   }
 
   void _updateUserCache() {
-    // TODO cancel old notification
-    // TODO dailyTaskSet to notificationSet
-    // TODO store both to file
-    NotificationSet notificationSet = _toNotificationSet(dailyTaskSet!);
-    userSettingsCache.setTaskAndNotify(dailyTaskSet!, notificationSet);
-    // TODO create notification
-  }
+    // cancel old notification
+    NotificationSet oldNof = userSettingsCache.getNotificationSet();
+    for (NotificationObject notificationObject in oldNof.notificationObjects) {
+      NotificationUtil.cancelNotification(notificationObject.id!);
+    }
 
-  NotificationSet _toNotificationSet(DailyTaskSet dailyTaskSet) {
-    NotificationSet notificationSet = NotificationSet();
-    // TODO
-    return notificationSet;
+    NotificationSet notificationSet = NotificationUtil.toNotificationSet(dailyTaskSet!);
+    userSettingsCache.setTaskAndNotify(dailyTaskSet!, notificationSet);
+    // create notification
+    for (NotificationObject notificationObject in notificationSet.notificationObjects) {
+      NotificationUtil.createNotification(notificationObject.id!,
+          notificationObject.title!,
+          notificationObject.body,
+          notificationObject.weekday!,
+          notificationObject.hour,
+          notificationObject.minute,
+          notificationObject.repeat);
+    }
   }
 
   void _addNewSettings() async {

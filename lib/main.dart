@@ -15,7 +15,7 @@ void main() {
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   AwesomeNotifications().initialize(
-    'resource://drawable/res_app_icon',
+    'resource://drawable/ic_launcher',
     [
       NotificationChannel(
         channelKey: SystemConst.notificationChannel,

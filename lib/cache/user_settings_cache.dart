@@ -38,9 +38,7 @@ class UserSettingsCache {
     }
   }
 
-  UserSettingsCache._internal() {
-    _init();
-  }
+  UserSettingsCache._internal();
 
   String getLanguage() {
     return userSettings.language;
@@ -69,6 +67,12 @@ class UserSettingsCache {
     final directory = await getApplicationSupportDirectory();
     final file = File('${directory.path}/$fileName');
     await file.writeAsString(userSettings.toString());
-    print("write file: " + userSettings.toString());
+    printInBatches("write file: " + userSettings.toString());
+  }
+
+  void printInBatches(String data, {int batchSize = 500}) {
+    for (int i = 0; i < data.length; i += batchSize) {
+      print(data.substring(i, i + batchSize < data.length ? i + batchSize : data.length));
+    }
   }
 }
