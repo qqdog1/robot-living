@@ -151,6 +151,7 @@ class _SettingsPage extends State<SettingsPage> {
     setState(() {
       dailyTaskSet?.dailyTasks.removeAt(index);
     });
+    _updateUserCache();
   }
 
   void _addNewTask(DailyTask dailyTask) {
@@ -172,20 +173,20 @@ class _SettingsPage extends State<SettingsPage> {
     // cancel old notification
     NotificationSet oldNof = userSettingsCache.getNotificationSet();
     for (NotificationObject notificationObject in oldNof.notificationObjects) {
-      NotificationUtil.cancelNotification(notificationObject.id!);
+      NotificationUtil.cancelAndroidAlarm(notificationObject.id!);
     }
 
     NotificationSet notificationSet = NotificationUtil.toNotificationSet(dailyTaskSet!);
+    print(notificationSet.toString());
     userSettingsCache.setTaskAndNotify(dailyTaskSet!, notificationSet);
     // create notification
     for (NotificationObject notificationObject in notificationSet.notificationObjects) {
-      NotificationUtil.createNotification(notificationObject.id!,
+      NotificationUtil.setAndroidAlarm(notificationObject.id!,
           notificationObject.title!,
           notificationObject.body,
           notificationObject.weekday!,
           notificationObject.hour,
-          notificationObject.minute,
-          notificationObject.repeat);
+          notificationObject.minute);
     }
   }
 

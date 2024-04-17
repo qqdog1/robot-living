@@ -1,8 +1,6 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:robot_living/const/system_const.dart';
 import 'package:robot_living/page/logo_page.dart';
 
 import 'cache/user_settings_cache.dart';
@@ -14,18 +12,6 @@ void main() {
 
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AwesomeNotifications().initialize(
-    'resource://drawable/ic_launcher',
-    [
-      NotificationChannel(
-        channelKey: SystemConst.notificationChannel,
-        channelName: 'Basic notifications',
-        channelDescription: 'Notification channel for robot living',
-        defaultColor: const Color(0xFF9D50DD),
-        ledColor: Colors.white,
-      )
-    ],
-  );
   final localeProvider = LocaleProvider();
   await localeProvider.init(); // 初始化LocaleProvider
   runApp(ChangeNotifierProvider(

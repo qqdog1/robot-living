@@ -1,39 +1,39 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:robot_living/const/daily_task_type.dart';
 import 'package:robot_living/dto/daily_task_set.dart';
 import 'package:robot_living/dto/duration_task.dart';
 import 'package:robot_living/dto/one_time_task.dart';
 import 'package:robot_living/dto/segmented_task.dart';
 
-import '../const/system_const.dart';
 import '../dto/daily_task.dart';
 import '../dto/notification_object.dart';
 import '../dto/notification_set.dart';
 import '../dto/task.dart';
+import '../service/platform_channel.dart';
 
 class NotificationUtil {
-  static void createNotification(int id, String title, String body, int weekday,
-      int hour, int minute, bool repeat) {
-    AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: id, // 通知ID，用於取消通知
-        channelKey: SystemConst.notificationChannel,
-        title: title,
-        body: body,
-      ),
-      schedule: NotificationCalendar(
-        weekday: weekday,
-        hour: hour,
-        minute: minute,
-        second: 0,
-        millisecond: 0,
-        repeats: repeat, // 設定重複
-      ),
-    );
+  static void setAndroidAlarm(int id, String title, String body, int weekday, int hour, int minute) async {
+    try {
+      await PlatformChannel.createAlarm(
+          id,
+          title,
+          body,
+          weekday,
+          hour,
+          minute,
+      );
+    } catch (e) {
+      print("Failed to set the alarm: $e");
+    }
   }
 
-  static void cancelNotification(int id) {
-    AwesomeNotifications().cancel(id);
+  static void cancelAndroidAlarm(int id) async {
+    try {
+      await PlatformChannel.cancelAlarm(
+          id,
+      );
+    } catch (e) {
+      print("Failed to cancel the alarm: $e");
+    }
   }
 
   static NotificationSet toNotificationSet(DailyTaskSet dailyTaskSet) {
@@ -50,9 +50,8 @@ class NotificationUtil {
               if (notificationObject.crossDay) {
                 adjustedWeekday = (index + 1) % 7; // 週日跨至週一需循環
               }
-              if (adjustedWeekday == 0) {
-                adjustedWeekday = 7; // awesome notification 星期日是7
-              }
+              // android 原生星期日是1 星期一是2
+              adjustedWeekday = adjustedWeekday + 1;
               copyNof.setWeekday(adjustedWeekday);
               notificationObjects.add(copyNof);
             }
@@ -103,8 +102,7 @@ class NotificationUtil {
     return notifications;
   }
 
-  static List<NotificationObject> segmentedTaskToNotificationList(
-      SegmentedTask segmentedTask) {
+  static List<NotificationObject> segmentedTaskToNotificationList(SegmentedTask segmentedTask) {
     List<NotificationObject> notifications = [];
 
     // 解析開始和結束時間
