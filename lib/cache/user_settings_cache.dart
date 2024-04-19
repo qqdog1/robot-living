@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:robot_living/const/language.dart';
-import 'package:robot_living/dto/notification_set.dart';
+import 'package:robot_living/dto/notification_map.dart';
 
 import '../dto/daily_task_set.dart';
 import '../dto/user_settings.dart';
@@ -53,13 +53,13 @@ class UserSettingsCache {
     return userSettings.dailyTaskSet;
   }
 
-  NotificationSet getNotificationSet() {
-    return userSettings.notificationSet;
+  NotificationMap getNotificationMap() {
+    return userSettings.notificationMap;
   }
 
-  void setTaskAndNotify(DailyTaskSet dailyTaskSet, NotificationSet notificationSet) {
+  void setTaskAndNotify(DailyTaskSet dailyTaskSet, NotificationMap notificationMap) {
     userSettings.dailyTaskSet = dailyTaskSet;
-    userSettings.notificationSet = notificationSet;
+    userSettings.notificationMap = notificationMap;
     _write();
   }
 
@@ -67,7 +67,7 @@ class UserSettingsCache {
     final directory = await getApplicationSupportDirectory();
     final file = File('${directory.path}/$fileName');
     await file.writeAsString(userSettings.toString());
-    printInBatches("write file: " + userSettings.toString());
+    printInBatches("write file: $userSettings");
   }
 
   void printInBatches(String data, {int batchSize = 500}) {

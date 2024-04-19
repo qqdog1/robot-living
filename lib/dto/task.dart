@@ -7,10 +7,19 @@ import 'package:robot_living/dto/segmented_task.dart';
 import 'duration_task.dart';
 
 abstract class Task {
+  int? id;
   String name;
   DailyTaskType type;
 
-  Task(this.name, this.type);
+  Task({
+    this.id,
+    required this.name,
+    required this.type,
+  });
+
+  void setId(int id) {
+    this.id = id;
+  }
 
   factory Task.fromJson(Map<String, dynamic> json) {
     final type = DailyTaskType.values
@@ -30,6 +39,7 @@ abstract class Task {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'name': name,
       'type': type.toString().split('.').last,
     };

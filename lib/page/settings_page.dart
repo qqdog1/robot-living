@@ -8,7 +8,8 @@ import 'package:robot_living/util/notification_util.dart';
 
 import '../dto/daily_task_set.dart';
 import '../dto/notification_object.dart';
-import '../dto/notification_set.dart';
+import '../dto/notification_map.dart';
+import '../dto/task.dart';
 import '../generated/l10n.dart';
 import '../main.dart';
 
@@ -171,23 +172,36 @@ class _SettingsPage extends State<SettingsPage> {
 
   void _updateUserCache() {
     // cancel old notification
-    NotificationSet oldNof = userSettingsCache.getNotificationSet();
-    for (NotificationObject notificationObject in oldNof.notificationObjects) {
+    NotificationMap oldNof = userSettingsCache.getNotificationMap();
+    for (NotificationObject notificationObject in oldNof.map.values) {
       NotificationUtil.cancelAndroidAlarm(notificationObject.id!);
     }
 
-    NotificationSet notificationSet = NotificationUtil.toNotificationSet(dailyTaskSet!);
-    print(notificationSet.toString());
-    userSettingsCache.setTaskAndNotify(dailyTaskSet!, notificationSet);
-    // create notification
-    for (NotificationObject notificationObject in notificationSet.notificationObjects) {
-      NotificationUtil.setAndroidAlarm(notificationObject.id!,
-          notificationObject.title!,
-          notificationObject.body,
-          notificationObject.weekday!,
-          notificationObject.hour,
-          notificationObject.minute);
+    // give all task an id
+    int id = 1;
+    for (DailyTask dailyTask in dailyTaskSet!.dailyTasks) {
+      for (Task task in dailyTask.tasks!) {
+        task.setId(id++);
+      }
     }
+
+    NotificationMap notificationMap = NotificationUtil.toNotificationMap(dailyTaskSet!);
+    userSettingsCache.setTaskAndNotify(dailyTaskSet!, notificationMap);
+
+    // TODO 為每一個task註冊一個最近期即將發生的通知而非全部
+    for (DailyTask dailyTask in dailyTaskSet!.dailyTasks) {
+      for (Task task in dailyTask.tasks) {
+      }
+    }
+
+    // for (NotificationObject notificationObject in notificationMap.map) {
+    //   NotificationUtil.setAndroidAlarm(notificationObject.id!,
+    //       notificationObject.title!,
+    //       notificationObject.body,
+    //       notificationObject.weekday!,
+    //       notificationObject.hour,
+    //       notificationObject.minute);
+    // }
   }
 
   void _addNewSettings() async {

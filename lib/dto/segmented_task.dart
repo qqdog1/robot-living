@@ -9,17 +9,18 @@ class SegmentedTask extends Task {
   String end;
   int loopMin;
 
-  SegmentedTask(String name, this.start, this.end, this.loopMin) : super(name, DailyTaskType.segmentedTask);
+  SegmentedTask(String name, this.start, this.end, this.loopMin) : super(name: name, type: DailyTaskType.segmentedTask);
 
   SegmentedTask.fromJson(Map<String, dynamic> json)
       : start = json['start'],
         end = json['end'],
         loopMin = json['loopMin'],
-        super(json['name'], DailyTaskType.segmentedTask);
+        super(name: json['name'], type: DailyTaskType.segmentedTask);
 
   @override
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'name': name,
       'type': type.toString().split('.').last,
       'start': start,

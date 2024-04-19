@@ -6,7 +6,7 @@ import 'package:robot_living/dto/segmented_task.dart';
 
 import '../dto/daily_task.dart';
 import '../dto/notification_object.dart';
-import '../dto/notification_set.dart';
+import '../dto/notification_map.dart';
 import '../dto/task.dart';
 import '../service/platform_channel.dart';
 
@@ -36,8 +36,9 @@ class NotificationUtil {
     }
   }
 
-  static NotificationSet toNotificationSet(DailyTaskSet dailyTaskSet) {
-    List<NotificationObject> notificationObjects = [];
+  static NotificationMap toNotificationMap(DailyTaskSet dailyTaskSet) {
+    List<NotificationObject> lst = [];
+    Map<int, NotificationObject> map = {};
     for (DailyTask dailyTask in dailyTaskSet.dailyTasks) {
       for (Task task in dailyTask.tasks) {
         List<NotificationObject> nof = toNotificationList(task);
@@ -53,17 +54,19 @@ class NotificationUtil {
               // android 原生星期日是1 星期一是2
               adjustedWeekday = adjustedWeekday + 1;
               copyNof.setWeekday(adjustedWeekday);
-              notificationObjects.add(copyNof);
+              lst.add(copyNof);
             }
           }
         }
       }
     }
     int id = 1;
-    for (NotificationObject notification in notificationObjects) {
-      notification.setId(id++);
+    for (NotificationObject notification in lst) {
+      notification.setId(id);
+      map.putIfAbsent(notification.taskId, () => notification);
+      id++;
     }
-    return NotificationSet(notifications: notificationObjects);
+    return NotificationMap(map: map);
   }
 
   static List<NotificationObject> toNotificationList(Task task) {
@@ -89,11 +92,13 @@ class NotificationUtil {
     bool crossDay = endHour < startHour ||
         (endHour == startHour && endMinute < startMinute);
     notifications.add(NotificationObject(
+        taskId: durationTask.id!,
         title: "${durationTask.name} start",
         body: "",
         hour: int.parse(startTimes[0]),
         minute: int.parse(startTimes[1])));
     notifications.add(NotificationObject(
+        taskId: durationTask.id!,
         title: "${durationTask.name} end",
         body: "",
         hour: int.parse(endTimes[0]),
@@ -130,6 +135,7 @@ class NotificationUtil {
     while (currentTime.isBefore(endTime) ||
         currentTime.isAtSameMomentAs(endTime)) {
       notifications.add(NotificationObject(
+          taskId: segmentedTask.id!,
           title: "${segmentedTask.name} $index",
           body: "",
           hour: currentTime.hour,
@@ -149,6 +155,7 @@ class NotificationUtil {
     List<NotificationObject> notifications = [];
     List<String> times = oneTimeTask.time.split(":");
     notifications.add(NotificationObject(
+        taskId: oneTimeTask.id!,
         title: oneTimeTask.name,
         body: "",
         hour: int.parse(times[0]),
