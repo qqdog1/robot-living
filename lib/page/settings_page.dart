@@ -192,19 +192,8 @@ class _SettingsPage extends State<SettingsPage> {
 
     // 為每一個task註冊一個最近期即將發生的通知而非全部
     for (int taskId in notificationMap.map.keys) {
-      for (NotificationObject notificationObject in notificationMap.map[taskId]!) {
-
-      }
+      NotificationUtil.registerNext(notificationMap.map[taskId]!);
     }
-
-    // for (NotificationObject notificationObject in notificationMap.map) {
-    //   NotificationUtil.setAndroidAlarm(notificationObject.id!,
-    //       notificationObject.title!,
-    //       notificationObject.body,
-    //       notificationObject.weekday!,
-    //       notificationObject.hour,
-    //       notificationObject.minute);
-    // }
   }
 
   void _addNewSettings() async {

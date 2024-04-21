@@ -14,12 +14,12 @@ class NotificationUtil {
   static void setAndroidAlarm(int id, String title, String body, int weekday, int hour, int minute) async {
     try {
       await PlatformChannel.createAlarm(
-          id,
-          title,
-          body,
-          weekday,
-          hour,
-          minute,
+        id,
+        title,
+        body,
+        weekday,
+        hour,
+        minute,
       );
     } catch (e) {
       print("Failed to set the alarm: $e");
@@ -29,10 +29,49 @@ class NotificationUtil {
   static void cancelAndroidAlarm(int id) async {
     try {
       await PlatformChannel.cancelAlarm(
-          id,
+        id,
       );
     } catch (e) {
       print("Failed to cancel the alarm: $e");
+    }
+  }
+
+  // TODO 觸發的那一個要記得取消註冊
+  static void registerNext(List<NotificationObject> lst) {
+    DateTime now = DateTime.now();
+    int nowWeekday = now.weekday;
+    int nowHour = now.hour;
+    int nowMinute = now.minute;
+
+    NotificationObject? nextNotification;
+    Duration? shortestDuration = const Duration(days: 8); // 設定比一週多一天的初始最大差異
+
+    for (var notification in lst) {
+      for (int i = -1; i <= 1; i++) {
+        // 考慮前一周、本周和下一周的情況
+        int targetWeekday = (notification.weekday ?? nowWeekday) + i * 7;
+
+        // 建立對應的DateTime物件
+        DateTime targetDateTime = DateTime(now.year, now.month, now.day).add(Duration(
+            days: targetWeekday - nowWeekday,
+            hours: notification.hour - nowHour,
+            minutes: notification.minute - nowMinute));
+
+        // 計算時間差，只考慮未來的通知
+        if (targetDateTime.isAfter(now)) {
+          Duration duration = targetDateTime.difference(now);
+          if (duration < shortestDuration!) {
+            shortestDuration = duration;
+            nextNotification = notification.copy(); // 假設有copy方法來複製NotificationObject
+            nextNotification.weekday = (targetWeekday % 7 == 0) ? 7 : targetWeekday % 7; // 確保星期天是7而不是0
+          }
+        }
+      }
+    }
+
+    if (nextNotification != null) {
+      setAndroidAlarm(nextNotification.id!, nextNotification.title, nextNotification.body, nextNotification.weekday!,
+          nextNotification.hour, nextNotification.minute);
     }
   }
 
@@ -83,8 +122,7 @@ class NotificationUtil {
     }
   }
 
-  static List<NotificationObject> durationTaskToNotificationList(
-      DurationTask durationTask) {
+  static List<NotificationObject> durationTaskToNotificationList(DurationTask durationTask) {
     List<NotificationObject> notifications = [];
     List<String> startTimes = durationTask.start.split(":");
     List<String> endTimes = durationTask.end.split(":");
@@ -92,8 +130,7 @@ class NotificationUtil {
     int startMinute = int.parse(startTimes[1]);
     int endHour = int.parse(endTimes[0]);
     int endMinute = int.parse(endTimes[1]);
-    bool crossDay = endHour < startHour ||
-        (endHour == startHour && endMinute < startMinute);
+    bool crossDay = endHour < startHour || (endHour == startHour && endMinute < startMinute);
     notifications.add(NotificationObject(
         taskId: durationTask.id!,
         title: "${durationTask.name} start",
@@ -131,12 +168,10 @@ class NotificationUtil {
       endTime = endTime.add(const Duration(days: 1));
     }
 
-    DateTime currentTime =
-        startTime.add(Duration(minutes: segmentedTask.loopMin));
+    DateTime currentTime = startTime.add(Duration(minutes: segmentedTask.loopMin));
 
     int index = 1;
-    while (currentTime.isBefore(endTime) ||
-        currentTime.isAtSameMomentAs(endTime)) {
+    while (currentTime.isBefore(endTime) || currentTime.isAtSameMomentAs(endTime)) {
       notifications.add(NotificationObject(
           taskId: segmentedTask.id!,
           title: "${segmentedTask.name} $index",
@@ -153,8 +188,7 @@ class NotificationUtil {
     return notifications;
   }
 
-  static List<NotificationObject> oneTimeTaskToNotificationList(
-      OneTimeTask oneTimeTask) {
+  static List<NotificationObject> oneTimeTaskToNotificationList(OneTimeTask oneTimeTask) {
     List<NotificationObject> notifications = [];
     List<String> times = oneTimeTask.time.split(":");
     notifications.add(NotificationObject(
