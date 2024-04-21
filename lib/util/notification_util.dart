@@ -38,7 +38,7 @@ class NotificationUtil {
 
   static NotificationMap toNotificationMap(DailyTaskSet dailyTaskSet) {
     List<NotificationObject> lst = [];
-    Map<int, NotificationObject> map = {};
+    Map<int, List<NotificationObject>> map = {};
     for (DailyTask dailyTask in dailyTaskSet.dailyTasks) {
       for (Task task in dailyTask.tasks) {
         List<NotificationObject> nof = toNotificationList(task);
@@ -63,7 +63,10 @@ class NotificationUtil {
     int id = 1;
     for (NotificationObject notification in lst) {
       notification.setId(id);
-      map.putIfAbsent(notification.taskId, () => notification);
+      if (!map.containsKey(notification.taskId)) {
+        map.putIfAbsent(notification.taskId, () => []);
+      }
+      map[notification.taskId]?.add(notification);
       id++;
     }
     return NotificationMap(map: map);

@@ -173,8 +173,10 @@ class _SettingsPage extends State<SettingsPage> {
   void _updateUserCache() {
     // cancel old notification
     NotificationMap oldNof = userSettingsCache.getNotificationMap();
-    for (NotificationObject notificationObject in oldNof.map.values) {
-      NotificationUtil.cancelAndroidAlarm(notificationObject.id!);
+    for (List<NotificationObject> lst in oldNof.map.values) {
+      for (NotificationObject notificationObject in lst) {
+        NotificationUtil.cancelAndroidAlarm(notificationObject.id!);
+      }
     }
 
     // give all task an id
@@ -188,9 +190,10 @@ class _SettingsPage extends State<SettingsPage> {
     NotificationMap notificationMap = NotificationUtil.toNotificationMap(dailyTaskSet!);
     userSettingsCache.setTaskAndNotify(dailyTaskSet!, notificationMap);
 
-    // TODO 為每一個task註冊一個最近期即將發生的通知而非全部
-    for (DailyTask dailyTask in dailyTaskSet!.dailyTasks) {
-      for (Task task in dailyTask.tasks) {
+    // 為每一個task註冊一個最近期即將發生的通知而非全部
+    for (int taskId in notificationMap.map.keys) {
+      for (NotificationObject notificationObject in notificationMap.map[taskId]!) {
+
       }
     }
 

@@ -30,6 +30,7 @@ class UserSettingsCache {
     final file = File('${directory.path}/$fileName');
 
     if (await file.exists()) {
+      // file.delete();
       final content = await file.readAsString();
       Map<String, dynamic> jsonMap = jsonDecode(content);
       userSettings = UserSettings.fromJson(jsonMap);
