@@ -23,6 +23,28 @@ class MainActivity: FlutterActivity() {
         createNotificationChannel() // 调用创建通知渠道的方法
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent) // 更新当前的 Intent 为最新的
+        handleIntent(intent) // 处理 Intent
+    }
+
+    private fun handleIntent(intent: Intent) {
+        val uri = intent.data
+        if (uri != null && "robotliving" == uri.scheme && "notificationPage" == uri.host) {
+            // 从 URI 提取数据，例如 ID
+            val id = uri.getQueryParameter("id")
+            // 根据 ID 处理业务逻辑，比如导航到特定页面
+            if (id != null) {
+                flutterEngine?.let {
+                    MethodChannel(it.dartExecutor.binaryMessenger, CHANNEL).invokeMethod("navigateToNotificationPage", id)
+                } ?: Log.e("MainActivity", "Flutter engine not initialized when trying to navigate to notification page")
+            } else {
+                Log.i("MainActivity", "No ID found in the URI")
+            }
+        }
+    }
+
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name: CharSequence = "Standard Notifications"
@@ -65,6 +87,7 @@ class MainActivity: FlutterActivity() {
 
         // 創建一個Intent，它將觸發一個廣播接收器
         val intent = Intent(this, AlarmReceiver::class.java).apply {
+            action = "com.example.robot_living.ALARM_ACTION"
             putExtra("title", title)
             putExtra("body", body)
             putExtra("id", id)  // 可用於區分不同的通知
