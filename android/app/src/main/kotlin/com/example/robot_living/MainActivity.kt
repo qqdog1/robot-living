@@ -66,7 +66,7 @@ class MainActivity: FlutterActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name: CharSequence = "Standard Notifications"
             val description = "Description for this channel"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel("robot_inner", name, importance)
             channel.description = description
             val notificationManager: NotificationManager = getSystemService(NotificationManager::class.java)
