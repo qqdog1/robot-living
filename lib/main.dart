@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:robot_living/page/logo_page.dart';
@@ -47,7 +46,7 @@ class RobotLiving extends StatefulWidget {
 }
 
 class _RobotLivingState extends State<RobotLiving> {
-  static const platform = MethodChannel('robot_inner');
+  // static const platform = MethodChannel('robot_inner');
   late Locale _locale;
   bool _loaded = false;
 
