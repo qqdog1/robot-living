@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:robot_living/page/logo_page.dart';
-import 'package:robot_living/page/notification_page.dart';
 
 import 'cache/user_settings_cache.dart';
 import 'generated/l10n.dart';
@@ -56,7 +55,7 @@ class _RobotLivingState extends State<RobotLiving> {
   void initState() {
     super.initState();
     _loadLocale();
-    _setupMethodChannel();
+    // _setupMethodChannel();
   }
 
   Future<void> _loadLocale() async {
@@ -68,26 +67,27 @@ class _RobotLivingState extends State<RobotLiving> {
     });
   }
 
-  void _setupMethodChannel() {
-    platform.setMethodCallHandler((call) async {
-      switch (call.method) {
-        case 'navigateToNotificationPage':
-          _navigateToNotificationPage(call.arguments);
-          break;
-        default:
-          print('Unimplemented method ${call.method}');
-      }
-    });
-  }
-
-  void _navigateToNotificationPage(String id) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => NotificationPage(id: int.parse(id)),
-      ),
-    );
-  }
+  // void _setupMethodChannel() {
+  //   platform.setMethodCallHandler((call) async {
+  //     switch (call.method) {
+  //       case 'navigateToNotificationPage':
+  //         _navigateToNotificationPage(call.arguments);
+  //         break;
+  //       default:
+  //         print('Unimplemented method ${call.method}');
+  //     }
+  //   });
+  // }
+  //
+  // void _navigateToNotificationPage(String id) {
+  //   print("ready to redirect ........... $id");
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => NotificationPage(id: int.parse(id)),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

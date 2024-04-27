@@ -36,43 +36,48 @@ class NotificationUtil {
     }
   }
 
-  // TODO 觸發的那一個要記得取消註冊
   static void registerNext(List<NotificationObject> lst) {
     DateTime now = DateTime.now();
-    int nowWeekday = now.weekday;
-    int nowHour = now.hour;
-    int nowMinute = now.minute;
+    int shortestMinutes = 60 * 24 * 7;
 
     NotificationObject? nextNotification;
-    Duration? shortestDuration = const Duration(days: 8); // 設定比一週多一天的初始最大差異
+    NotificationObject? zeroGapNotification;
 
     for (var notification in lst) {
-      for (int i = -1; i <= 1; i++) {
-        // 考慮前一周、本周和下一周的情況
-        int targetWeekday = (notification.weekday ?? nowWeekday) + i * 7;
-
-        // 建立對應的DateTime物件
-        DateTime targetDateTime = DateTime(now.year, now.month, now.day).add(Duration(
-            days: targetWeekday - nowWeekday,
-            hours: notification.hour - nowHour,
-            minutes: notification.minute - nowMinute));
-
-        // 計算時間差，只考慮未來的通知
-        if (targetDateTime.isAfter(now)) {
-          Duration duration = targetDateTime.difference(now);
-          if (duration < shortestDuration!) {
-            shortestDuration = duration;
-            nextNotification = notification.copy(); // 假設有copy方法來複製NotificationObject
-            nextNotification.weekday = (targetWeekday % 7 == 0) ? 7 : targetWeekday % 7; // 確保星期天是7而不是0
-          }
-        }
+      int gapMin = getGapMinutes(now, notification);
+      if (gapMin < shortestMinutes && gapMin != 0) {
+        shortestMinutes = gapMin;
+        nextNotification = notification.copy();
+      } else if (gapMin == 0) {
+        zeroGapNotification = notification.copy();
       }
     }
 
+    if (nextNotification == null && zeroGapNotification != null) {
+      nextNotification = zeroGapNotification;
+    }
+
     if (nextNotification != null) {
+      print("register next $nextNotification.toString()");
       setAndroidAlarm(nextNotification.id!, nextNotification.title, nextNotification.body, nextNotification.weekday!,
           nextNotification.hour, nextNotification.minute);
     }
+  }
+
+  static int getGapMinutes(DateTime now, NotificationObject notificationObject) {
+    int diffDay = notificationObject.weekday! - now.weekday;
+    int diffHour = notificationObject.hour - now.hour;
+    int diffMin = notificationObject.minute - now.minute;
+    if (diffMin < 0) {
+      diffMin = diffMin + 60;
+      diffHour = diffHour - 1;
+    }
+    if (diffHour < 0) {
+      diffHour = diffHour + 24;
+      diffDay = diffDay - 1;
+    }
+    if (diffDay < 0) diffDay = diffDay + 7;
+    return (((diffDay * 24) + diffHour) * 60) + diffMin;
   }
 
   static NotificationMap toNotificationMap(DailyTaskSet dailyTaskSet) {
@@ -91,7 +96,9 @@ class NotificationUtil {
                 adjustedWeekday = (index + 1) % 7; // 週日跨至週一需循環
               }
               // android 原生星期日是1 星期一是2
-              adjustedWeekday = adjustedWeekday + 1;
+              // flutter 星期日是0
+              // 在flutter處不動 應該要在原生註冊處改
+              // adjustedWeekday = adjustedWeekday + 1;
               copyNof.setWeekday(adjustedWeekday);
               lst.add(copyNof);
             }
