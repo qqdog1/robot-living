@@ -220,7 +220,8 @@ class MainActivity: FlutterActivity() {
     }
 
     private fun getGapMinutes(calendar: Calendar, notification: Notification) : Int {
-        var diffDay = notification.weekday - calendar.get(Calendar.DAY_OF_WEEK) + 1
+        var diffDay = if (notification.weekday == 7) - calendar.get(Calendar.DAY_OF_WEEK) + 1
+        else notification.weekday - calendar.get(Calendar.DAY_OF_WEEK) + 1
         var diffHour = notification.hour - calendar.get(Calendar.HOUR_OF_DAY)
         var diffMin = notification.minute - calendar.get(Calendar.MINUTE)
         if (diffMin < 0) {

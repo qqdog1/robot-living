@@ -95,8 +95,11 @@ class NotificationUtil {
               if (notificationObject.crossDay) {
                 adjustedWeekday = (index + 1) % 7; // 週日跨至週一需循環
               }
+              if (adjustedWeekday == 0) {
+                adjustedWeekday = 7;
+              }
               // android 原生星期日是1 星期一是2
-              // flutter 星期日是0
+              // flutter 星期日是7
               // 在flutter處不動 應該要在原生註冊處改
               // adjustedWeekday = adjustedWeekday + 1;
               copyNof.setWeekday(adjustedWeekday);
