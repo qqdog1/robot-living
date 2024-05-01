@@ -3,10 +3,11 @@ import 'package:flutter/services.dart';
 class PlatformChannel {
   static const MethodChannel _channel = MethodChannel('robot_inner');
 
-  static Future<bool> createAlarm(int id, String title, String body, int weekday, int hour, int minute) async {
+  static Future<bool> createAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) async {
     try {
       final bool result = await _channel.invokeMethod('createAlarm', {
         'id': id,
+        'taskId': taskId,
         'title': title,
         'body': body,
         'weekday': weekday,

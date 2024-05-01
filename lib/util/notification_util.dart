@@ -11,10 +11,11 @@ import '../dto/task.dart';
 import '../service/platform_channel.dart';
 
 class NotificationUtil {
-  static void setAndroidAlarm(int id, String title, String body, int weekday, int hour, int minute) async {
+  static void setAndroidAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) async {
     try {
       await PlatformChannel.createAlarm(
         id,
+        taskId,
         title,
         body,
         weekday,
@@ -58,8 +59,8 @@ class NotificationUtil {
     }
 
     if (nextNotification != null) {
-      print("register next $nextNotification.toString()");
-      setAndroidAlarm(nextNotification.id!, nextNotification.title, nextNotification.body, nextNotification.weekday!,
+      print("register next $nextNotification");
+      setAndroidAlarm(nextNotification.id!, nextNotification.taskId, nextNotification.title, nextNotification.body, nextNotification.weekday!,
           nextNotification.hour, nextNotification.minute);
     }
   }
