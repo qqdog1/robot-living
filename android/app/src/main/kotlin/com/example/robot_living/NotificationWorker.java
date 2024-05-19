@@ -35,16 +35,15 @@ public class NotificationWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Log.d("onHandleWork", "onHandleWork");
+        Log.d("onHandleWork", "doWork");
         int taskId = getInputData().getInt("taskId", 0);
         // get next with same task id
-        Log.d("get task id", String.valueOf(taskId));
         getNextAndRegister(taskId);
         return Result.success();
     }
 
     public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) {
-        Log.d("setupAlarm", "setupAlarm - id: " + id + ", taskId: " + taskId + ", title: " + title + ", body: " + body +
+        Log.d("setupAlarm", "準備註冊通知: id: " + id + ", taskId: " + taskId + ", title: " + title + ", body: " + body +
                 ", weekday: " + weekday + ", hour: " + hour + ", minute: " + minute);
 
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
@@ -68,24 +67,22 @@ public class NotificationWorker extends Worker {
         calendar.set(Calendar.SECOND, 0);
 
         // 檢查設置時間是否已經過去，若過去則設置為下一周
-//        if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
-//            calendar.add(Calendar.DAY_OF_YEAR, 7);
-//        }
-        Log.d("register time", calendar.toString());
+        if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 7);
+            Log.d("NextWeek", "應為下周觸發,加7天");
+        }
+        Log.d("register time", "註冊下次通知時間:" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
     private void getNextAndRegister(int taskId) {
         String fileContent = readFromFile(getApplicationContext(), "settings.txt");
-        Log.d("read file", fileContent);
         if (fileContent != null && !fileContent.equals("")) {
             // 查找下一個通知
             ArrayList<Notification> list = parseNotificationList(fileContent, taskId);
             if (list != null) {
-                Log.i("list", Integer.toString(list.size()));
                 Notification notification = getNextNotification(list);
                 if (notification != null) {
-                    Log.i("setup next", Integer.toString(notification.getId()));
                     setupAlarm(notification.getId(), notification.getTaskId(), notification.getTitle(), notification.getBody(),
                             notification.getWeekday(), notification.getHour(), notification.getMinute());
                 }
@@ -115,7 +112,6 @@ public class NotificationWorker extends Worker {
     }
 
     private ArrayList<Notification> parseNotificationList(String jsonString, int targetTaskId) {
-        Log.i("data", jsonString);
         try {
             JSONObject userSettings = new JSONObject(jsonString);
             JSONObject notificationMap = userSettings.getJSONObject("notificationMap");

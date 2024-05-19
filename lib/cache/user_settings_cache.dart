@@ -68,7 +68,7 @@ class UserSettingsCache {
     final directory = await getApplicationSupportDirectory();
     final file = File('${directory.path}/$fileName');
     await file.writeAsString(userSettings.toString());
-    printInBatches("write file: $userSettings");
+    printInBatches("寫檔完成: $userSettings");
   }
 
   void printInBatches(String data, {int batchSize = 500}) {

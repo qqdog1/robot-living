@@ -25,7 +25,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void registerNext(Context context, int taskId) {
-        Log.d("registerNext", String.valueOf(taskId));
+        Log.d("registerNext", "準備下一則通知");
         OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
                 .setInputData(new androidx.work.Data.Builder()
                         .putInt("taskId", taskId)

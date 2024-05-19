@@ -59,7 +59,7 @@ class NotificationUtil {
     }
 
     if (nextNotification != null) {
-      print("register next $nextNotification");
+      print("準備由flutter端向android註冊: $nextNotification");
       setAndroidAlarm(nextNotification.id!, nextNotification.taskId, nextNotification.title, nextNotification.body, nextNotification.weekday!,
           nextNotification.hour, nextNotification.minute);
     }

@@ -103,7 +103,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) {
-        Log.d("setupAlarm", "setupAlarm - id: " + id + ", taskId: " + taskId + ", title: " + title + ", body: " + body +
+        Log.d("setupAlarm", "準備註冊通知: id: " + id + ", taskId: " + taskId + ", title: " + title + ", body: " + body +
                 ", weekday: " + weekday + ", hour: " + hour + ", minute: " + minute);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -127,10 +127,11 @@ public class MainActivity extends FlutterActivity {
         calendar.set(Calendar.SECOND, 0);
 
         // 檢查設置時間是否已經過去，若過去則設置為下一周
-//        if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
-//            calendar.add(Calendar.DAY_OF_YEAR, 7);
-//        }
-        Log.d("register time", calendar.toString());
+        if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 7);
+            Log.d("應為下周觸發", "加7天");
+        }
+        Log.d("register time", "註冊下次通知時間:" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 }
