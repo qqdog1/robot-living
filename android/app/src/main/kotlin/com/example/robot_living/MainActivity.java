@@ -113,6 +113,7 @@ public class MainActivity extends FlutterActivity {
         intent.setAction("com.example.robot_living.ALARM_ACTION");
         intent.putExtra("title", title);
         intent.putExtra("body", body);
+        intent.putExtra("id", id);
         intent.putExtra("taskId", taskId);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);

@@ -42,7 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT) {
             notificationIntent.setPackage(context.getPackageName());  // 确保只有你的应用响应这个 Intent
         }
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // 创建并显示通知
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "robot_inner")
