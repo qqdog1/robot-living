@@ -1,8 +1,4 @@
 # robot-living
 
-加 task id
-
-notification
-add notification id
-mapping task id
-
+generate l10n
+flutter pub run intl_utils:generate

@@ -38,6 +38,7 @@
                <action android:name="com.example.robot_living.ALARM_ACTION"/>
            </intent-filter>
        </receiver>
+       <receiver android:name=".ButtonActionReceiver" />
     </application>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.SET_ALARM"/>

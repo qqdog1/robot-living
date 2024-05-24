@@ -35,6 +35,18 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void showNotification(Context context, int id, String title, String body) {
+        // 創建Intent，定義第一個按鈕的操作
+        Intent intentConfirm = new Intent(context, ButtonActionReceiver.class);
+        intentConfirm.setAction("ACTION_CONFIRM");
+        intentConfirm.putExtra("notification_id", id);
+        PendingIntent pendingIntentConfirm = PendingIntent.getBroadcast(context, id + 100000, intentConfirm, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // 創建Intent，定義第二個按鈕的操作
+        Intent intentAbandon = new Intent(context, ButtonActionReceiver.class);
+        intentAbandon.setAction("ACTION_ABANDON");
+        intentAbandon.putExtra("notification_id", id);
+        PendingIntent pendingIntentAbandon = PendingIntent.getBroadcast(context, id + 1000000, intentAbandon, PendingIntent.FLAG_UPDATE_CURRENT);
+
         Intent notificationIntent = new Intent(Intent.ACTION_VIEW);
         // 目前不需要
 //        Uri data = Uri.parse("robotliving://notificationPage?id=" + id);
@@ -50,7 +62,11 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setContentTitle(title)
                 .setContentText(body)
                 .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
+                .addAction(R.drawable.ic_check, "", pendingIntentConfirm)
+                .addAction(R.drawable.ic_close, "", pendingIntentAbandon);
+
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(id, builder.build());

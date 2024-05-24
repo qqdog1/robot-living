@@ -22,6 +22,8 @@
   "execution_interval_input": "Execution Interval: {loopMin}",
   "execution_interval": "Execution Interval",
   "save": "Save",
+  "ok": "ok",
+  "skip": "skip",
   "monday": "Mon",
   "tuesday": "Tue",
   "wednesday": "Wed",

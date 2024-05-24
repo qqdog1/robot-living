@@ -22,6 +22,8 @@
   "execution_interval_input": "執行間格: {loopMin}",
   "execution_interval": "執行間格",
   "save": "儲存",
+  "ok": "確定",
+  "skip": "跳過",
   "monday": "一",
   "tuesday": "二",
   "wednesday": "三",

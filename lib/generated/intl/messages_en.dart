@@ -76,6 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Today\'s Progress"),
         "minute": MessageLookupByLibrary.simpleMessage("Minute"),
         "monday": MessageLookupByLibrary.simpleMessage("Mon"),
+        "ok": MessageLookupByLibrary.simpleMessage("ok"),
         "one_time_type": MessageLookupByLibrary.simpleMessage("One-time Type"),
         "saturday": MessageLookupByLibrary.simpleMessage("Sat"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
@@ -84,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Segmented Type"),
         "set_trigger_time":
             MessageLookupByLibrary.simpleMessage("Set Trigger Time: "),
+        "skip": MessageLookupByLibrary.simpleMessage("skip"),
         "start_time": m2,
         "sunday": MessageLookupByLibrary.simpleMessage("Sun"),
         "task_edit_help_1": MessageLookupByLibrary.simpleMessage(

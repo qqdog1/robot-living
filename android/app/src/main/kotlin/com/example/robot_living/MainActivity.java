@@ -96,6 +96,11 @@ public class MainActivity extends FlutterActivity {
 
     private void cancelAlarm(int id) {
         Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.setAction("com.example.robot_living.ALARM_ACTION");
+        intent.putExtra("id", id);
+        intent.putExtra("title", "dummy"); // 可以是任何值，主要是保證Intent的結構一致
+        intent.putExtra("body", "dummy");
+        intent.putExtra("taskId", "dummy");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
@@ -133,6 +138,13 @@ public class MainActivity extends FlutterActivity {
             Log.d("應為下周觸發", "加7天");
         }
         Log.d("register time", "註冊下次通知時間:" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent), pendingIntent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
     }
 }
