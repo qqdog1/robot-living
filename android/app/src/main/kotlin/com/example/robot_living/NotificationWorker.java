@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.util.Log;
 
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import javax.xml.transform.Result;
 
@@ -43,7 +45,7 @@ public class NotificationWorker extends Worker {
         return Result.success();
     }
 
-    public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) {
+    public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute, String confirmText, String skipText) {
         Log.d("setupAlarm", "準備註冊通知: id: " + id + ", taskId: " + taskId + ", title: " + title + ", body: " + body +
                 ", weekday: " + weekday + ", hour: " + hour + ", minute: " + minute);
 
@@ -56,6 +58,8 @@ public class NotificationWorker extends Worker {
         intent.putExtra("body", body);
         intent.putExtra("id", id);
         intent.putExtra("taskId", taskId);
+        intent.putExtra("confirmText", confirmText);
+        intent.putExtra("skipText", skipText);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -87,14 +91,27 @@ public class NotificationWorker extends Worker {
     private void getNextAndRegister(int taskId) {
         String fileContent = readFromFile(getApplicationContext(), "settings.txt");
         if (fileContent != null && !fileContent.equals("")) {
-            // 查找下一個通知
-            ArrayList<Notification> list = parseNotificationList(fileContent, taskId);
-            if (list != null) {
-                Notification notification = getNextNotification(list);
-                if (notification != null) {
-                    setupAlarm(notification.getId(), notification.getTaskId(), notification.getTitle(), notification.getBody(),
-                            notification.getWeekday(), notification.getHour(), notification.getMinute());
+            JSONObject userSettings = null;
+            try {
+                userSettings = new JSONObject(fileContent);
+                String language = userSettings.getString("language");
+
+                // 設置語言環境
+                Context localizedContext = setLocale(getApplicationContext(), language);
+
+                // 查找下一個通知
+                ArrayList<Notification> list = parseNotificationList(userSettings, taskId);
+                if (list != null) {
+                    Notification notification = getNextNotification(list);
+                    if (notification != null) {
+                        String confirmText = localizedContext.getString(R.string.button_ok);
+                        String skipText = localizedContext.getString(R.string.button_skip);
+                        setupAlarm(notification.getId(), notification.getTaskId(), notification.getTitle(), notification.getBody(),
+                                notification.getWeekday(), notification.getHour(), notification.getMinute(), confirmText, skipText);
+                    }
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -120,9 +137,8 @@ public class NotificationWorker extends Worker {
         return stringBuilder.toString();
     }
 
-    private ArrayList<Notification> parseNotificationList(String jsonString, int targetTaskId) {
+    private ArrayList<Notification> parseNotificationList(JSONObject userSettings, int targetTaskId) {
         try {
-            JSONObject userSettings = new JSONObject(jsonString);
             JSONObject notificationMap = userSettings.getJSONObject("notificationMap");
             JSONArray mapArray = notificationMap.getJSONArray("notificationMap");
             ArrayList<Notification> lst = new ArrayList<>();
@@ -190,5 +206,13 @@ public class NotificationWorker extends Worker {
         }
         if (diffDay < 0) diffDay += 7;
         return (((diffDay * 24) + diffHour) * 60) + diffMin;
+    }
+
+    private Context setLocale(Context context, String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+        return context.createConfigurationContext(config);
     }
 }

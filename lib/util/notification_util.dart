@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:robot_living/const/daily_task_type.dart';
 import 'package:robot_living/dto/daily_task_set.dart';
 import 'package:robot_living/dto/duration_task.dart';
@@ -9,9 +10,10 @@ import '../dto/notification_object.dart';
 import '../dto/notification_map.dart';
 import '../dto/task.dart';
 import '../service/platform_channel.dart';
+import '../generated/l10n.dart';
 
 class NotificationUtil {
-  static void setAndroidAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) async {
+  static void setAndroidAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute, String confirmText, String skipText) async {
     try {
       await PlatformChannel.createAlarm(
         id,
@@ -21,6 +23,8 @@ class NotificationUtil {
         weekday,
         hour,
         minute,
+        confirmText,
+        skipText
       );
     } catch (e) {
       print("Failed to set the alarm: $e");
@@ -37,7 +41,7 @@ class NotificationUtil {
     }
   }
 
-  static void registerNext(List<NotificationObject> lst) {
+  static void registerNext(List<NotificationObject> lst, BuildContext context) {
     DateTime now = DateTime.now();
     int shortestMinutes = 60 * 24 * 7;
 
@@ -61,7 +65,7 @@ class NotificationUtil {
     if (nextNotification != null) {
       print("準備由flutter端向android註冊: $nextNotification");
       setAndroidAlarm(nextNotification.id!, nextNotification.taskId, nextNotification.title, nextNotification.body, nextNotification.weekday!,
-          nextNotification.hour, nextNotification.minute);
+          nextNotification.hour, nextNotification.minute, S.of(context).ok, S.of(context).skip);
     }
   }
 

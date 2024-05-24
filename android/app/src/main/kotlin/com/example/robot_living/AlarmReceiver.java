@@ -19,9 +19,11 @@ public class AlarmReceiver extends BroadcastReceiver {
         String body = intent.getStringExtra("body");
         int id = intent.getIntExtra("id", 0);
         int taskId = intent.getIntExtra("taskId", 0);
+        String confirmText = intent.getStringExtra("confirmText");
+        String skipText = intent.getStringExtra("skipText");
 
         registerNext(context, taskId);
-        showNotification(context, id, title, body);
+        showNotification(context, id, title, body, confirmText, skipText);
     }
 
     private void registerNext(Context context, int taskId) {
@@ -34,7 +36,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         WorkManager.getInstance(context).enqueue(workRequest);
     }
 
-    private void showNotification(Context context, int id, String title, String body) {
+    private void showNotification(Context context, int id, String title, String body, String confirmText, String skipText) {
         // 創建Intent，定義第一個按鈕的操作
         Intent intentConfirm = new Intent(context, ButtonActionReceiver.class);
         intentConfirm.setAction("ACTION_CONFIRM");
@@ -64,8 +66,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
-                .addAction(R.drawable.ic_check, "", pendingIntentConfirm)
-                .addAction(R.drawable.ic_close, "", pendingIntentAbandon);
+                .addAction(0, confirmText, pendingIntentConfirm)
+                .addAction(0, skipText, pendingIntentAbandon);
 
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

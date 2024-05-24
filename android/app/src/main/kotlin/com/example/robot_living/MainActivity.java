@@ -78,7 +78,9 @@ public class MainActivity extends FlutterActivity {
                                 int weekday = call.argument("weekday");
                                 int hour = call.argument("hour");
                                 int minute = call.argument("minute");
-                                setupAlarm(id, taskId, title, body, weekday, hour, minute);
+                                String confirmText = call.argument("confirmText");
+                                String skipText = call.argument("skipText");
+                                setupAlarm(id, taskId, title, body, weekday, hour, minute, confirmText, skipText);
                                 result.success(true);
                                 break;
                             case "cancelAlarm":
@@ -107,9 +109,9 @@ public class MainActivity extends FlutterActivity {
         pendingIntent.cancel();
     }
 
-    public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) {
+    public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute, String confirmText, String skipText) {
         Log.d("setupAlarm", "準備註冊通知: id: " + id + ", taskId: " + taskId + ", title: " + title + ", body: " + body +
-                ", weekday: " + weekday + ", hour: " + hour + ", minute: " + minute);
+                ", weekday: " + weekday + ", hour: " + hour + ", minute: " + minute + ", confirmText: " + confirmText + ", skipText: " + skipText);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
@@ -120,6 +122,8 @@ public class MainActivity extends FlutterActivity {
         intent.putExtra("body", body);
         intent.putExtra("id", id);
         intent.putExtra("taskId", taskId);
+        intent.putExtra("confirmText", confirmText);
+        intent.putExtra("skipText", skipText);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
