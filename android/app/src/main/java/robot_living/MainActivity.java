@@ -1,4 +1,4 @@
-package com.example.robot_living;
+package robot_living;
 
 import android.app.AlarmManager;
 import android.app.NotificationChannel;

@@ -1,4 +1,4 @@
-package com.example.robot_living.dto;
+package robot_living.dto;
 
 public class Notification {
     int id;

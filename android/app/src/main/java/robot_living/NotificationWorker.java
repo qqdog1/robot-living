@@ -1,4 +1,4 @@
-package com.example.robot_living;
+package robot_living;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.example.robot_living.dto.Notification;
+import com.example.robot_living.R;
+
+import robot_living.dto.Notification;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +47,7 @@ public class NotificationWorker extends Worker {
         return Result.success();
     }
 
-    public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute, String confirmText, String skipText) {
+    public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) {
         Log.d("setupAlarm", "準備註冊通知: id: " + id + ", taskId: " + taskId + ", title: " + title + ", body: " + body +
                 ", weekday: " + weekday + ", hour: " + hour + ", minute: " + minute);
 
@@ -58,8 +60,6 @@ public class NotificationWorker extends Worker {
         intent.putExtra("body", body);
         intent.putExtra("id", id);
         intent.putExtra("taskId", taskId);
-        intent.putExtra("confirmText", confirmText);
-        intent.putExtra("skipText", skipText);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -104,10 +104,8 @@ public class NotificationWorker extends Worker {
                 if (list != null) {
                     Notification notification = getNextNotification(list);
                     if (notification != null) {
-                        String confirmText = localizedContext.getString(R.string.button_ok);
-                        String skipText = localizedContext.getString(R.string.button_skip);
                         setupAlarm(notification.getId(), notification.getTaskId(), notification.getTitle(), notification.getBody(),
-                                notification.getWeekday(), notification.getHour(), notification.getMinute(), confirmText, skipText);
+                                notification.getWeekday(), notification.getHour(), notification.getMinute());
                     }
                 }
             } catch (JSONException e) {

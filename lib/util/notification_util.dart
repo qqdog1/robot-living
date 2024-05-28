@@ -13,7 +13,7 @@ import '../service/platform_channel.dart';
 import '../generated/l10n.dart';
 
 class NotificationUtil {
-  static void setAndroidAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute, String confirmText, String skipText) async {
+  static void setAndroidAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) async {
     try {
       await PlatformChannel.createAlarm(
         id,
@@ -22,9 +22,7 @@ class NotificationUtil {
         body,
         weekday,
         hour,
-        minute,
-        confirmText,
-        skipText
+        minute
       );
     } catch (e) {
       print("Failed to set the alarm: $e");
@@ -65,7 +63,7 @@ class NotificationUtil {
     if (nextNotification != null) {
       print("準備由flutter端向android註冊: $nextNotification");
       setAndroidAlarm(nextNotification.id!, nextNotification.taskId, nextNotification.title, nextNotification.body, nextNotification.weekday!,
-          nextNotification.hour, nextNotification.minute, S.of(context).ok, S.of(context).skip);
+          nextNotification.hour, nextNotification.minute);
     }
   }
 

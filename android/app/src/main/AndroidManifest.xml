@@ -6,7 +6,7 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
-            android:name=".MainActivity"
+            android:name="robot_living.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -33,12 +33,11 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-       <receiver android:name=".AlarmReceiver" android:exported="true">
+       <receiver android:name="robot_living.AlarmReceiver" android:exported="true">
            <intent-filter>
                <action android:name="com.example.robot_living.ALARM_ACTION"/>
            </intent-filter>
        </receiver>
-       <receiver android:name=".ButtonActionReceiver" />
     </application>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.SET_ALARM"/>

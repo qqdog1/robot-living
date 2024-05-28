@@ -1,4 +1,4 @@
-package com.example.robot_living;
+package robot_living;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,6 +12,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.example.robot_living.R;
+
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -19,11 +21,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         String body = intent.getStringExtra("body");
         int id = intent.getIntExtra("id", 0);
         int taskId = intent.getIntExtra("taskId", 0);
-        String confirmText = intent.getStringExtra("confirmText");
-        String skipText = intent.getStringExtra("skipText");
 
         registerNext(context, taskId);
-        showNotification(context, id, title, body, confirmText, skipText);
+        showNotification(context, id, title, body);
     }
 
     private void registerNext(Context context, int taskId) {
@@ -36,19 +36,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         WorkManager.getInstance(context).enqueue(workRequest);
     }
 
-    private void showNotification(Context context, int id, String title, String body, String confirmText, String skipText) {
-        // 創建Intent，定義第一個按鈕的操作
-        Intent intentConfirm = new Intent(context, ButtonActionReceiver.class);
-        intentConfirm.setAction("ACTION_CONFIRM");
-        intentConfirm.putExtra("notification_id", id);
-        PendingIntent pendingIntentConfirm = PendingIntent.getBroadcast(context, id + 100000, intentConfirm, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // 創建Intent，定義第二個按鈕的操作
-        Intent intentAbandon = new Intent(context, ButtonActionReceiver.class);
-        intentAbandon.setAction("ACTION_ABANDON");
-        intentAbandon.putExtra("notification_id", id);
-        PendingIntent pendingIntentAbandon = PendingIntent.getBroadcast(context, id + 1000000, intentAbandon, PendingIntent.FLAG_UPDATE_CURRENT);
-
+    private void showNotification(Context context, int id, String title, String body) {
         Intent notificationIntent = new Intent(Intent.ACTION_VIEW);
         // 目前不需要
 //        Uri data = Uri.parse("robotliving://notificationPage?id=" + id);
@@ -65,9 +53,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setContentText(body)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
-                .addAction(0, confirmText, pendingIntentConfirm)
-                .addAction(0, skipText, pendingIntentAbandon);
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(body));
 
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
