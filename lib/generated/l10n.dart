@@ -390,41 +390,41 @@ class S {
     );
   }
 
-  /// `menu_1_help_1`
-  String get menu_1_help_1 {
+  /// `menu_today_help_1`
+  String get menu_today_help_1 {
     return Intl.message(
-      'menu_1_help_1',
-      name: 'menu_1_help_1',
+      'menu_today_help_1',
+      name: 'menu_today_help_1',
       desc: '',
       args: [],
     );
   }
 
-  /// `menu_1_help_2`
-  String get menu_1_help_2 {
+  /// `menu_today_help_2`
+  String get menu_today_help_2 {
     return Intl.message(
-      'menu_1_help_2',
-      name: 'menu_1_help_2',
+      'menu_today_help_2',
+      name: 'menu_today_help_2',
       desc: '',
       args: [],
     );
   }
 
-  /// `menu_2_help_1`
-  String get menu_2_help_1 {
+  /// `menu_settings_help_1`
+  String get menu_settings_help_1 {
     return Intl.message(
-      'menu_2_help_1',
-      name: 'menu_2_help_1',
+      'menu_settings_help_1',
+      name: 'menu_settings_help_1',
       desc: '',
       args: [],
     );
   }
 
-  /// `menu_3_help_1`
-  String get menu_3_help_1 {
+  /// `menu_historical_help_1`
+  String get menu_historical_help_1 {
     return Intl.message(
-      'menu_3_help_1',
-      name: 'menu_3_help_1',
+      'menu_historical_help_1',
+      name: 'menu_historical_help_1',
       desc: '',
       args: [],
     );

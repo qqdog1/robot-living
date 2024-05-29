@@ -64,14 +64,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Enter Plan Name"),
         "input_task_name":
             MessageLookupByLibrary.simpleMessage("Enter Task Name"),
-        "menu_1_help_1": MessageLookupByLibrary.simpleMessage("menu_1_help_1"),
-        "menu_1_help_2": MessageLookupByLibrary.simpleMessage("menu_1_help_2"),
-        "menu_2_help_1": MessageLookupByLibrary.simpleMessage("menu_2_help_1"),
-        "menu_3_help_1": MessageLookupByLibrary.simpleMessage("menu_3_help_1"),
         "menu_completion_records":
             MessageLookupByLibrary.simpleMessage("Completion Records"),
+        "menu_historical_help_1":
+            MessageLookupByLibrary.simpleMessage("menu_historical_help_1"),
         "menu_project_settings":
             MessageLookupByLibrary.simpleMessage("Project Settings"),
+        "menu_settings_help_1":
+            MessageLookupByLibrary.simpleMessage("menu_settings_help_1"),
+        "menu_today_help_1":
+            MessageLookupByLibrary.simpleMessage("menu_today_help_1"),
+        "menu_today_help_2":
+            MessageLookupByLibrary.simpleMessage("menu_today_help_2"),
         "menu_today_progress":
             MessageLookupByLibrary.simpleMessage("Today\'s Progress"),
         "minute": MessageLookupByLibrary.simpleMessage("Minute"),

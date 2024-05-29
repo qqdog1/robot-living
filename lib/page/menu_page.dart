@@ -3,9 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:robot_living/cache/user_settings_cache.dart';
 import 'package:robot_living/const/language.dart';
-import 'package:robot_living/page/historical_page.dart';
 import 'package:robot_living/page/settings_page.dart';
-import 'package:robot_living/page/today_page.dart';
 
 import '../component/text_paging_popup.dart';
 import '../generated/l10n.dart';
@@ -23,35 +21,38 @@ class _MenuPageState extends State<MenuPage> {
 
   Widget _getPageWidget(int index) {
     switch (index) {
-      case 0:
-        return const TodayPage();
-      case 1:
-        return const SettingsPage();
-      case 2:
-        return const HistoricalPage();
       default:
         return const SettingsPage();
+
+      // case 0:
+      //   return const TodayPage();
+      // case 1:
+      //   return const SettingsPage();
+      // case 2:
+      //   return const HistoricalPage();
+      // default:
+      //   return const SettingsPage();
     }
   }
 
   List<String> get _pageTitles => [
-        S.of(context).menu_today_progress,
+        // S.of(context).menu_today_progress,
         S.of(context).menu_project_settings,
-        S.of(context).menu_completion_records,
+        // S.of(context).menu_completion_records,
       ];
 
   List<List<Text>> get _pagePopupContent {
     return [
+      // [
+      //   Text(S.of(context).menu_today_help_1),
+      //   Text(S.of(context).menu_today_help_2),
+      // ],
       [
-        Text(S.of(context).menu_1_help_1),
-        Text(S.of(context).menu_1_help_2),
+        Text(S.of(context).menu_settings_help_1),
       ],
-      [
-        Text(S.of(context).menu_2_help_1),
-      ],
-      [
-        Text(S.of(context).menu_3_help_1),
-      ],
+      // [
+      //   Text(S.of(context).menu_historical_help_1),
+      // ],
     ];
   }
 
@@ -86,20 +87,20 @@ class _MenuPageState extends State<MenuPage> {
                       Navigator.pop(context);
                     },
                   ),
-                  ListTile(
-                    title: Text(_pageTitles[1]),
-                    onTap: () {
-                      clickDrawer(1);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    title: Text(_pageTitles[2]),
-                    onTap: () {
-                      clickDrawer(2);
-                      Navigator.pop(context);
-                    },
-                  ),
+                  // ListTile(
+                  //   title: Text(_pageTitles[1]),
+                  //   onTap: () {
+                  //     clickDrawer(1);
+                  //     Navigator.pop(context);
+                  //   },
+                  // ),
+                  // ListTile(
+                  //   title: Text(_pageTitles[2]),
+                  //   onTap: () {
+                  //     clickDrawer(2);
+                  //     Navigator.pop(context);
+                  //   },
+                  // ),
                 ],
               ),
             ),

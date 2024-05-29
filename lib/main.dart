@@ -66,28 +66,6 @@ class _RobotLivingState extends State<RobotLiving> {
     });
   }
 
-  // void _setupMethodChannel() {
-  //   platform.setMethodCallHandler((call) async {
-  //     switch (call.method) {
-  //       case 'navigateToNotificationPage':
-  //         _navigateToNotificationPage(call.arguments);
-  //         break;
-  //       default:
-  //         print('Unimplemented method ${call.method}');
-  //     }
-  //   });
-  // }
-  //
-  // void _navigateToNotificationPage(String id) {
-  //   print("ready to redirect ........... $id");
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => NotificationPage(id: int.parse(id)),
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     final localeProvider = Provider.of<LocaleProvider>(context);

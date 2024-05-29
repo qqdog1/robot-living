@@ -54,12 +54,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "input_ex_task_name": MessageLookupByLibrary.simpleMessage("EX: 定時學習"),
         "input_plan_name": MessageLookupByLibrary.simpleMessage("輸入計畫名稱"),
         "input_task_name": MessageLookupByLibrary.simpleMessage("輸入任務名稱"),
-        "menu_1_help_1": MessageLookupByLibrary.simpleMessage("menu 1 說明第一頁"),
-        "menu_1_help_2": MessageLookupByLibrary.simpleMessage("menu 1 說明第二頁"),
-        "menu_2_help_1": MessageLookupByLibrary.simpleMessage("menu 2 說明第一頁"),
-        "menu_3_help_1": MessageLookupByLibrary.simpleMessage("menu 3 說明第一頁"),
         "menu_completion_records": MessageLookupByLibrary.simpleMessage("完成紀錄"),
+        "menu_historical_help_1":
+            MessageLookupByLibrary.simpleMessage("menu historical 說明第一頁"),
         "menu_project_settings": MessageLookupByLibrary.simpleMessage("計畫設定"),
+        "menu_settings_help_1":
+            MessageLookupByLibrary.simpleMessage("menu settings 說明第一頁"),
+        "menu_today_help_1":
+            MessageLookupByLibrary.simpleMessage("menu today 說明第一頁"),
+        "menu_today_help_2":
+            MessageLookupByLibrary.simpleMessage("menu today 說明第二頁"),
         "menu_today_progress": MessageLookupByLibrary.simpleMessage("今日進度"),
         "minute": MessageLookupByLibrary.simpleMessage("分"),
         "monday": MessageLookupByLibrary.simpleMessage("一"),
