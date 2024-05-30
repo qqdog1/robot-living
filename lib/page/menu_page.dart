@@ -41,34 +41,34 @@ class _MenuPageState extends State<MenuPage> {
         // S.of(context).menu_completion_records,
       ];
 
-  List<List<Text>> get _pagePopupContent {
-    return [
+  // List<List<Text>> get _pagePopupContent {
+  //   return [
       // [
       //   Text(S.of(context).menu_today_help_1),
       //   Text(S.of(context).menu_today_help_2),
       // ],
-      [
-        Text(S.of(context).menu_settings_help_1),
-      ],
+      // [
+      //   Text(S.of(context).menu_settings_help_1),
+      // ],
       // [
       //   Text(S.of(context).menu_historical_help_1),
       // ],
-    ];
-  }
+    // ];
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(_pageTitles[_selectedPage]),
-        actions: [
-          IconButton(
-            onPressed: () {
-              showHelpPopup(context);
-            },
-            icon: const Icon(FontAwesomeIcons.circleQuestion),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {
+        //       showHelpPopup(context);
+        //     },
+        //     icon: const Icon(FontAwesomeIcons.circleQuestion),
+        //   ),
+        // ],
       ),
       drawer: Drawer(
         child: Column(
@@ -128,17 +128,17 @@ class _MenuPageState extends State<MenuPage> {
     }
   }
 
-  Future<void> showHelpPopup(BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return TextPagingPopup(
-          pageContents: _pagePopupContent[_selectedPage],
-        );
-      },
-    );
-  }
+  // Future<void> showHelpPopup(BuildContext context) {
+  //   return showDialog<void>(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (BuildContext context) {
+  //       return TextPagingPopup(
+  //         pageContents: _pagePopupContent[_selectedPage],
+  //       );
+  //     },
+  //   );
+  // }
 
   Future<void> _toggleLanguage() async {
     final userSettingsCache = await UserSettingsCache.getInstance();
