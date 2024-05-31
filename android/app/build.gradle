@@ -50,21 +50,21 @@ android {
         versionName flutterVersionName
     }
 
-//    signingConfigs {
-//        release {
-//            keyAlias 'your-key-alias'
-//            keyPassword 'your-key-password'
-//            storeFile file('path/to/your/keystore.jks')
-//            storePassword 'your-store-password'
-//        }
-//    }
+    signingConfigs {
+        release {
+            keyAlias project.findProperty("KEY_ALIAS")
+            keyPassword project.findProperty("KEY_PASSWORD")
+            storeFile file(project.findProperty("STORE_FILE"))
+            storePassword project.findProperty("STORE_PASSWORD")
+        }
+    }
 
     buildTypes {
         release {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
         }
     }
 
