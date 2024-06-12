@@ -10,7 +10,6 @@ import '../dto/notification_object.dart';
 import '../dto/notification_map.dart';
 import '../dto/task.dart';
 import '../service/platform_channel.dart';
-import '../generated/l10n.dart';
 
 class NotificationUtil {
   static void setAndroidAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) async {

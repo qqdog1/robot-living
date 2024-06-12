@@ -70,7 +70,6 @@ public class MainActivity extends FlutterActivity {
                     public void onMethodCall(MethodCall call, MethodChannel.Result result) {
                         switch (call.method) {
                             case "createAlarm":
-                                Log.d("createAlarm", "message from flutter side");
                                 int id = call.argument("id");
                                 int taskId = call.argument("taskId");
                                 String title = call.argument("title");
@@ -78,9 +77,7 @@ public class MainActivity extends FlutterActivity {
                                 int weekday = call.argument("weekday");
                                 int hour = call.argument("hour");
                                 int minute = call.argument("minute");
-                                String confirmText = call.argument("confirmText");
-                                String skipText = call.argument("skipText");
-                                setupAlarm(id, taskId, title, body, weekday, hour, minute, confirmText, skipText);
+                                setupAlarm(id, taskId, title, body, weekday, hour, minute);
                                 result.success(true);
                                 break;
                             case "cancelAlarm":
@@ -107,11 +104,12 @@ public class MainActivity extends FlutterActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
+        Log.d("canceled alarm", "" + id);
     }
 
-    public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute, String confirmText, String skipText) {
+    public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) {
         Log.d("setupAlarm", "準備註冊通知: id: " + id + ", taskId: " + taskId + ", title: " + title + ", body: " + body +
-                ", weekday: " + weekday + ", hour: " + hour + ", minute: " + minute + ", confirmText: " + confirmText + ", skipText: " + skipText);
+                ", weekday: " + weekday + ", hour: " + hour + ", minute: " + minute);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
@@ -122,8 +120,6 @@ public class MainActivity extends FlutterActivity {
         intent.putExtra("body", body);
         intent.putExtra("id", id);
         intent.putExtra("taskId", taskId);
-        intent.putExtra("confirmText", confirmText);
-        intent.putExtra("skipText", skipText);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 

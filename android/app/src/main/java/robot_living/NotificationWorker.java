@@ -94,11 +94,6 @@ public class NotificationWorker extends Worker {
             JSONObject userSettings = null;
             try {
                 userSettings = new JSONObject(fileContent);
-                String language = userSettings.getString("language");
-
-                // 設置語言環境
-                Context localizedContext = setLocale(getApplicationContext(), language);
-
                 // 查找下一個通知
                 ArrayList<Notification> list = parseNotificationList(userSettings, taskId);
                 if (list != null) {
@@ -204,13 +199,5 @@ public class NotificationWorker extends Worker {
         }
         if (diffDay < 0) diffDay += 7;
         return (((diffDay * 24) + diffHour) * 60) + diffMin;
-    }
-
-    private Context setLocale(Context context, String languageCode) {
-        Locale locale = new Locale(languageCode);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-        return context.createConfigurationContext(config);
     }
 }
