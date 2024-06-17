@@ -37,7 +37,7 @@ class _MenuPageState extends State<MenuPage> {
 
   List<String> get _pageTitles => [
         // S.of(context).menu_today_progress,
-        S.of(context).menu_project_settings,
+        S.of(context).menu_schedule_settings,
         // S.of(context).menu_completion_records,
       ];
 

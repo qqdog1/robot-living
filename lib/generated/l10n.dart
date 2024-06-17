@@ -60,11 +60,11 @@ class S {
     );
   }
 
-  /// `Project Settings`
-  String get menu_project_settings {
+  /// `Schedule Settings`
+  String get menu_schedule_settings {
     return Intl.message(
-      'Project Settings',
-      name: 'menu_project_settings',
+      'Schedule Settings',
+      name: 'menu_schedule_settings',
       desc: '',
       args: [],
     );
@@ -255,6 +255,16 @@ class S {
     return Intl.message(
       'Execution Interval',
       name: 'execution_interval',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scheduled Days`
+  String get scheduled_days {
+    return Intl.message(
+      'Scheduled Days',
+      name: 'scheduled_days',
       desc: '',
       args: [],
     );
@@ -465,6 +475,26 @@ class S {
     return Intl.message(
       'ok',
       name: 'task_edit_help_4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode, or due to a bug.\nWhen notifications fail, pressing the reset button can help restore normal functionality.`
+  String get reset_help {
+    return Intl.message(
+      'Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode, or due to a bug.\nWhen notifications fail, pressing the reset button can help restore normal functionality.',
+      name: 'reset_help',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `reset`
+  String get reset {
+    return Intl.message(
+      'reset',
+      name: 'reset',
       desc: '',
       args: [],
     );

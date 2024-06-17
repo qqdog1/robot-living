@@ -6,6 +6,7 @@ import 'package:robot_living/dto/daily_task.dart';
 import 'package:robot_living/page/settings_day_edit_page.dart';
 import 'package:robot_living/util/notification_util.dart';
 
+import '../component/text_paging_popup_with_button.dart';
 import '../dto/daily_task_set.dart';
 import '../dto/notification_object.dart';
 import '../dto/notification_map.dart';
@@ -53,13 +54,11 @@ class _SettingsPage extends State<SettingsPage> {
           Positioned(
             bottom: 20.0,
             right: 20.0,
-            child: Visibility(
-              child: FloatingActionButton(
-                onPressed: () {
-                  _addNewSettings();
-                },
-                child: const Icon(FontAwesomeIcons.plus),
-              ),
+            child: FloatingActionButton(
+              onPressed: () {
+                _addNewSettings();
+              },
+              child: const Icon(FontAwesomeIcons.plus),
             ),
           ),
         ],
@@ -84,65 +83,79 @@ class _SettingsPage extends State<SettingsPage> {
           S.of(context).saturday,
         ];
 
-        return Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(name,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 4.0),
-                          child: Text(S.of(context).execution_interval,
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold)),
-                        ),
-                        ...List.generate(
-                          7,
-                          (i) {
-                            return triggered[i]
-                                ? Padding(
-                                    padding: const EdgeInsets.only(right: 4.0),
-                                    child: Text(weekDays[i],
-                                        style: const TextStyle(fontSize: 16)),
-                                  )
-                                : const SizedBox();
-                          },
+        return Column(
+          children: [
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(name,
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4.0),
+                              child: Text(S.of(context).execution_interval,
+                                  style: const TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.bold)),
+                            ),
+                            ...List.generate(
+                              7,
+                                  (i) {
+                                return triggered[i]
+                                    ? Padding(
+                                  padding: const EdgeInsets.only(right: 4.0),
+                                  child: Text(weekDays[i],
+                                      style: const TextStyle(fontSize: 16)),
+                                )
+                                    : const SizedBox();
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     ),
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(FontAwesomeIcons.penToSquare),
+                            onPressed: () {
+                              _editSettings(index, currentDailyTask);
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(FontAwesomeIcons.trashCan),
+                            onPressed: () {
+                              _deleteTask(index);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(FontAwesomeIcons.penToSquare),
-                        onPressed: () {
-                          _editSettings(index, currentDailyTask);
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(FontAwesomeIcons.trashCan),
-                        onPressed: () {
-                          _deleteTask(index);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            if (index == (dailyTaskSet!.dailyTasks.length - 1))
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: IconButton(
+                  icon: const Icon(FontAwesomeIcons.arrowsRotate),
+                  onPressed: () {
+                    _showResetPopup(context);
+                  },
+                ),
+              ),
+          ],
         );
       },
     );
@@ -217,5 +230,25 @@ class _SettingsPage extends State<SettingsPage> {
       DailyTask dailyTask = result as DailyTask;
       _replaceTask(index, dailyTask);
     }
+  }
+
+  Future<void> _showResetPopup(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return TextPagingPopupWithButton(
+          pageContents: [
+            Text(S.of(context).reset_help,
+                style: const TextStyle(fontSize: 18)),
+          ],
+          buttonCallback: () {
+            _updateUserCache();
+            Navigator.pop(context);
+          },
+          buttonText: S.of(context).reset,
+        );
+      },
+    );
   }
 }

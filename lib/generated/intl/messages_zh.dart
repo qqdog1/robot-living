@@ -57,7 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "menu_completion_records": MessageLookupByLibrary.simpleMessage("完成紀錄"),
         "menu_historical_help_1":
             MessageLookupByLibrary.simpleMessage("menu historical 說明第一頁"),
-        "menu_project_settings": MessageLookupByLibrary.simpleMessage("計畫設定"),
+        "menu_schedule_settings": MessageLookupByLibrary.simpleMessage("計畫設定"),
         "menu_settings_help_1":
             MessageLookupByLibrary.simpleMessage("menu settings 說明第一頁"),
         "menu_today_help_1":
@@ -69,8 +69,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "monday": MessageLookupByLibrary.simpleMessage("一"),
         "ok": MessageLookupByLibrary.simpleMessage("確定"),
         "one_time_type": MessageLookupByLibrary.simpleMessage("單次類"),
+        "reset": MessageLookupByLibrary.simpleMessage("重設"),
+        "reset_help": MessageLookupByLibrary.simpleMessage(
+            "通知會在某些狀況下失靈,\n像是重開機,開飛航\n當通知失靈後可以按下重設按鈕讓一切恢復正常"),
         "saturday": MessageLookupByLibrary.simpleMessage("六"),
         "save": MessageLookupByLibrary.simpleMessage("儲存"),
+        "scheduled_days": MessageLookupByLibrary.simpleMessage("執行日"),
         "second": MessageLookupByLibrary.simpleMessage("秒"),
         "segmented_type": MessageLookupByLibrary.simpleMessage("分段類"),
         "set_trigger_time": MessageLookupByLibrary.simpleMessage("設定觸發時間: "),

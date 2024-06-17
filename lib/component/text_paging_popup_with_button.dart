@@ -1,28 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'text_paging_popup.dart';
 
-class TextPagingPopup extends StatefulWidget {
-  final List<Widget> pageContents;
+class TextPagingPopupWithButton extends TextPagingPopup {
+  final VoidCallback buttonCallback;
+  final String buttonText;
 
-  const TextPagingPopup({
+  const TextPagingPopupWithButton({
     super.key,
-    required this.pageContents,
+    required super.pageContents,
+    required this.buttonCallback,
+    required this.buttonText,
   });
 
   @override
-  TextPagingPopupState createState() => TextPagingPopupState();
+  TextPagingPopupWithButtonState createState() => TextPagingPopupWithButtonState();
 }
 
-class TextPagingPopupState extends State<TextPagingPopup> {
-  late int totalPages;
-  int currentPage = 1;
-
-  @override
-  void initState() {
-    super.initState();
-    totalPages = widget.pageContents.length;
-  }
-
+class TextPagingPopupWithButtonState extends TextPagingPopupState {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -33,7 +28,17 @@ class TextPagingPopupState extends State<TextPagingPopup> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      content: widget.pageContents[currentPage - 1], // 顯示當前頁面的內容
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          widget.pageContents[currentPage - 1], // 顯示當前頁面的內容
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: (widget as TextPagingPopupWithButton).buttonCallback,
+            child: Text((widget as TextPagingPopupWithButton).buttonText),
+          ),
+        ],
+      ),
       actionsAlignment: MainAxisAlignment.spaceBetween,
       actions: <Widget>[
         if (currentPage == 1)

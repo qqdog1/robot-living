@@ -68,8 +68,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Completion Records"),
         "menu_historical_help_1":
             MessageLookupByLibrary.simpleMessage("menu_historical_help_1"),
-        "menu_project_settings":
-            MessageLookupByLibrary.simpleMessage("Project Settings"),
+        "menu_schedule_settings":
+            MessageLookupByLibrary.simpleMessage("Schedule Settings"),
         "menu_settings_help_1":
             MessageLookupByLibrary.simpleMessage("menu_settings_help_1"),
         "menu_today_help_1":
@@ -82,8 +82,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "monday": MessageLookupByLibrary.simpleMessage("Mon"),
         "ok": MessageLookupByLibrary.simpleMessage("ok"),
         "one_time_type": MessageLookupByLibrary.simpleMessage("One-time Type"),
+        "reset": MessageLookupByLibrary.simpleMessage("reset"),
+        "reset_help": MessageLookupByLibrary.simpleMessage(
+            "Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode, or due to a bug.\nWhen notifications fail, pressing the reset button can help restore normal functionality."),
         "saturday": MessageLookupByLibrary.simpleMessage("Sat"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
+        "scheduled_days":
+            MessageLookupByLibrary.simpleMessage("Scheduled Days"),
         "second": MessageLookupByLibrary.simpleMessage("Second"),
         "segmented_type":
             MessageLookupByLibrary.simpleMessage("Segmented Type"),
