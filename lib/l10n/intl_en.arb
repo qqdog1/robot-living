@@ -43,7 +43,7 @@
   "task_edit_help_2": "blahblahblah",
   "task_edit_help_3": "cooooool",
   "task_edit_help_4": "ok",
-  "reset_help": "Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode, or due to a bug.\nWhen notifications fail, pressing the reset button can help restore normal functionality.",
+  "reset_help": "Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode.\nWhen notifications fail, pressing the reset button can help restore normal functionality.",
   "reset": "reset",
   "error_no_settings_made": "No settings made.",
   "error_no_plan_name": "No plan name.",

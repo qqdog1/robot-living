@@ -480,10 +480,10 @@ class S {
     );
   }
 
-  /// `Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode, or due to a bug.\nWhen notifications fail, pressing the reset button can help restore normal functionality.`
+  /// `Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode.\nWhen notifications fail, pressing the reset button can help restore normal functionality.`
   String get reset_help {
     return Intl.message(
-      'Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode, or due to a bug.\nWhen notifications fail, pressing the reset button can help restore normal functionality.',
+      'Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode.\nWhen notifications fail, pressing the reset button can help restore normal functionality.',
       name: 'reset_help',
       desc: '',
       args: [],

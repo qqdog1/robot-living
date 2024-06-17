@@ -84,7 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "one_time_type": MessageLookupByLibrary.simpleMessage("One-time Type"),
         "reset": MessageLookupByLibrary.simpleMessage("reset"),
         "reset_help": MessageLookupByLibrary.simpleMessage(
-            "Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode, or due to a bug.\nWhen notifications fail, pressing the reset button can help restore normal functionality."),
+            "Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode.\nWhen notifications fail, pressing the reset button can help restore normal functionality."),
         "saturday": MessageLookupByLibrary.simpleMessage("Sat"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "scheduled_days":
