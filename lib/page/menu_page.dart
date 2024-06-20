@@ -5,7 +5,6 @@ import 'package:robot_living/cache/user_settings_cache.dart';
 import 'package:robot_living/const/language.dart';
 import 'package:robot_living/page/settings_page.dart';
 
-import '../component/text_paging_popup.dart';
 import '../generated/l10n.dart';
 import '../main.dart';
 
@@ -78,7 +77,7 @@ class _MenuPageState extends State<MenuPage> {
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   const Padding(
-                    padding: EdgeInsets.only(top: 60), // 顶部填充20像素
+                    padding: EdgeInsets.only(top: 60),
                   ),
                   ListTile(
                     title: Text(_pageTitles[0]),

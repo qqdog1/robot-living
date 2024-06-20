@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "choose_end_time": MessageLookupByLibrary.simpleMessage("選擇結束時間: "),
         "choose_start_time": MessageLookupByLibrary.simpleMessage("選擇開始時間: "),
+        "currently_executing": MessageLookupByLibrary.simpleMessage("現正執行"),
         "duration_type": MessageLookupByLibrary.simpleMessage("起訖類"),
         "end_time": m0,
         "error_no_end_time": MessageLookupByLibrary.simpleMessage("請設定結束時間"),

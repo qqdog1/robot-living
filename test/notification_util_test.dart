@@ -3,12 +3,17 @@ import 'package:robot_living/dto/notification_object.dart';
 import 'package:robot_living/util/notification_util.dart';
   void main() {
     test('test gap minutes calculation', () {
-      // DateTime dateTime = DateTime.now();
-      // NotificationObject notificationObject10079 = NotificationObject(taskId: 1, title: 'test', body: 'body', weekday: dateTime.weekday, hour: dateTime.hour, minute: dateTime.minute-1);
+      DateTime dateTime = DateTime.now();
+      NotificationObject notificationObject10079 = NotificationObject(taskId: 1, title: 'test start', body: 'body', weekday: dateTime.weekday, hour: dateTime.hour, minute: dateTime.minute-3, crossDay: true);
       // print(NotificationUtil.getGapMinutes(dateTime, notificationObject10079));
       //
-      // NotificationObject notificationObject1 = NotificationObject(taskId: 1, title: 'test', body: 'body', weekday: dateTime.weekday, hour: dateTime.hour, minute: dateTime.minute+1);
+      NotificationObject notificationObject1 = NotificationObject(taskId: 1, title: 'test end', body: 'body', weekday: dateTime.weekday+1, hour: dateTime.hour+1, minute: dateTime.minute+3);
       // print(NotificationUtil.getGapMinutes(dateTime, notificationObject1));
+
+      List<NotificationObject> lst = [ notificationObject1, notificationObject10079 ];
+
+      String? result = NotificationUtil.getCurrentExecuting(lst);
+      print(result);
 
       DateTime testDateTime = DateTime(2024, 4, 28, 22, 00, 00, 00, 00);
       print(testDateTime.weekday);

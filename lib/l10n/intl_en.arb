@@ -45,6 +45,7 @@
   "task_edit_help_4": "ok",
   "reset_help": "Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode.\nWhen notifications fail, pressing the reset button can help restore normal functionality.",
   "reset": "reset",
+  "currently_executing": "Currently Executing",
   "error_no_settings_made": "No settings made.",
   "error_no_plan_name": "No plan name.",
   "error_no_task_name": "Please enter task name.",

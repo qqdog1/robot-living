@@ -500,6 +500,16 @@ class S {
     );
   }
 
+  /// `Currently Executing`
+  String get currently_executing {
+    return Intl.message(
+      'Currently Executing',
+      name: 'currently_executing',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `No settings made.`
   String get error_no_settings_made {
     return Intl.message(

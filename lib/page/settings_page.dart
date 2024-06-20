@@ -24,6 +24,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPage extends State<SettingsPage> {
   late UserSettingsCache userSettingsCache;
   DailyTaskSet? dailyTaskSet;
+  String? currentExecuting;
 
   @override
   void initState() {
@@ -37,6 +38,7 @@ class _SettingsPage extends State<SettingsPage> {
     if (mounted) {
       setState(() {
         dailyTaskSet = dailyTaskSetCache;
+        currentExecuting = NotificationUtil.getCurrentExecuting(userSettingsCache.getNotificationMap().getAllValues());
       });
     }
   }
@@ -45,7 +47,23 @@ class _SettingsPage extends State<SettingsPage> {
   Widget build(BuildContext context) {
     Provider.of<LocaleProvider>(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: currentExecuting == null
+          ? AppBar()
+          : AppBar(
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    S.of(context).currently_executing,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    currentExecuting!,
+                    style: const TextStyle(fontSize: 24),
+                  ),
+                ],
+              ),
+            ),
       body: Stack(
         children: [
           Positioned.fill(
@@ -93,27 +111,23 @@ class _SettingsPage extends State<SettingsPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(name,
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text(name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 8),
                         Row(
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(right: 4.0),
                               child: Text(S.of(context).execution_interval,
-                                  style: const TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.bold)),
+                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                             ),
                             ...List.generate(
                               7,
-                                  (i) {
+                              (i) {
                                 return triggered[i]
                                     ? Padding(
-                                  padding: const EdgeInsets.only(right: 4.0),
-                                  child: Text(weekDays[i],
-                                      style: const TextStyle(fontSize: 16)),
-                                )
+                                        padding: const EdgeInsets.only(right: 4.0),
+                                        child: Text(weekDays[i], style: const TextStyle(fontSize: 16)),
+                                      )
                                     : const SizedBox();
                               },
                             ),
@@ -195,7 +209,7 @@ class _SettingsPage extends State<SettingsPage> {
     // give all task an id
     int id = 1;
     for (DailyTask dailyTask in dailyTaskSet!.dailyTasks) {
-      for (Task task in dailyTask.tasks!) {
+      for (Task task in dailyTask.tasks) {
         task.setId(id++);
       }
     }
@@ -207,6 +221,10 @@ class _SettingsPage extends State<SettingsPage> {
     for (int taskId in notificationMap.map.keys) {
       NotificationUtil.registerNext(notificationMap.map[taskId]!, context);
     }
+
+    setState(() {
+      currentExecuting = NotificationUtil.getCurrentExecuting(userSettingsCache.getNotificationMap().getAllValues());
+    });
   }
 
   void _addNewSettings() async {
@@ -222,8 +240,7 @@ class _SettingsPage extends State<SettingsPage> {
 
   void _editSettings(int index, DailyTask dailyTask) async {
     final result = await Navigator.of(context).push(
-      MaterialPageRoute(
-          builder: (context) => SettingsDayEditPage(dailyTask: dailyTask)),
+      MaterialPageRoute(builder: (context) => SettingsDayEditPage(dailyTask: dailyTask)),
     );
 
     if (result != null) {
@@ -239,8 +256,7 @@ class _SettingsPage extends State<SettingsPage> {
       builder: (BuildContext context) {
         return TextPagingPopupWithButton(
           pageContents: [
-            Text(S.of(context).reset_help,
-                style: const TextStyle(fontSize: 18)),
+            Text(S.of(context).reset_help, style: const TextStyle(fontSize: 18)),
           ],
           buttonCallback: () {
             _updateUserCache();

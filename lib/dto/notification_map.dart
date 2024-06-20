@@ -26,4 +26,12 @@ class NotificationMap {
   String toString() {
     return jsonEncode(toJson());
   }
+
+  List<NotificationObject> getAllValues() {
+    List<NotificationObject> lst = [];
+    for (List<NotificationObject> lstValues in map.values) {
+      lst.addAll(lstValues);
+    }
+    return lst;
+  }
 }
