@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:robot_living/cache/user_settings_cache.dart';
@@ -21,7 +22,9 @@ class SettingsPage extends StatefulWidget {
   _SettingsPage createState() => _SettingsPage();
 }
 
-class _SettingsPage extends State<SettingsPage> {
+class _SettingsPage extends State<SettingsPage> with WidgetsBindingObserver {
+  static const MethodChannel _channel = MethodChannel('robot_inner');
+
   late UserSettingsCache userSettingsCache;
   DailyTaskSet? dailyTaskSet;
   String? currentExecuting;
@@ -30,6 +33,15 @@ class _SettingsPage extends State<SettingsPage> {
   void initState() {
     super.initState();
     _loadSettings();
+    WidgetsBinding.instance.addObserver(this);
+
+    _channel.setMethodCallHandler((MethodCall call) async {
+      if (call.method == 'onAlarmReceived') {
+        if (WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) {
+          _handleAlarm();
+        }
+      }
+    });
   }
 
   Future<void> _loadSettings() async {
@@ -38,7 +50,7 @@ class _SettingsPage extends State<SettingsPage> {
     if (mounted) {
       setState(() {
         dailyTaskSet = dailyTaskSetCache;
-        currentExecuting = NotificationUtil.getCurrentExecuting(userSettingsCache.getNotificationMap().getAllValues());
+        currentExecuting = NotificationUtil.getCurrentExecuting(userSettingsCache.getDailyTaskSet());
       });
     }
   }
@@ -223,7 +235,7 @@ class _SettingsPage extends State<SettingsPage> {
     }
 
     setState(() {
-      currentExecuting = NotificationUtil.getCurrentExecuting(userSettingsCache.getNotificationMap().getAllValues());
+      currentExecuting = NotificationUtil.getCurrentExecuting(userSettingsCache.getDailyTaskSet());
     });
   }
 
@@ -266,5 +278,12 @@ class _SettingsPage extends State<SettingsPage> {
         );
       },
     );
+  }
+
+  void _handleAlarm() {
+    print("handle alarm");
+    setState(() {
+      currentExecuting = NotificationUtil.getCurrentExecuting(userSettingsCache.getDailyTaskSet());
+    });
   }
 }

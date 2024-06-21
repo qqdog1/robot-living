@@ -8,6 +8,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.embedding.engine.FlutterEngineCache;
+import io.flutter.plugin.common.MethodChannel;
+
 import androidx.core.app.NotificationCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -15,6 +19,9 @@ import androidx.work.WorkManager;
 import com.example.robot_living.R;
 
 public class AlarmReceiver extends BroadcastReceiver {
+    private static final String CHANNEL = "robot_inner";
+    private static final String ENGINE_ID = "flutter_engine";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String title = intent.getStringExtra("title");
@@ -24,6 +31,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         registerNext(context, taskId);
         showNotification(context, id, title, body);
+        notifyFlutter(context);
     }
 
     private void registerNext(Context context, int taskId) {
@@ -58,5 +66,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(id, builder.build());
+    }
+
+    private void notifyFlutter(Context context) {
+        FlutterEngine flutterEngine = FlutterEngineCache.getInstance().get(ENGINE_ID);
+        MethodChannel methodChannel = new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL);
+        methodChannel.invokeMethod("onAlarmReceived", null);
     }
 }

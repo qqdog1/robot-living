@@ -29,4 +29,23 @@ class DurationTask extends Task {
   String toString() {
     return jsonEncode(toJson());
   }
+
+  bool isCurrentTimeInRange() {
+    DateTime now = DateTime.now();
+    DateTime startTime = _getDateTimeFromTimeString(start);
+    DateTime endTime = _getDateTimeFromTimeString(end);
+
+    if (endTime.isBefore(startTime)) {
+      endTime = endTime.add(const Duration(days: 1));
+    }
+
+    return (now.isAfter(startTime) || now.isAtSameMomentAs(startTime)) &&
+        (now.isBefore(endTime));
+  }
+
+  DateTime _getDateTimeFromTimeString(String time) {
+    final parts = time.split(':');
+    final now = DateTime.now();
+    return DateTime(now.year, now.month, now.day, int.parse(parts[0]), int.parse(parts[1]));
+  }
 }

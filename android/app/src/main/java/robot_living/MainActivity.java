@@ -17,11 +17,13 @@ import java.util.Calendar;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.embedding.engine.FlutterEngineCache;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
 public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "robot_inner";
+    private static final String ENGINE_ID = "flutter_engine";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +93,7 @@ public class MainActivity extends FlutterActivity {
                         }
                     }
                 });
+        FlutterEngineCache.getInstance().put(ENGINE_ID, flutterEngine);
     }
 
     private void cancelAlarm(int id) {

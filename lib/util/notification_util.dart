@@ -212,53 +212,22 @@ class NotificationUtil {
     return notifications;
   }
 
-  static String? getCurrentExecuting(List<NotificationObject> lst) {
+  static String? getCurrentExecuting(DailyTaskSet dailyTaskSet) {
     DateTime now = DateTime.now();
     int currentWeekday = now.weekday;
 
-    for (var startNotification in lst.where((n) => n.title.endsWith("start"))) {
-      String baseTitle = startNotification.title.substring(0, startNotification.title.length - 6);
-      var endNotification = lst.firstWhere(
-            (n) => n.title == "$baseTitle end",
-        orElse: () => NotificationObject(
-          taskId: startNotification.taskId,
-          title: '',
-          body: '',
-          hour: 0,
-          minute: 0,
-          crossDay: false,
-        ),
-      );
+    if (currentWeekday == 7) currentWeekday = 0;
 
-      if (endNotification.title.isEmpty) continue;
-
-      // 开始时间
-      DateTime startTime = DateTime(now.year, now.month, now.day, startNotification.hour, startNotification.minute);
-      if (startNotification.weekday != null) {
-        int daysDifference = (startNotification.weekday! - currentWeekday) % 7;
-        if (daysDifference < 0) daysDifference += 7; // 确保是正的
-        startTime = startTime.add(Duration(days: daysDifference));
-      }
-
-      // 结束时间
-      DateTime endTime = DateTime(now.year, now.month, now.day, endNotification.hour, endNotification.minute);
-      if (endNotification.weekday != null) {
-        int daysDifference = (endNotification.weekday! - currentWeekday) % 7;
-        if (daysDifference < 0) daysDifference += 7; // 确保是正的
-        endTime = endTime.add(Duration(days: daysDifference));
-      }
-
-      // 跨天处理
-      if (startNotification.crossDay) {
-        if (endTime.isBefore(startTime)) {
-          endTime = endTime.add(const Duration(days: 1));
+    for (DailyTask dailyTask in dailyTaskSet.dailyTasks) {
+      if (dailyTask.triggered![currentWeekday]) {
+        for (Task task in dailyTask.tasks) {
+          if (task.type == DailyTaskType.durationTask) {
+            DurationTask durationTask = task as DurationTask;
+            if (durationTask.isCurrentTimeInRange()) {
+              return durationTask.name;
+            }
+          }
         }
-      }
-
-      // 检查当前时间是否在开始和结束时间之间
-      if ((now.isAfter(startTime) || now.isAtSameMomentAs(startTime)) &&
-          (now.isBefore(endTime) || now.isAtSameMomentAs(endTime))) {
-        return baseTitle;
       }
     }
 
