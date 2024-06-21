@@ -36,11 +36,11 @@ class DurationTask extends Task {
     DateTime endTime = _getDateTimeFromTimeString(end);
 
     if (endTime.isBefore(startTime)) {
-      endTime = endTime.add(const Duration(days: 1));
+      return now.isAfter(startTime) || now.isBefore(endTime);
+    } else {
+      return (now.isAfter(startTime) || now.isAtSameMomentAs(startTime)) &&
+          (now.isBefore(endTime));
     }
-
-    return (now.isAfter(startTime) || now.isAtSameMomentAs(startTime)) &&
-        (now.isBefore(endTime));
   }
 
   DateTime _getDateTimeFromTimeString(String time) {
