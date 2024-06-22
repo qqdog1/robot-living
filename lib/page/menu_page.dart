@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:robot_living/cache/user_settings_cache.dart';
 import 'package:robot_living/const/language.dart';
@@ -17,6 +18,20 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   int _selectedPage = 0;
+  String _version = 'Unknown';
+
+  @override
+  void initState() {
+    super.initState();
+    _initPackageInfo();
+  }
+
+  Future<void> _initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _version = info.version;
+    });
+  }
 
   Widget _getPageWidget(int index) {
     switch (index) {
@@ -105,11 +120,22 @@ class _MenuPageState extends State<MenuPage> {
             ),
             Align(
               alignment: FractionalOffset.bottomCenter,
-              child: ListTile(
-                leading: const Icon(FontAwesomeIcons.language),
-                onTap: () {
-                  _toggleLanguage();
-                },
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(FontAwesomeIcons.language),
+                    onTap: () {
+                      _toggleLanguage();
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0, bottom: 16.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(_version),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
