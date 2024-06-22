@@ -36,32 +36,33 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Choose Start Time: "),
         "currently_executing":
             MessageLookupByLibrary.simpleMessage("Currently Executing"),
-        "duration_type": MessageLookupByLibrary.simpleMessage("Duration Type"),
+        "duration_type": MessageLookupByLibrary.simpleMessage("Duration"),
         "end_time": m0,
         "error_no_end_time":
-            MessageLookupByLibrary.simpleMessage("Please set end time."),
+            MessageLookupByLibrary.simpleMessage("Please set the end time."),
         "error_no_execution_interval": MessageLookupByLibrary.simpleMessage(
-            "Please set execution interval."),
+            "Please set the execution interval."),
         "error_no_plan_name":
-            MessageLookupByLibrary.simpleMessage("No plan name."),
-        "error_no_settings_made":
-            MessageLookupByLibrary.simpleMessage("No settings made."),
+            MessageLookupByLibrary.simpleMessage("Please enter the plan name."),
+        "error_no_settings_made": MessageLookupByLibrary.simpleMessage(
+            "No settings made, no need to save."),
         "error_no_start_time":
-            MessageLookupByLibrary.simpleMessage("Please set start time."),
+            MessageLookupByLibrary.simpleMessage("Please set the start time."),
         "error_no_task_name":
-            MessageLookupByLibrary.simpleMessage("Please enter task name."),
-        "error_no_task_type":
-            MessageLookupByLibrary.simpleMessage("Please enter task type."),
-        "error_no_trigger_time":
-            MessageLookupByLibrary.simpleMessage("Please set trigger time."),
+            MessageLookupByLibrary.simpleMessage("Please enter the task name."),
+        "error_no_task_type": MessageLookupByLibrary.simpleMessage(
+            "Please select the task type."),
+        "error_no_trigger_time": MessageLookupByLibrary.simpleMessage(
+            "Please set the trigger time."),
         "execution_interval":
             MessageLookupByLibrary.simpleMessage("Execution Interval"),
         "execution_interval_input": m1,
         "friday": MessageLookupByLibrary.simpleMessage("Fri"),
         "hour": MessageLookupByLibrary.simpleMessage("Hour"),
         "input_ex_plan_name":
-            MessageLookupByLibrary.simpleMessage("EX: work smart day"),
-        "input_ex_task_name": MessageLookupByLibrary.simpleMessage("EX: Study"),
+            MessageLookupByLibrary.simpleMessage("EX: On-time Leaving Plan"),
+        "input_ex_task_name":
+            MessageLookupByLibrary.simpleMessage("EX: Regular Study"),
         "input_plan_name":
             MessageLookupByLibrary.simpleMessage("Enter Plan Name"),
         "input_task_name":
@@ -83,28 +84,29 @@ class MessageLookup extends MessageLookupByLibrary {
         "minute": MessageLookupByLibrary.simpleMessage("Minute"),
         "monday": MessageLookupByLibrary.simpleMessage("Mon"),
         "ok": MessageLookupByLibrary.simpleMessage("ok"),
-        "one_time_type": MessageLookupByLibrary.simpleMessage("One-time Type"),
+        "one_time_type": MessageLookupByLibrary.simpleMessage("One-time"),
         "reset": MessageLookupByLibrary.simpleMessage("reset"),
         "reset_help": MessageLookupByLibrary.simpleMessage(
-            "Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode.\nWhen notifications fail, pressing the reset button can help restore normal functionality."),
+            "Notifications may fail under certain circumstances,\nsuch as rebooting, turning on airplane mode.\nWhen notifications fail, you can press the reset button to restore everything to normal."),
         "saturday": MessageLookupByLibrary.simpleMessage("Sat"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "scheduled_days":
             MessageLookupByLibrary.simpleMessage("Scheduled Days"),
         "second": MessageLookupByLibrary.simpleMessage("Second"),
-        "segmented_type":
-            MessageLookupByLibrary.simpleMessage("Segmented Type"),
+        "segmented_type": MessageLookupByLibrary.simpleMessage("Segmented"),
         "set_trigger_time":
             MessageLookupByLibrary.simpleMessage("Set Trigger Time: "),
         "skip": MessageLookupByLibrary.simpleMessage("skip"),
         "start_time": m2,
         "sunday": MessageLookupByLibrary.simpleMessage("Sun"),
         "task_edit_help_1": MessageLookupByLibrary.simpleMessage(
-            "task have 3 different types:\n1. duration type\n2. segmented type\n3. one time type"),
-        "task_edit_help_2":
-            MessageLookupByLibrary.simpleMessage("blahblahblah"),
-        "task_edit_help_3": MessageLookupByLibrary.simpleMessage("cooooool"),
-        "task_edit_help_4": MessageLookupByLibrary.simpleMessage("ok"),
+            "Tasks are divided into three types:\n1. Duration type\n2. Segmented type\n3. One-time"),
+        "task_edit_help_2": MessageLookupByLibrary.simpleMessage(
+            "Duration type tasks require setting\nstart time and end time.\nIf you want to develop a habit of going to bed and getting up early, it is suitable to set sleep as a duration task.\nOr, if you want to develop a habit of reading every evening, it is also suitable to add a duration task."),
+        "task_edit_help_3": MessageLookupByLibrary.simpleMessage(
+            "Segmented tasks are suitable for goals that need to be completed in stages daily.\nIf you set a goal to drink enough water every day, from 10 am to 8 pm,\nremind every 40 minutes.\nOr, if you want to do 100 push-ups every day,\nthe program can assist with segmented reminders."),
+        "task_edit_help_4": MessageLookupByLibrary.simpleMessage(
+            "One-time tasks only need to set a specific time to remind you to do something.\nFor example, remember to boil water at 10 am every day or turn off the porch light at 10 pm.\nTasks that don\'t take much time to execute or are easy to forget are very suitable to add."),
         "task_type": MessageLookupByLibrary.simpleMessage("Task Type:"),
         "thursday": MessageLookupByLibrary.simpleMessage("Thus"),
         "title_daily_plan_settings":

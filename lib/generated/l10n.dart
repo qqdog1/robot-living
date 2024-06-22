@@ -110,10 +110,10 @@ class S {
     );
   }
 
-  /// `EX: work smart day`
+  /// `EX: On-time Leaving Plan`
   String get input_ex_plan_name {
     return Intl.message(
-      'EX: work smart day',
+      'EX: On-time Leaving Plan',
       name: 'input_ex_plan_name',
       desc: '',
       args: [],
@@ -130,10 +130,10 @@ class S {
     );
   }
 
-  /// `EX: Study`
+  /// `EX: Regular Study`
   String get input_ex_task_name {
     return Intl.message(
-      'EX: Study',
+      'EX: Regular Study',
       name: 'input_ex_task_name',
       desc: '',
       args: [],
@@ -150,30 +150,30 @@ class S {
     );
   }
 
-  /// `Duration Type`
+  /// `Duration`
   String get duration_type {
     return Intl.message(
-      'Duration Type',
+      'Duration',
       name: 'duration_type',
       desc: '',
       args: [],
     );
   }
 
-  /// `One-time Type`
+  /// `One-time`
   String get one_time_type {
     return Intl.message(
-      'One-time Type',
+      'One-time',
       name: 'one_time_type',
       desc: '',
       args: [],
     );
   }
 
-  /// `Segmented Type`
+  /// `Segmented`
   String get segmented_type {
     return Intl.message(
-      'Segmented Type',
+      'Segmented',
       name: 'segmented_type',
       desc: '',
       args: [],
@@ -440,50 +440,50 @@ class S {
     );
   }
 
-  /// `task have 3 different types:\n1. duration type\n2. segmented type\n3. one time type`
+  /// `Tasks are divided into three types:\n1. Duration type\n2. Segmented type\n3. One-time`
   String get task_edit_help_1 {
     return Intl.message(
-      'task have 3 different types:\n1. duration type\n2. segmented type\n3. one time type',
+      'Tasks are divided into three types:\n1. Duration type\n2. Segmented type\n3. One-time',
       name: 'task_edit_help_1',
       desc: '',
       args: [],
     );
   }
 
-  /// `blahblahblah`
+  /// `Duration type tasks require setting\nstart time and end time.\nIf you want to develop a habit of going to bed and getting up early, it is suitable to set sleep as a duration task.\nOr, if you want to develop a habit of reading every evening, it is also suitable to add a duration task.`
   String get task_edit_help_2 {
     return Intl.message(
-      'blahblahblah',
+      'Duration type tasks require setting\nstart time and end time.\nIf you want to develop a habit of going to bed and getting up early, it is suitable to set sleep as a duration task.\nOr, if you want to develop a habit of reading every evening, it is also suitable to add a duration task.',
       name: 'task_edit_help_2',
       desc: '',
       args: [],
     );
   }
 
-  /// `cooooool`
+  /// `Segmented tasks are suitable for goals that need to be completed in stages daily.\nIf you set a goal to drink enough water every day, from 10 am to 8 pm,\nremind every 40 minutes.\nOr, if you want to do 100 push-ups every day,\nthe program can assist with segmented reminders.`
   String get task_edit_help_3 {
     return Intl.message(
-      'cooooool',
+      'Segmented tasks are suitable for goals that need to be completed in stages daily.\nIf you set a goal to drink enough water every day, from 10 am to 8 pm,\nremind every 40 minutes.\nOr, if you want to do 100 push-ups every day,\nthe program can assist with segmented reminders.',
       name: 'task_edit_help_3',
       desc: '',
       args: [],
     );
   }
 
-  /// `ok`
+  /// `One-time tasks only need to set a specific time to remind you to do something.\nFor example, remember to boil water at 10 am every day or turn off the porch light at 10 pm.\nTasks that don't take much time to execute or are easy to forget are very suitable to add.`
   String get task_edit_help_4 {
     return Intl.message(
-      'ok',
+      'One-time tasks only need to set a specific time to remind you to do something.\nFor example, remember to boil water at 10 am every day or turn off the porch light at 10 pm.\nTasks that don\'t take much time to execute or are easy to forget are very suitable to add.',
       name: 'task_edit_help_4',
       desc: '',
       args: [],
     );
   }
 
-  /// `Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode.\nWhen notifications fail, pressing the reset button can help restore normal functionality.`
+  /// `Notifications may fail under certain circumstances,\nsuch as rebooting, turning on airplane mode.\nWhen notifications fail, you can press the reset button to restore everything to normal.`
   String get reset_help {
     return Intl.message(
-      'Notifications may fail in certain situations,\nsuch as after a reboot, enabling airplane mode.\nWhen notifications fail, pressing the reset button can help restore normal functionality.',
+      'Notifications may fail under certain circumstances,\nsuch as rebooting, turning on airplane mode.\nWhen notifications fail, you can press the reset button to restore everything to normal.',
       name: 'reset_help',
       desc: '',
       args: [],
@@ -510,80 +510,80 @@ class S {
     );
   }
 
-  /// `No settings made.`
+  /// `No settings made, no need to save.`
   String get error_no_settings_made {
     return Intl.message(
-      'No settings made.',
+      'No settings made, no need to save.',
       name: 'error_no_settings_made',
       desc: '',
       args: [],
     );
   }
 
-  /// `No plan name.`
+  /// `Please enter the plan name.`
   String get error_no_plan_name {
     return Intl.message(
-      'No plan name.',
+      'Please enter the plan name.',
       name: 'error_no_plan_name',
       desc: '',
       args: [],
     );
   }
 
-  /// `Please enter task name.`
+  /// `Please enter the task name.`
   String get error_no_task_name {
     return Intl.message(
-      'Please enter task name.',
+      'Please enter the task name.',
       name: 'error_no_task_name',
       desc: '',
       args: [],
     );
   }
 
-  /// `Please enter task type.`
+  /// `Please select the task type.`
   String get error_no_task_type {
     return Intl.message(
-      'Please enter task type.',
+      'Please select the task type.',
       name: 'error_no_task_type',
       desc: '',
       args: [],
     );
   }
 
-  /// `Please set start time.`
+  /// `Please set the start time.`
   String get error_no_start_time {
     return Intl.message(
-      'Please set start time.',
+      'Please set the start time.',
       name: 'error_no_start_time',
       desc: '',
       args: [],
     );
   }
 
-  /// `Please set end time.`
+  /// `Please set the end time.`
   String get error_no_end_time {
     return Intl.message(
-      'Please set end time.',
+      'Please set the end time.',
       name: 'error_no_end_time',
       desc: '',
       args: [],
     );
   }
 
-  /// `Please set execution interval.`
+  /// `Please set the execution interval.`
   String get error_no_execution_interval {
     return Intl.message(
-      'Please set execution interval.',
+      'Please set the execution interval.',
       name: 'error_no_execution_interval',
       desc: '',
       args: [],
     );
   }
 
-  /// `Please set trigger time.`
+  /// `Please set the trigger time.`
   String get error_no_trigger_time {
     return Intl.message(
-      'Please set trigger time.',
+      'Please set the trigger time.',
       name: 'error_no_trigger_time',
       desc: '',
       args: [],
