@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.robot_living">
+    package="name.qd.robot_living">
    <application
         android:label="robot_living"
         android:name="${applicationName}"
@@ -35,7 +35,7 @@
             android:value="2" />
        <receiver android:name="robot_living.AlarmReceiver" android:exported="true">
            <intent-filter>
-               <action android:name="com.example.robot_living.ALARM_ACTION"/>
+               <action android:name="name.qd.robot_living.ALARM_ACTION"/>
            </intent-filter>
        </receiver>
     </application>

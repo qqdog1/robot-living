@@ -16,7 +16,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import com.example.robot_living.R;
+import name.qd.robot_living.R;
 
 public class AlarmReceiver extends BroadcastReceiver {
     private static final String CHANNEL = "robot_inner";

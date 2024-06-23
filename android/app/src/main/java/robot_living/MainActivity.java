@@ -98,7 +98,7 @@ public class MainActivity extends FlutterActivity {
 
     private void cancelAlarm(int id) {
         Intent intent = new Intent(this, AlarmReceiver.class);
-        intent.setAction("com.example.robot_living.ALARM_ACTION");
+        intent.setAction("name.qd.robot_living.ALARM_ACTION");
         intent.putExtra("id", id);
         intent.putExtra("title", "dummy"); // 可以是任何值，主要是保證Intent的結構一致
         intent.putExtra("body", "dummy");
@@ -118,7 +118,7 @@ public class MainActivity extends FlutterActivity {
 
         // 創建一個 Intent，它將觸發一個廣播接收器
         Intent intent = new Intent(this, AlarmReceiver.class);
-        intent.setAction("com.example.robot_living.ALARM_ACTION");
+        intent.setAction("name.qd.robot_living.ALARM_ACTION");
         intent.putExtra("title", title);
         intent.putExtra("body", body);
         intent.putExtra("id", id);

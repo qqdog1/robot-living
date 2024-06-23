@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.example.robot_living.R;
+import name.qd.robot_living.R;
 
 import robot_living.dto.Notification;
 
@@ -55,7 +55,7 @@ public class NotificationWorker extends Worker {
 
         // 創建一個 Intent，它將觸發一個廣播接收器
         Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-        intent.setAction("com.example.robot_living.ALARM_ACTION");
+        intent.setAction("name.qd.robot_living.ALARM_ACTION");
         intent.putExtra("title", title);
         intent.putExtra("body", body);
         intent.putExtra("id", id);
