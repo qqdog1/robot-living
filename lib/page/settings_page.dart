@@ -126,22 +126,29 @@ class _SettingsPage extends State<SettingsPage> with WidgetsBindingObserver {
                         Text(name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 8),
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(right: 4.0),
                               child: Text(S.of(context).execution_interval,
                                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                             ),
-                            ...List.generate(
-                              7,
-                              (i) {
-                                return triggered[i]
-                                    ? Padding(
+                            Expanded(
+                              child: Wrap(
+                                children: [
+                                  ...List.generate(
+                                    7,
+                                        (i) {
+                                      return triggered[i]
+                                          ? Padding(
                                         padding: const EdgeInsets.only(right: 4.0),
                                         child: Text(weekDays[i], style: const TextStyle(fontSize: 16)),
                                       )
-                                    : const SizedBox();
-                              },
+                                          : const SizedBox();
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
