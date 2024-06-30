@@ -12,12 +12,17 @@ void main() {
 
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final localeProvider = LocaleProvider();
-  await localeProvider.init(); // 初始化LocaleProvider
-  runApp(ChangeNotifierProvider(
-    create: (context) => localeProvider,
-    child: const RobotLiving(),
-  ));
+  try {
+    final localeProvider = LocaleProvider();
+    await localeProvider.init(); // 初始化LocaleProvider
+    runApp(ChangeNotifierProvider(
+      create: (context) => localeProvider,
+      child: const RobotLiving(),
+    ));
+  } catch (e, stackTrace) {
+    print("Error during app initialization: $e");
+    print(stackTrace);
+  }
 }
 
 class LocaleProvider with ChangeNotifier {

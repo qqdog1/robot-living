@@ -26,15 +26,27 @@ class UserSettingsCache {
   }
 
   Future<void> _init() async {
-    final directory = await getApplicationSupportDirectory();
-    final file = File('${directory.path}/$fileName');
+    try {
+      final directory = await getApplicationSupportDirectory();
+      final file = File('${directory.path}/$fileName');
 
-    if (await file.exists()) {
-      // file.delete();
-      final content = await file.readAsString();
-      Map<String, dynamic> jsonMap = jsonDecode(content);
-      userSettings = UserSettings.fromJson(jsonMap);
-    } else {
+      if (await file.exists()) {
+        final content = await file.readAsString();
+        if (content.isNotEmpty) {
+          Map<String, dynamic> jsonMap = jsonDecode(content);
+          userSettings = UserSettings.fromJson(jsonMap);
+        } else {
+          print("File is empty, initializing with default settings.");
+          _write();
+        }
+      } else {
+        print("File does not exist, creating new file with default settings.");
+        _write();
+      }
+    } catch (e, stackTrace) {
+      print("Error initializing UserSettingsCache: $e");
+      print(stackTrace);
+      // Handle initialization error, possibly reinitialize with default settings
       _write();
     }
   }
@@ -65,10 +77,15 @@ class UserSettingsCache {
   }
 
   Future<void> _write() async {
-    final directory = await getApplicationSupportDirectory();
-    final file = File('${directory.path}/$fileName');
-    await file.writeAsString(userSettings.toString());
-    printInBatches("寫檔完成: $userSettings");
+    try {
+      final directory = await getApplicationSupportDirectory();
+      final file = File('${directory.path}/$fileName');
+      await file.writeAsString(userSettings.toString());
+      printInBatches("寫檔完成: $userSettings");
+    } catch (e, stackTrace) {
+      print("Error writing UserSettingsCache: $e");
+      print(stackTrace);
+    }
   }
 
   void printInBatches(String data, {int batchSize = 500}) {
