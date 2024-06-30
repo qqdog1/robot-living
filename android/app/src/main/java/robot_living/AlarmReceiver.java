@@ -70,7 +70,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private void notifyFlutter(Context context) {
         FlutterEngine flutterEngine = FlutterEngineCache.getInstance().get(ENGINE_ID);
-        MethodChannel methodChannel = new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL);
-        methodChannel.invokeMethod("onAlarmReceived", null);
+        if (flutterEngine != null) {
+            MethodChannel methodChannel = new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL);
+            methodChannel.invokeMethod("onAlarmReceived", null);
+        }
     }
 }
