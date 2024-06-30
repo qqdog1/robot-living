@@ -1,5 +1,11 @@
+import 'dart:io';
+
+import 'package:android_intent_plus/android_intent.dart';
+import 'package:android_intent_plus/flag.dart';
 import 'package:flutter/material.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:robot_living/page/logo_page.dart';
 
@@ -13,6 +19,7 @@ void main() {
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
+    await requestExactAlarmPermission();
     final localeProvider = LocaleProvider();
     await localeProvider.init(); // 初始化LocaleProvider
     runApp(ChangeNotifierProvider(
@@ -22,6 +29,26 @@ Future<void> initApp() async {
   } catch (e, stackTrace) {
     print("Error during app initialization: $e");
     print(stackTrace);
+  }
+}
+
+Future<void> requestExactAlarmPermission() async {
+  if (Platform.isAndroid) {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
+    if (androidInfo.version.sdkInt >= 31) { // Android 12 (API 31) and above
+      // 檢查 SCHEDULE_EXACT_ALARM 權限狀態
+      var status = await Permission.scheduleExactAlarm.status;
+
+      if (status.isDenied) {
+        const intent = AndroidIntent(
+          action: 'android.settings.REQUEST_SCHEDULE_EXACT_ALARM',
+          flags: <int>[Flag.FLAG_ACTIVITY_NEW_TASK],
+        );
+        await intent.launch();
+      }
+    }
   }
 }
 
