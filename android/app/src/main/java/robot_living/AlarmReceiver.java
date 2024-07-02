@@ -17,6 +17,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import name.qd.robot_living.R;
+import robot_living.NotificationWorker;
 
 public class AlarmReceiver extends BroadcastReceiver {
     private static final String CHANNEL = "robot_inner";
@@ -47,12 +48,11 @@ public class AlarmReceiver extends BroadcastReceiver {
     private void showNotification(Context context, int id, String title, String body) {
         Intent notificationIntent = new Intent(Intent.ACTION_VIEW);
         // 目前不需要
-//        Uri data = Uri.parse("robotliving://notificationPage?id=" + id);
-//        notificationIntent.setData(data);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT) {
-            notificationIntent.setPackage(context.getPackageName());  // 确保只有你的应用响应这个 Intent
-        }
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Uri data = Uri.parse("robotliving://notificationPage?id=" + id);
+        // notificationIntent.setData(data);
+        notificationIntent.setPackage(context.getPackageName());  // 确保只有你的应用响应这个 Intent
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         // 创建并显示通知
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "robot_inner")
@@ -62,7 +62,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(body));
-
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(id, builder.build());

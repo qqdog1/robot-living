@@ -61,7 +61,7 @@ public class NotificationWorker extends Worker {
         intent.putExtra("id", id);
         intent.putExtra("taskId", taskId);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         int androidWeekday = weekday + 1;
 
