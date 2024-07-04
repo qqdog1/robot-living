@@ -17,7 +17,6 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import name.qd.robot_living.R;
-import robot_living.NotificationWorker;
 
 public class AlarmReceiver extends BroadcastReceiver {
     private static final String CHANNEL = "robot_inner";
@@ -25,10 +24,14 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d("AlarmReceiver", "onReceive called");
+
         String title = intent.getStringExtra("title");
         String body = intent.getStringExtra("body");
         int id = intent.getIntExtra("id", 0);
         int taskId = intent.getIntExtra("taskId", 0);
+
+        Log.d("AlarmReceiver", "Received intent with id: " + id + " and taskId: " + taskId);
 
         registerNext(context, taskId);
         showNotification(context, id, title, body);
@@ -36,7 +39,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void registerNext(Context context, int taskId) {
-        Log.d("registerNext", "準備下一則通知");
+        Log.d("AlarmReceiver", "registerNext called with taskId: " + taskId);
         OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(NotificationWorker.class)
                 .setInputData(new androidx.work.Data.Builder()
                         .putInt("taskId", taskId)
@@ -46,15 +49,12 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void showNotification(Context context, int id, String title, String body) {
+        Log.d("AlarmReceiver", "showNotification called with id: " + id + ", title: " + title + ", body: " + body);
         Intent notificationIntent = new Intent(Intent.ACTION_VIEW);
-        // 目前不需要
-        // Uri data = Uri.parse("robotliving://notificationPage?id=" + id);
-        // notificationIntent.setData(data);
-        notificationIntent.setPackage(context.getPackageName());  // 确保只有你的应用响应这个 Intent
+        notificationIntent.setPackage(context.getPackageName());
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        // 创建并显示通知
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "robot_inner")
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle(title)
@@ -68,6 +68,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void notifyFlutter(Context context) {
+        Log.d("AlarmReceiver", "notifyFlutter called");
         FlutterEngine flutterEngine = FlutterEngineCache.getInstance().get(ENGINE_ID);
         if (flutterEngine != null) {
             MethodChannel methodChannel = new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL);
