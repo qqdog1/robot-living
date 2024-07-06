@@ -30,12 +30,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "can_close": MessageLookupByLibrary.simpleMessage(
+            "Notification setup complete, you may now close the application."),
         "choose_end_time":
             MessageLookupByLibrary.simpleMessage("Choose End Time: "),
         "choose_start_time":
             MessageLookupByLibrary.simpleMessage("Choose Start Time: "),
         "currently_executing":
             MessageLookupByLibrary.simpleMessage("Currently Executing"),
+        "do_not_close_app": MessageLookupByLibrary.simpleMessage(
+            "Please do not close the application."),
         "duration_type": MessageLookupByLibrary.simpleMessage("Duration"),
         "end_time": m0,
         "error_no_end_time":
@@ -96,9 +100,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "segmented_type": MessageLookupByLibrary.simpleMessage("Segmented"),
         "set_trigger_time":
             MessageLookupByLibrary.simpleMessage("Set Trigger Time: "),
+        "setup_complete":
+            MessageLookupByLibrary.simpleMessage("Setup complete."),
         "skip": MessageLookupByLibrary.simpleMessage("skip"),
         "start_time": m2,
         "sunday": MessageLookupByLibrary.simpleMessage("Sun"),
+        "system_setup": MessageLookupByLibrary.simpleMessage(
+            "System configuration in progress."),
         "task_edit_help_1": MessageLookupByLibrary.simpleMessage(
             "Tasks are divided into three types:\n1. Duration type\n2. Segmented type\n3. One-time"),
         "task_edit_help_2": MessageLookupByLibrary.simpleMessage(

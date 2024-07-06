@@ -28,6 +28,7 @@ class _SettingsPage extends State<SettingsPage> with WidgetsBindingObserver {
   late UserSettingsCache userSettingsCache;
   DailyTaskSet? dailyTaskSet;
   String? currentExecuting;
+  BuildContext? _dialogContext;
 
   @override
   void initState() {
@@ -216,12 +217,13 @@ class _SettingsPage extends State<SettingsPage> with WidgetsBindingObserver {
     _updateUserCache();
   }
 
-  void _updateUserCache() {
+  void _updateUserCache() async {
+    _showProgressDialog();
     // cancel old notification
     NotificationMap oldNof = userSettingsCache.getNotificationMap();
     for (List<NotificationObject> lst in oldNof.map.values) {
       for (NotificationObject notificationObject in lst) {
-        NotificationUtil.cancelAndroidAlarm(notificationObject.id!);
+        await NotificationUtil.cancelAndroidAlarm(notificationObject.id!);
       }
     }
 
@@ -234,12 +236,15 @@ class _SettingsPage extends State<SettingsPage> with WidgetsBindingObserver {
     }
 
     NotificationMap notificationMap = NotificationUtil.toNotificationMap(dailyTaskSet!);
-    userSettingsCache.setTaskAndNotify(dailyTaskSet!, notificationMap);
+    await userSettingsCache.setTaskAndNotify(dailyTaskSet!, notificationMap);
 
     // 為每一個task註冊一個最近期即將發生的通知而非全部
     for (int taskId in notificationMap.map.keys) {
-      NotificationUtil.registerNext(notificationMap.map[taskId]!, context);
+      await NotificationUtil.registerNext(notificationMap.map[taskId]!, context);
     }
+
+    _hideProgressDialog();
+    _showRegistrationCompleteDialog();
 
     setState(() {
       currentExecuting = NotificationUtil.getCurrentExecuting(userSettingsCache.getDailyTaskSet());
@@ -292,5 +297,47 @@ class _SettingsPage extends State<SettingsPage> with WidgetsBindingObserver {
     setState(() {
       currentExecuting = NotificationUtil.getCurrentExecuting(userSettingsCache.getDailyTaskSet());
     });
+  }
+
+  void _showProgressDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        _dialogContext = context;
+        return AlertDialog(
+          title: Text(S.of(context).system_setup),
+          content: Text(S.of(context).do_not_close_app),
+        );
+      },
+    );
+  }
+
+  void _hideProgressDialog() {
+    if (_dialogContext != null) {
+      Navigator.of(_dialogContext!).pop();
+      _dialogContext = null;
+    }
+  }
+
+  void _showRegistrationCompleteDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).setup_complete),
+          content: Text(S.of(context).can_close),
+          actions: <Widget>[
+            TextButton(
+              child: Text(S.of(context).ok),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

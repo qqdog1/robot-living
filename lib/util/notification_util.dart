@@ -12,9 +12,9 @@ import '../dto/task.dart';
 import '../service/platform_channel.dart';
 
 class NotificationUtil {
-  static void setAndroidAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) async {
+  static Future<bool> setAndroidAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) async {
     try {
-      await PlatformChannel.createAlarm(
+      final bool result = await PlatformChannel.createAlarm(
         id,
         taskId,
         title,
@@ -23,22 +23,26 @@ class NotificationUtil {
         hour,
         minute
       );
+      return result;
     } catch (e) {
       print("Failed to set the alarm: $e");
     }
+    return false;
   }
 
-  static void cancelAndroidAlarm(int id) async {
+  static Future<bool> cancelAndroidAlarm(int id) async {
     try {
-      await PlatformChannel.cancelAlarm(
+      final bool result = await PlatformChannel.cancelAlarm(
         id,
       );
+      return result;
     } catch (e) {
       print("Failed to cancel the alarm: $e");
     }
+    return false;
   }
 
-  static void registerNext(List<NotificationObject> lst, BuildContext context) {
+  static Future<bool> registerNext(List<NotificationObject> lst, BuildContext context) async {
     DateTime now = DateTime.now();
     int shortestMinutes = 60 * 24 * 7;
 
@@ -61,9 +65,10 @@ class NotificationUtil {
 
     if (nextNotification != null) {
       print("準備由flutter端向android註冊: $nextNotification");
-      setAndroidAlarm(nextNotification.id!, nextNotification.taskId, nextNotification.title, nextNotification.body, nextNotification.weekday!,
+      return await setAndroidAlarm(nextNotification.id!, nextNotification.taskId, nextNotification.title, nextNotification.body, nextNotification.weekday!,
           nextNotification.hour, nextNotification.minute);
     }
+    return false;
   }
 
   static int getGapMinutes(DateTime now, NotificationObject notificationObject) {

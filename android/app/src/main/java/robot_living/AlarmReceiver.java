@@ -24,7 +24,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("AlarmReceiver", "onReceive called");
+        Log.i("AlarmReceiver", "onReceive called");
 
         String title = intent.getStringExtra("title");
         String body = intent.getStringExtra("body");

@@ -510,6 +510,46 @@ class S {
     );
   }
 
+  /// `System configuration in progress.`
+  String get system_setup {
+    return Intl.message(
+      'System configuration in progress.',
+      name: 'system_setup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please do not close the application.`
+  String get do_not_close_app {
+    return Intl.message(
+      'Please do not close the application.',
+      name: 'do_not_close_app',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Setup complete.`
+  String get setup_complete {
+    return Intl.message(
+      'Setup complete.',
+      name: 'setup_complete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notification setup complete, you may now close the application.`
+  String get can_close {
+    return Intl.message(
+      'Notification setup complete, you may now close the application.',
+      name: 'can_close',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `No settings made, no need to save.`
   String get error_no_settings_made {
     return Intl.message(

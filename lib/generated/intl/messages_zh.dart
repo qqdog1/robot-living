@@ -30,9 +30,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "can_close": MessageLookupByLibrary.simpleMessage("通知已設定完成 您可以關閉應用程式"),
         "choose_end_time": MessageLookupByLibrary.simpleMessage("選擇結束時間: "),
         "choose_start_time": MessageLookupByLibrary.simpleMessage("選擇開始時間: "),
         "currently_executing": MessageLookupByLibrary.simpleMessage("現正執行"),
+        "do_not_close_app": MessageLookupByLibrary.simpleMessage("請勿關閉應用程式"),
         "duration_type": MessageLookupByLibrary.simpleMessage("起訖類"),
         "end_time": m0,
         "error_no_end_time": MessageLookupByLibrary.simpleMessage("請設定結束時間"),
@@ -79,9 +81,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "second": MessageLookupByLibrary.simpleMessage("秒"),
         "segmented_type": MessageLookupByLibrary.simpleMessage("分段類"),
         "set_trigger_time": MessageLookupByLibrary.simpleMessage("設定觸發時間: "),
+        "setup_complete": MessageLookupByLibrary.simpleMessage("設定完成"),
         "skip": MessageLookupByLibrary.simpleMessage("跳過"),
         "start_time": m2,
         "sunday": MessageLookupByLibrary.simpleMessage("日"),
+        "system_setup": MessageLookupByLibrary.simpleMessage("系統設定中"),
         "task_edit_help_1": MessageLookupByLibrary.simpleMessage(
             "任務分三種類型:\n1.起訖類型\n2.分段類型\n3.一次性"),
         "task_edit_help_2": MessageLookupByLibrary.simpleMessage(

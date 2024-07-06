@@ -70,10 +70,10 @@ class UserSettingsCache {
     return userSettings.notificationMap;
   }
 
-  void setTaskAndNotify(DailyTaskSet dailyTaskSet, NotificationMap notificationMap) {
+  Future<void> setTaskAndNotify(DailyTaskSet dailyTaskSet, NotificationMap notificationMap) async {
     userSettings.dailyTaskSet = dailyTaskSet;
     userSettings.notificationMap = notificationMap;
-    _write();
+    await _write();
   }
 
   Future<void> _write() async {
