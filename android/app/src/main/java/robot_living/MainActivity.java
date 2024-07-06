@@ -154,7 +154,6 @@ public class MainActivity extends FlutterActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { // Android 6.0 (API 23) and above
             Log.d("register", "使用android 6以上註冊方式");
-            Log.d("canScheduleExactAlarms", String.valueOf(alarmManager.canScheduleExactAlarms()));
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { // Android 5.0 (API 21) and above
             Log.d("register", "使用android 5以上註冊方式");
