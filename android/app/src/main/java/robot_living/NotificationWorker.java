@@ -64,6 +64,7 @@ public class NotificationWorker extends Worker {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         int androidWeekday = weekday + 1;
+        androidWeekday = androidWeekday == 8 ? 1 : androidWeekday;
 
         // 設置觸發時間
         Calendar calendar = Calendar.getInstance();
@@ -81,7 +82,6 @@ public class NotificationWorker extends Worker {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { // Android 6.0 (API 23) and above
             Log.d("register", "使用android 6以上註冊方式");
-            Log.d("canScheduleExactAlarms", String.valueOf(alarmManager.canScheduleExactAlarms()));
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { // Android 5.0 (API 21) and above
             Log.d("register", "使用android 5以上註冊方式");
