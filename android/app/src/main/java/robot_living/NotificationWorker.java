@@ -47,9 +47,9 @@ public class NotificationWorker extends Worker {
         return Result.success();
     }
 
-    public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) {
+    public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute, int second) {
         Log.d("setupAlarm", "準備註冊通知: id: " + id + ", taskId: " + taskId + ", title: " + title + ", body: " + body +
-                ", weekday: " + weekday + ", hour: " + hour + ", minute: " + minute);
+                ", weekday: " + weekday + ", hour: " + hour + ", minute: " + minute + ", second: " + second);
 
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 
@@ -71,14 +71,14 @@ public class NotificationWorker extends Worker {
         calendar.set(Calendar.DAY_OF_WEEK, androidWeekday);
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.SECOND, second);
 
         // 檢查設置時間是否已經過去，若過去則設置為下一周
         if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
             calendar.add(Calendar.DAY_OF_YEAR, 7);
             Log.d("NextWeek", "應為下周觸發,加7天");
         }
-        Log.d("register time", "註冊下次通知時間:" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+        Log.d("register time", "註冊下次通知時間:" + calendar.getTime());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { // Android 6.0 (API 23) and above
             Log.d("register", "使用android 6以上註冊方式");
@@ -104,7 +104,7 @@ public class NotificationWorker extends Worker {
                     Notification notification = getNextNotification(list);
                     if (notification != null) {
                         setupAlarm(notification.getId(), notification.getTaskId(), notification.getTitle(), notification.getBody(),
-                                notification.getWeekday(), notification.getHour(), notification.getMinute());
+                                notification.getWeekday(), notification.getHour(), notification.getMinute(), notification.getSecond());
                     }
                 }
             } catch (JSONException e) {
@@ -155,6 +155,7 @@ public class NotificationWorker extends Worker {
                     notification.setWeekday(nof.getInt("weekday"));
                     notification.setHour(nof.getInt("hour"));
                     notification.setMinute(nof.getInt("minute"));
+                    notification.setSecond(nof.getInt("second"));
                     lst.add(notification);
                 }
             }

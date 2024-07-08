@@ -46,6 +46,6 @@ class DurationTask extends Task {
   DateTime _getDateTimeFromTimeString(String time) {
     final parts = time.split(':');
     final now = DateTime.now();
-    return DateTime(now.year, now.month, now.day, int.parse(parts[0]), int.parse(parts[1]));
+    return DateTime(now.year, now.month, now.day, int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
   }
 }

@@ -88,7 +88,8 @@ public class MainActivity extends FlutterActivity {
                                 int weekday = call.argument("weekday");
                                 int hour = call.argument("hour");
                                 int minute = call.argument("minute");
-                                setupAlarm(id, taskId, title, body, weekday, hour, minute);
+                                int second = call.argument("second");
+                                setupAlarm(id, taskId, title, body, weekday, hour, minute, second);
                                 result.success(true);
                                 break;
                             case "cancelAlarm":
@@ -119,9 +120,9 @@ public class MainActivity extends FlutterActivity {
         Log.d("canceled alarm", "" + id);
     }
 
-    public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) {
+    public void setupAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute, int second) {
         Log.d("setupAlarm", "準備註冊通知: id: " + id + ", taskId: " + taskId + ", title: " + title + ", body: " + body +
-                ", weekday: " + weekday + ", hour: " + hour + ", minute: " + minute);
+                ", weekday: " + weekday + ", hour: " + hour + ", minute: " + minute + ", second: " + second);
 
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 
@@ -143,7 +144,7 @@ public class MainActivity extends FlutterActivity {
         calendar.set(Calendar.DAY_OF_WEEK, androidWeekday);
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.SECOND, second);
 
         // 檢查設置時間是否已經過去，若過去則設置為下一周
         if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
@@ -153,9 +154,9 @@ public class MainActivity extends FlutterActivity {
         Log.d("register time", "註冊下次通知時間:" + calendar.getTime());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android 6.0 (API 23) and above
-//            Log.d("register", "使用android 12以上註冊方式");
-//            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-//        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { // Android 5.0 (API 21) and above
+            Log.d("register", "使用android 12以上註冊方式");
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { // Android 5.0 (API 21) and above
             Log.d("register", "使用android 5以上註冊方式");
             alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent), pendingIntent);
         } else { // Below Android 5.0

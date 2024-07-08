@@ -8,6 +8,7 @@ class NotificationObject {
   int? weekday;
   int hour;
   int minute;
+  int second;
   bool crossDay;
 
   NotificationObject({
@@ -18,6 +19,7 @@ class NotificationObject {
     this.weekday,
     required this.hour,
     required this.minute,
+    required this.second,
     this.crossDay = false,
   });
 
@@ -41,6 +43,7 @@ class NotificationObject {
         weekday = json['weekday'],
         hour = json['hour'],
         minute = json['minute'],
+        second = json['second'],
         crossDay = json['crossDay'] ?? false;
 
   @override
@@ -53,6 +56,7 @@ class NotificationObject {
       'weekday': weekday,
       'hour': hour,
       'minute': minute,
+      'second': second,
       'crossDay': crossDay,
     };
   }
@@ -71,6 +75,7 @@ class NotificationObject {
       weekday: weekday,
       hour: hour,
       minute: minute,
+      second: second,
       crossDay: crossDay,
     );
   }

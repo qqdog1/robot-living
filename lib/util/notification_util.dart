@@ -12,7 +12,7 @@ import '../dto/task.dart';
 import '../service/platform_channel.dart';
 
 class NotificationUtil {
-  static Future<bool> setAndroidAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute) async {
+  static Future<bool> setAndroidAlarm(int id, int taskId, String title, String body, int weekday, int hour, int minute, int second) async {
     try {
       final bool result = await PlatformChannel.createAlarm(
         id,
@@ -21,7 +21,8 @@ class NotificationUtil {
         body,
         weekday,
         hour,
-        minute
+        minute,
+        second
       );
       return result;
     } catch (e) {
@@ -66,7 +67,7 @@ class NotificationUtil {
     if (nextNotification != null) {
       print("準備由flutter端向android註冊: $nextNotification");
       return await setAndroidAlarm(nextNotification.id!, nextNotification.taskId, nextNotification.title, nextNotification.body, nextNotification.weekday!,
-          nextNotification.hour, nextNotification.minute);
+          nextNotification.hour, nextNotification.minute, nextNotification.second);
     }
     return false;
   }
@@ -116,6 +117,15 @@ class NotificationUtil {
         }
       }
     }
+    // 檢查是否有重複時間若有將秒數+1
+    for (int i = 0 ; i < lst.length ; i++) {
+      for (int j = i+1 ; j < lst.length; j++) {
+        if (lst[i].weekday == lst[j].weekday && lst[i].hour == lst[j].hour && lst[i].minute == lst[j].minute) {
+          lst[j].second = lst[j].second + 1;
+        }
+      }
+    }
+    // 設定不重複ID並且依照taskId為key放進map
     int id = 1;
     for (NotificationObject notification in lst) {
       notification.setId(id);
@@ -153,14 +163,18 @@ class NotificationUtil {
         title: "${durationTask.name} start",
         body: "",
         hour: int.parse(startTimes[0]),
-        minute: int.parse(startTimes[1])));
+        minute: int.parse(startTimes[1]),
+        second: 0,
+    ));
     notifications.add(NotificationObject(
         taskId: durationTask.id!,
         title: "${durationTask.name} end",
         body: "",
         hour: int.parse(endTimes[0]),
         minute: int.parse(endTimes[1]),
-        crossDay: crossDay));
+        second: 0,
+        crossDay: crossDay
+    ));
     return notifications;
   }
 
@@ -195,8 +209,9 @@ class NotificationUtil {
           body: "",
           hour: currentTime.hour,
           minute: currentTime.minute,
+          second: 0,
           crossDay: currentTime.day != startTime.day // 標記是否跨日
-          ));
+      ));
 
       currentTime = currentTime.add(Duration(minutes: segmentedTask.loopMin));
       index++;
@@ -213,7 +228,9 @@ class NotificationUtil {
         title: oneTimeTask.name,
         body: "",
         hour: int.parse(times[0]),
-        minute: int.parse(times[1])));
+        minute: int.parse(times[1]),
+        second: 0,
+    ));
     return notifications;
   }
 

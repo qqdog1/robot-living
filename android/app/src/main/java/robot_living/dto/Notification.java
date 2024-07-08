@@ -8,6 +8,7 @@ public class Notification {
     int weekday;
     int hour;
     int minute;
+    int second;
 
     public int getId() {
         return id;
@@ -63,5 +64,13 @@ public class Notification {
 
     public void setMinute(int minute) {
         this.minute = minute;
+    }
+
+    public int getSecond() {
+        return second;
+    }
+
+    public void setSecond(int second) {
+        this.second = second;
     }
 }
