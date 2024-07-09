@@ -20,8 +20,10 @@ Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await requestExactAlarmPermission();
+    Locale systemLocale = WidgetsBinding.instance.platformDispatcher.locale;
+    String languageCode = systemLocale.languageCode;
     final localeProvider = LocaleProvider();
-    await localeProvider.init(); // 初始化LocaleProvider
+    await localeProvider.init(languageCode); // 初始化LocaleProvider
     runApp(ChangeNotifierProvider(
       create: (context) => localeProvider,
       child: const RobotLiving(),
@@ -53,13 +55,18 @@ Future<void> requestExactAlarmPermission() async {
 }
 
 class LocaleProvider with ChangeNotifier {
-  Locale _locale = const Locale('zh');
+  Locale _locale = const Locale('en');
 
   Locale get locale => _locale;
 
-  Future<void> init() async {
+  Future<void> init(String languageCode) async {
     final userSettingsCache = await UserSettingsCache.getInstance();
-    final languageCode = userSettingsCache.getLanguage();
+    if (userSettingsCache.isFirstTime()) {
+      userSettingsCache.setLanguage(languageCode);
+      print('First time open the application, use system language: $languageCode');
+    } else {
+      languageCode = userSettingsCache.getLanguage();
+    }
     _locale = Locale(languageCode);
     notifyListeners();
   }

@@ -12,6 +12,7 @@ class UserSettingsCache {
   UserSettings userSettings = UserSettings(language: Language.chinese);
   String fileName = 'settings.txt';
   bool _initialized = false;
+  bool _isFirstTime = false;
 
   factory UserSettingsCache() {
     return _instance;
@@ -41,6 +42,7 @@ class UserSettingsCache {
         }
       } else {
         print("File does not exist, creating new file with default settings.");
+        _isFirstTime = true;
         _write();
       }
     } catch (e, stackTrace) {
@@ -52,6 +54,10 @@ class UserSettingsCache {
   }
 
   UserSettingsCache._internal();
+
+  bool isFirstTime() {
+    return _isFirstTime;
+  }
 
   String getLanguage() {
     return userSettings.language;
